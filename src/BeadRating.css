@@ -1,0 +1,626 @@
+/* 串珠評分區主容器 */
+.bead-rating-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 頁面頭部 */
+.rating-header {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.rating-header h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4, #45b7d1);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* 返回按鈕 */
+.back-btn {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.back-btn:hover {
+  transform: translateY(-50%) translateX(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* 主要內容區域 */
+.rating-content {
+  display: flex;
+  gap: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* 左側面板 */
+.left-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  position: relative;
+}
+
+/* 左上：對話框 */
+.dialogue-box {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 25px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  position: relative;
+  min-height: 200px;
+}
+
+.dialogue-box::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 30px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 左中下：通靈師角色 */
+.psychic-medium {
+  text-align: center;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.psychic-avatar {
+  position: relative;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.psychic-character {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.psychic-image {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(138, 43, 226, 0.8));
+  animation: gentleSway 4s ease-in-out infinite;
+}
+
+.psychic-body {
+  display: none;
+}
+
+.psychic-robe {
+  display: none;
+}
+
+.psychic-hands {
+  display: none;
+}
+
+@keyframes gentleSway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+.psychic-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  background: linear-gradient(45deg, #ffd700, #ff6b6b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.psychic-subtitle {
+  font-size: 1.3rem;
+  color: #ccc;
+  opacity: 0.8;
+}
+
+/* 歡迎訊息 */
+.welcome-message p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: #e0e0e0;
+}
+
+/* 分析中訊息 */
+.analyzing-message {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.crystal-animation {
+  font-size: 3rem;
+  animation: pulse 1.5s ease-in-out infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+.analyzing-message p {
+  font-size: 1.1rem;
+  margin: 10px 0;
+  color: #ffd700;
+}
+
+/* 結果訊息 */
+.result-message {
+  position: relative;
+}
+
+.advice-text {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #e0e0e0;
+  text-align: justify;
+  margin: 0;
+}
+
+.typing-indicator {
+  display: inline-block;
+  animation: blink 1s infinite;
+  color: #ffd700;
+  font-weight: bold;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* 右側面板 */
+.right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* 串珠設計展示區域 */
+.bead-design-section {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.bead-design-section h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ffd700;
+  font-size: 1.3rem;
+}
+
+/* 設計展示區域 */
+.design-display {
+  text-align: center;
+}
+
+.design-info {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.design-info h4 {
+  color: #ffd700;
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+}
+
+.design-info p {
+  margin: 5px 0;
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+/* 串珠設計視覺化 */
+.bead-design-visualization {
+  margin: 20px 0;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bead-string-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 100px;
+  padding: 20px;
+}
+
+.design-bead {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.design-bead:hover {
+  transform: scale(1.2);
+  z-index: 10;
+}
+
+
+
+.bead-shine {
+  position: absolute;
+  top: 15%;
+  left: 15%;
+  width: 20%;
+  height: 20%;
+  background: none;
+  border-radius: 50%;
+}
+
+.bead-reflection {
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  width: 15%;
+  height: 15%;
+  background: none;
+  border-radius: 50%;
+}
+
+.bead-glow {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 50%;
+  z-index: -1;
+  background: none;
+}
+
+/* 設計控制按鈕 */
+.design-controls {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.clear-design-btn {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: white;
+  border: none;
+  padding: 15px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.clear-design-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+}
+
+/* 無設計時的提示 */
+.no-design-message {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.no-design-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.no-design-message h4 {
+  color: #ffd700;
+  margin: 0 0 15px 0;
+  font-size: 1.3rem;
+}
+
+.no-design-message p {
+  color: #ccc;
+  margin: 0 0 25px 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.go-to-cabinet-btn {
+  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+}
+
+.go-to-cabinet-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+}
+
+.analyze-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #8a2be2 0%, #4b0082 100%);
+  color: white;
+  border: none;
+  padding: 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+}
+
+.analyze-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
+}
+
+.analyze-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 雷達圖區域 */
+.radar-chart-section {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.radar-chart-section h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ffd700;
+  font-size: 1.3rem;
+}
+
+.radar-chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* 雷達圖圖片 */
+.radar-chart-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+  transition: none;
+}
+
+/* 雷達圖標籤容器 */
+.radar-chart-labels {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+/* 六個標籤元素 */
+.radar-label {
+  position: absolute;
+  color: #ffd700;
+  font-size: 16.8px;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  white-space: nowrap;
+}
+
+/* 上方標籤 - 對應六邊形頂點 */
+.radar-label.top {
+  top:0px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 右上標籤 - 對應六邊形右上頂點 */
+.radar-label.top-right {
+  top: 50px;
+  right: 150px;
+}
+
+/* 右側標籤 - 對應六邊形右側頂點 */
+.radar-label.right {
+  top:80%;
+  right: 150px;
+  transform: translateY(-50%);
+}
+
+/* 右下標籤 - 對應六邊形右下頂點 */
+.radar-label.bottom-right {
+  bottom: 70px;
+  right: 400px;
+}
+
+/* 下方標籤 - 對應六邊形底部頂點 */
+.radar-label.bottom {
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 左側標籤 - 對應六邊形左側頂點 */
+.radar-label.left {
+  top: 20%;
+  left: 150px;
+  transform: translateY(-50%);
+}
+
+.radar-chart-image:hover {
+  transform: none;
+}
+
+/* SVG雷達圖樣式 */
+.radar-svg {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  filter: drop-shadow(0 0 10px rgba(138, 43, 226, 0.3));
+}
+
+.axis-label {
+  fill: #ffd700;
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+.score-label {
+  fill: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+/* 響應式設計 */
+@media (max-width: 1024px) {
+  .rating-content {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .left-panel, .right-panel {
+    flex: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .rating-header h1 {
+    font-size: 2rem;
+  }
+  
+  .back-btn {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    margin-bottom: 20px;
+  }
+  
+  .rating-header {
+    text-align: center;
+  }
+  
+  .psychic-medium, .dialogue-box, .bead-design-section, .radar-chart-section {
+    padding: 20px;
+  }
+  
+  .psychic-character {
+    font-size: 2.5rem;
+  }
+  
+  .psychic-robe {
+    font-size: 1.5rem;
+  }
+  
+  .psychic-hands {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .bead-rating-container {
+    padding: 15px;
+  }
+  
+  .rating-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .psychic-medium, .dialogue-box, .bead-design-section, .radar-chart-section {
+    padding: 15px;
+  }
+  
+  .radar-svg {
+    max-width: 250px;
+  }
+}
+
+/* 簡單的珠子跳動動畫 */
+@keyframes beadBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}

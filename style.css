@@ -1,0 +1,763 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft JhengHei', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: white;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.back-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 20px;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(-5px);
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 30px;
+}
+
+/* 左側 - 真實珠子櫃子 */
+.bead-cabinet {
+    background: linear-gradient(145deg, #F5F5DC, #DEB887);
+    border: 3px solid #8B4513;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 
+        inset 0 0 20px rgba(0,0,0,0.1),
+        0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.cabinet-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #8B4513;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* 透明櫃子外殼 */
+.cabinet-shell {
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 15px;
+    backdrop-filter: blur(2px);
+    box-shadow: 
+        inset 0 0 10px rgba(255,255,255,0.2),
+        0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* 櫃子層架 */
+.cabinet-shelves {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.shelf {
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 5px;
+    padding: 8px;
+    display: flex;
+    gap: 8px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 抽屜式格子 */
+.drawer-compartment {
+    background: rgba(255, 255, 255, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 4px;
+    padding: 8px;
+    flex: 1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        inset 0 2px 4px rgba(0,0,0,0.1),
+        0 2px 4px rgba(0,0,0,0.1);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+/* 抽屜外殼 */
+.drawer-outer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 抽屜正面 */
+.drawer-front {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        inset 0 2px 4px rgba(0,0,0,0.1),
+        0 2px 4px rgba(0,0,0,0.1);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* 抽屜把手 */
+.drawer-handle {
+    width: 20px;
+    height: 4px;
+    background: linear-gradient(145deg, #8B4513, #A0522D);
+    border-radius: 2px;
+    box-shadow: 
+        inset 0 1px 2px rgba(0,0,0,0.3),
+        0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* 抽屜內容區域 */
+.drawer-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    border-radius: 4px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        inset 0 2px 4px rgba(0,0,0,0.1),
+        0 2px 4px rgba(0,0,0,0.1);
+    transform: translateZ(-10px);
+    backface-visibility: hidden;
+}
+
+/* 抽屜側面 */
+.drawer-side {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 100%;
+    background: linear-gradient(145deg, #DEB887, #F5DEB3);
+    border: 1px solid rgba(139, 69, 19, 0.3);
+    transform: translateX(-5px) rotateY(90deg);
+    transform-origin: left center;
+}
+
+/* 抽屜打開狀態 */
+.drawer-compartment.open .drawer-outer {
+    transform: translateX(20px) rotateY(-15deg);
+}
+
+.drawer-compartment.open .drawer-front {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 
+        inset 0 2px 4px rgba(0,0,0,0.1),
+        0 4px 8px rgba(0,0,0,0.2),
+        0 0 15px rgba(255,215,0,0.3);
+}
+
+.drawer-compartment.open .drawer-content {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 
+        inset 0 2px 4px rgba(0,0,0,0.1),
+        0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* 抽屜懸停效果 */
+.drawer-compartment:hover .drawer-outer {
+    transform: translateX(5px) rotateY(-5deg);
+}
+
+.drawer-compartment:hover .drawer-front {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 
+        inset 0 2px 4px rgba(0,0,0,0.1),
+        0 4px 8px rgba(0,0,0,0.2);
+}
+
+.drawer-compartment.hover .drawer-outer {
+    transform: translateX(3px) rotateY(-3deg);
+}
+
+.drawer-compartment.hover .drawer-front {
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 
+        inset 0 2px 4px rgba(0,0,0,0.1),
+        0 3px 6px rgba(0,0,0,0.15);
+}
+
+/* 抽屜打開動畫 */
+@keyframes drawerOpen {
+    0% {
+        transform: translateX(0) rotateY(0deg);
+    }
+    50% {
+        transform: translateX(10px) rotateY(-8deg);
+    }
+    100% {
+        transform: translateX(20px) rotateY(-15deg);
+    }
+}
+
+@keyframes drawerClose {
+    0% {
+        transform: translateX(20px) rotateY(-15deg);
+    }
+    50% {
+        transform: translateX(10px) rotateY(-8deg);
+    }
+    100% {
+        transform: translateX(0) rotateY(0deg);
+    }
+}
+
+.drawer-compartment.opening .drawer-outer {
+    animation: drawerOpen 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.drawer-compartment.closing .drawer-outer {
+    animation: drawerClose 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* 珠子樣式 */
+.bead-pile {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    justify-content: center;
+    align-items: center;
+}
+
+.bead-item {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 
+        inset 0 1px 3px rgba(255,255,255,0.3),
+        0 1px 2px rgba(0,0,0,0.2);
+}
+
+.bead-item:hover {
+    transform: scale(1.3);
+    z-index: 10;
+}
+
+.bead-item.selected {
+    transform: scale(1.5);
+    box-shadow: 
+        inset 0 1px 3px rgba(255,255,255,0.5),
+        0 0 8px rgba(255,215,0,0.8);
+    z-index: 20;
+}
+
+.bead-item.grabbed {
+    transform: scale(1.8);
+    box-shadow: 
+        inset 0 1px 3px rgba(255,255,255,0.5),
+        0 0 12px rgba(255,215,0,1);
+    z-index: 1000;
+}
+
+/* 右側 - 串珠托盤 */
+.beading-board {
+    background: linear-gradient(145deg, #2F4F4F, #3A5F5F);
+    border: 3px solid #1F3F3F;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 
+        inset 0 0 20px rgba(0,0,0,0.3),
+        0 10px 30px rgba(0,0,0,0.4);
+    position: relative;
+}
+
+.board-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #FFD700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+/* 長方形木質托盤 */
+.beading-tray {
+    width: 400px;
+    height: 250px;
+    margin: 0 auto;
+    background: linear-gradient(145deg, #DEB887, #F5DEB3);
+    border: 3px solid #8B4513;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        inset 0 0 20px rgba(0,0,0,0.2),
+        0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* 木質紋理效果 */
+.tray-texture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(90deg, transparent 0%, rgba(139,69,19,0.1) 50%, transparent 100%),
+        linear-gradient(0deg, transparent 0%, rgba(139,69,19,0.05) 50%, transparent 100%);
+    background-size: 20px 20px, 10px 10px;
+    border-radius: 7px;
+    pointer-events: none;
+}
+
+/* 主串珠凹槽 */
+.main-beading-groove {
+    width: 350px;
+    height: 15px;
+    background: linear-gradient(145deg, #8B4513, #A0522D);
+    border: 2px solid #654321;
+    border-radius: 8px;
+    position: relative;
+    margin: 20px 0;
+    box-shadow: 
+        inset 0 2px 4px rgba(0,0,0,0.3),
+        0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* 圓形小凹槽 */
+.circular-groove {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(145deg, #8B4513, #A0522D);
+    border: 2px solid #654321;
+    border-radius: 50%;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 
+        inset 0 2px 4px rgba(0,0,0,0.3),
+        0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* 直線型小凹槽 */
+.linear-groove {
+    width: 60px;
+    height: 8px;
+    background: linear-gradient(145deg, #8B4513, #A0522D);
+    border: 1px solid #654321;
+    border-radius: 4px;
+    position: absolute;
+    box-shadow: 
+        inset 0 1px 3px rgba(0,0,0,0.3),
+        0 1px 2px rgba(0,0,0,0.2);
+}
+
+.groove-left {
+    top: 40px;
+    left: 30px;
+}
+
+.groove-right {
+    top: 40px;
+    right: 30px;
+}
+
+.groove-bottom-left {
+    bottom: 30px;
+    left: 30px;
+}
+
+.groove-bottom-right {
+    bottom: 30px;
+    right: 30px;
+}
+
+/* 串珠區域 */
+.beading-area {
+    width: 320px;
+    height: 12px;
+    background: linear-gradient(145deg, #FFD700, #FFA500);
+    border-radius: 6px;
+    position: relative;
+    margin: 0 auto;
+    box-shadow: 
+        inset 0 1px 3px rgba(255,255,255,0.3),
+        0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* 托盤上的珠子 */
+.tray-bead {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    cursor: pointer;
+    box-shadow: 
+        inset 0 1px 3px rgba(255,255,255,0.3),
+        0 2px 4px rgba(0,0,0,0.3);
+    animation: beadPlace 0.5s ease;
+    z-index: 10;
+}
+
+.tray-bead:hover {
+    transform: scale(1.2);
+    z-index: 20;
+}
+
+@keyframes beadPlace {
+    from { 
+        transform: scale(0); 
+        opacity: 0;
+    }
+    to { 
+        transform: scale(1); 
+        opacity: 1;
+    }
+}
+
+.board-controls {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.control-btn {
+    background: linear-gradient(145deg, #FFD700, #FFA500);
+    border: none;
+    border-radius: 10px;
+    color: #333;
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.bead-info {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.info-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #FFD700;
+}
+
+.info-description {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    opacity: 0.9;
+}
+
+.completion-status {
+    text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.status-text {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #FFD700;
+}
+
+/* 拖曳時的視覺效果 */
+.dragging {
+    opacity: 0.7;
+    transform: scale(1.2);
+    z-index: 1000;
+}
+
+.drop-zone {
+    border: 2px dashed #FFD700;
+    background: rgba(255, 215, 0, 0.1);
+    animation: dropZonePulse 0.5s ease-in-out;
+}
+
+@keyframes dropZonePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* 珠子放置動畫 */
+.bead-drop-animation {
+    animation: beadDrop 0.6s ease-out;
+}
+
+@keyframes beadDrop {
+    0% { 
+        transform: scale(0) rotate(0deg); 
+        opacity: 0;
+    }
+    50% { 
+        transform: scale(1.2) rotate(180deg); 
+        opacity: 0.8;
+    }
+    100% { 
+        transform: scale(1) rotate(360deg); 
+        opacity: 1;
+    }
+}
+
+/* 托盤互動效果 */
+.beading-tray:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        inset 0 0 20px rgba(0,0,0,0.2),
+        0 15px 35px rgba(0,0,0,0.4);
+}
+
+/* 珠子懸停效果增強 */
+.bead-item:hover {
+    transform: scale(1.3) translateY(-2px);
+    z-index: 10;
+    box-shadow: 
+        inset 0 1px 3px rgba(255,255,255,0.5),
+        0 4px 8px rgba(0,0,0,0.3),
+        0 0 10px rgba(255,215,0,0.5);
+}
+
+/* 托盤珠子懸停效果 */
+.tray-bead:hover {
+    transform: scale(1.3) translateY(-3px);
+    z-index: 20;
+    box-shadow: 
+        inset 0 1px 3px rgba(255,255,255,0.5),
+        0 6px 12px rgba(0,0,0,0.4),
+        0 0 15px rgba(255,215,0,0.6);
+}
+
+/* 完成按鈕動畫 */
+.control-btn.complete {
+    background: linear-gradient(145deg, #10B981, #059669);
+    animation: completePulse 2s infinite;
+}
+
+@keyframes completePulse {
+    0%, 100% { 
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    50% { 
+        box-shadow: 0 5px 20px rgba(16, 185, 129, 0.5);
+    }
+}
+
+/* 櫃子抽屜打開動畫 */
+.drawer-compartment.open {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 
+        inset 0 2px 4px rgba(0,0,0,0.1),
+        0 8px 16px rgba(0,0,0,0.3),
+        0 0 15px rgba(255,215,0,0.3);
+    border-color: #FFD700;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* 珠子選擇動畫 */
+.bead-item.selected {
+    transform: scale(1.5) translateY(-3px);
+    box-shadow: 
+        inset 0 1px 3px rgba(255,255,255,0.5),
+        0 0 12px rgba(255,215,0,0.8),
+        0 0 20px rgba(255,215,0,0.4);
+    z-index: 20;
+    animation: selectedGlow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes selectedGlow {
+    from { 
+        box-shadow: 
+            inset 0 1px 3px rgba(255,255,255,0.5),
+            0 0 12px rgba(255,215,0,0.8),
+            0 0 20px rgba(255,215,0,0.4);
+    }
+    to { 
+        box-shadow: 
+            inset 0 1px 3px rgba(255,255,255,0.5),
+            0 0 15px rgba(255,215,0,1),
+            0 0 25px rgba(255,215,0,0.6);
+    }
+}
+
+/* 托盤珠子移除動畫 */
+.tray-bead.removing {
+    animation: beadRemove 0.4s ease-in;
+}
+
+@keyframes beadRemove {
+    0% { 
+        transform: scale(1); 
+        opacity: 1;
+    }
+    100% { 
+        transform: scale(0) rotate(180deg); 
+        opacity: 0;
+    }
+}
+
+/* 成功提示動畫 */
+.success-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(145deg, #10B981, #059669);
+    color: white;
+    padding: 20px 30px;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    z-index: 1000;
+    animation: successPopup 0.8s ease-out;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+@keyframes successPopup {
+    0% { 
+        transform: translate(-50%, -50%) scale(0); 
+        opacity: 0;
+    }
+    50% { 
+        transform: translate(-50%, -50%) scale(1.1); 
+        opacity: 1;
+    }
+    100% { 
+        transform: translate(-50%, -50%) scale(1); 
+        opacity: 1;
+    }
+}
+
+/* 托盤珠子串聯效果 */
+.beading-area {
+    position: relative;
+    overflow: visible;
+}
+
+.beading-area::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #FFD700, #FFA500, #FFD700);
+    transform: translateY(-50%);
+    z-index: 1;
+    animation: stringFlow 2s ease-in-out infinite;
+}
+
+@keyframes stringFlow {
+    0%, 100% { 
+        background: linear-gradient(90deg, #FFD700, #FFA500, #FFD700);
+    }
+    50% { 
+        background: linear-gradient(90deg, #FFA500, #FFD700, #FFA500);
+    }
+}
+
+@media (max-width: 1200px) {
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .beading-tray {
+        width: 350px;
+        height: 220px;
+    }
+}
+
+@media (max-width: 768px) {
+    .shelf {
+        flex-direction: column;
+    }
+    
+    .drawer-compartment {
+        min-height: 40px;
+    }
+    
+    .beading-tray {
+        width: 300px;
+        height: 200px;
+    }
+}

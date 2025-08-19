@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>靈性串珠創作 App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-top: 40px;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .menu-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .menu-item:hover::before {
+            left: 100%;
+        }
+
+        .menu-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .menu-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .menu-description {
+            font-size: 1rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            opacity: 0.7;
+        }
+
+        /* 珠子介紹指南彈窗樣式 */
+        .guide-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            overflow-y: auto;
+        }
+
+        .guide-modal-content {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 20px auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 95%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .guide-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #333;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .guide-close:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .menu-item {
+                padding: 20px;
+            }
+
+            .guide-modal-content {
+                width: 98%;
+                margin: 10px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">✨ 靈性串珠創作 ✨</h1>
+            <p class="subtitle">探索靈性世界，創作專屬於你的能量串珠</p>
+        </div>
+
+        <div class="menu-grid">
+            <div class="menu-item" onclick="openBeadRatingInNewTab()">
+                <span class="menu-icon">⭐</span>
+                <h3 class="menu-title">串珠評分區</h3>
+                <p class="menu-description">作品評分、創意分享</p>
+            </div>
+
+            <div class="menu-item" onclick="window.open('http://localhost:3000', '_blank')">
+                <span class="menu-icon">💠</span>
+                <h3 class="menu-title">數位串珠創作區</h3>
+                <p class="menu-description">珠子櫃子視覺選珠介面</p>
+            </div>
+
+            <div class="menu-item" onclick="openBeadGuideInNewTab()">
+                <span class="menu-icon">📚</span>
+                <h3 class="menu-title">珠子圖案庫</h3>
+                <p class="menu-description">精美圖案與設計靈感</p>
+            </div>
+
+            <div class="menu-item" onclick="window.open('http://localhost:3000/tutorial', '_blank')">
+                <span class="menu-icon">🎨</span>
+                <h3 class="menu-title">珠子教學中心</h3>
+                <p class="menu-description">製作技巧與工具介紹</p>
+            </div>
+
+            <div class="menu-item" onclick="alert('🔭 近期運勢報導 - 功能開發中')">
+                <span class="menu-icon">🔭</span>
+                <h3 class="menu-title">近期運勢報導</h3>
+                <p class="menu-description">能量分析與水晶建議</p>
+            </div>
+
+            <div class="menu-item" onclick="alert('🏪 推薦串珠店家 - 功能開發中')">
+                <span class="menu-icon">🏪</span>
+                <h3 class="menu-title">推薦串珠店家</h3>
+                <p class="menu-description">店家資訊與收藏功能</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>✨ 讓靈性指引你的創作之路 ✨</p>
+        </div>
+    </div>
+
+    <!-- 珠子介紹指南彈窗 -->
+    <div id="beadGuideModal" class="guide-modal">
+        <div class="guide-modal-content">
+            <span class="guide-close" onclick="closeBeadGuide()">&times;</span>
+            <div id="beadGuideContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // 珠子材質數據
+        const beadMaterials = {
+            glass: {
+                name: '玻璃珠',
+                description: '晶瑩剔透，色彩豐富',
+                icon: '🔮',
+                characteristics: [
+                    '透明度高，光澤度好',
+                    '色彩飽和度高',
+                    '適合製作亮眼的首飾',
+                    '重量適中，佩戴舒適'
+                ],
+                care: '避免碰撞，定期清潔',
+                price: '中等',
+                applications: ['項鍊', '手鍊', '耳環', '髮飾'],
+                colors: ['紅色', '藍色', '綠色', '紫色', '黃色', '粉色', '金色', '銀色']
+            },
+            
+            seed: {
+                name: '米珠',
+                description: '小巧精緻，質地細膩',
+                icon: '✨',
+                characteristics: [
+                    '尺寸小，適合精細工藝',
+                    '質地堅硬，不易損壞',
+                    '色彩柔和，適合搭配',
+                    '重量輕，佩戴無負擔'
+                ],
+                care: '避免潮濕，定期擦拭',
+                price: '經濟實惠',
+                applications: ['精細編織', '刺繡裝飾', '小配件'],
+                colors: ['淺粉', '薄荷綠', '天藍', '米色', '淺紫', '淺黃']
+            },
+            
+            crystal: {
+                name: '水晶珠',
+                description: '高貴典雅，光澤璀璨',
+                icon: '💎',
+                characteristics: [
+                    '折射率高，光澤璀璨',
+                    '質地堅硬，不易刮傷',
+                    '色彩純淨，高貴典雅',
+                    '重量較重，質感十足'
+                ],
+                care: '避免化學品，定期拋光',
+                price: '較高',
+                applications: ['高級首飾', '禮品製作', '收藏品'],
+                colors: ['透明', '粉晶', '紫晶', '黃晶', '綠晶', '白晶']
+            },
+            
+            wooden: {
+                name: '木珠',
+                description: '自然質樸，環保健康',
+                icon: '🌳',
+                characteristics: [
+                    '天然材質，環保健康',
+                    '質地輕盈，佩戴舒適',
+                    '色彩自然，質樸溫馨',
+                    '可雕刻，個性化強'
+                ],
+                care: '避免水浸，定期上油',
+                price: '經濟實惠',
+                applications: ['自然風格首飾', '兒童飾品', '環保產品'],
+                colors: ['原木色', '深棕', '淺棕', '紅棕', '黑棕']
+            }
+        };
+
+        // 顏色特性數據
+        const colorCharacteristics = {
+            red: {
+                name: '紅色系',
+                icon: '❤️',
+                psychology: '熱情、活力、自信',
+                occasions: ['慶祝場合', '重要會議', '約會'],
+                combinations: ['金色', '白色', '黑色'],
+                beads: ['紅色玻璃珠', '酒紅米珠', '珊瑚色水晶珠'],
+                hex: '#FF6B6B'
+            },
+            
+            blue: {
+                name: '藍色系',
+                icon: '💙',
+                psychology: '冷靜、信任、專業',
+                occasions: ['工作場合', '正式會議', '日常休閒'],
+                combinations: ['白色', '銀色', '灰色'],
+                beads: ['天藍玻璃珠', '深藍米珠', '海藍水晶珠'],
+                hex: '#4ECDC4'
+            },
+            
+            green: {
+                name: '綠色系',
+                icon: '💚',
+                psychology: '自然、平衡、成長',
+                occasions: ['戶外活動', '環保主題', '放鬆時刻'],
+                combinations: ['棕色', '白色', '黃色'],
+                beads: ['薄荷綠玻璃珠', '深綠米珠', '翠綠水晶珠'],
+                hex: '#32CD32'
+            },
+            
+            purple: {
+                name: '紫色系',
+                icon: '💜',
+                psychology: '神秘、高貴、創意',
+                occasions: ['藝術活動', '正式場合', '冥想放鬆'],
+                combinations: ['金色', '銀色', '白色'],
+                beads: ['紫色玻璃珠', '淡紫米珠', '紫水晶珠'],
+                hex: '#9370DB'
+            },
+            
+            yellow: {
+                name: '黃色系',
+                icon: '💛',
+                psychology: '快樂、樂觀、智慧',
+                occasions: ['生日慶祝', '學習場合', '創意活動'],
+                combinations: ['白色', '藍色', '綠色'],
+                beads: ['黃色玻璃珠', '金黃米珠', '黃水晶珠'],
+                hex: '#FFE66D'
+            },
+            
+            pink: {
+                name: '粉色系',
+                icon: '🌸',
+                psychology: '溫柔、浪漫、甜美',
+                occasions: ['約會', '派對', '送禮'],
+                combinations: ['白色', '銀色', '淺紫'],
+                beads: ['粉色玻璃珠', '淺粉米珠', '粉水晶珠'],
+                hex: '#FF6B9D'
+            }
+        };
+
+        // 材質介紹組件
+        function createMaterialCard(material, data, isActive, onClick) {
+            return `
+                <div class="material-card ${isActive ? 'active' : ''}" onclick="${onClick}">
+                    <div class="material-icon">${data.icon}</div>
+                    <h3>${data.name}</h3>
+                    <p class="material-description">${data.description}</p>
+                    <div class="material-tags">
+                        <span class="price-tag">${data.price}</span>
+                        <span class="care-tag">保養: ${data.care}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 材質詳情組件
+        function createMaterialDetail(material, data) {
+            return `
+                <div class="material-detail">
+                    <div class="detail-header">
+                        <div class="detail-icon">${data.icon}</div>
+                        <div class="detail-info">
+                            <h2>${data.name}</h2>
+                            <p>${data.description}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-content">
+                        <div class="detail-section">
+                            <h3>✨ 特點</h3>
+                            <ul class="characteristics-list">
+                                ${data.characteristics.map(char => `<li>${char}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h3>🎯 適用範圍</h3>
+                            <div class="applications-grid">
+                                ${data.applications.map(app => `<span class="application-tag">${app}</span>`).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h3>🎨 常見顏色</h3>
+                            <div class="colors-grid">
+                                ${data.colors.map(color => `<span class="color-tag">${color}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 顏色特性組件
+        function createColorCard(color, data) {
+            return `
+                <div class="color-card" style="border-color: ${data.hex}">
+                    <div class="color-header">
+                        <div class="color-icon">${data.icon}</div>
+                        <h3>${data.name}</h3>
+                        <div class="color-sample" style="background-color: ${data.hex}"></div>
+                    </div>
+                    
+                    <div class="color-content">
+                        <div class="psychology">
+                            <h4>心理特質</h4>
+                            <p>${data.psychology}</p>
+                        </div>
+                        
+                        <div class="occasions">
+                            <h4>適用場合</h4>
+                            <div class="occasion-tags">
+                                ${data.occasions.map(occasion => `<span class="occasion-tag">${occasion}</span>`).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="combinations">
+                            <h4>搭配建議</h4>
+                            <div class="combination-tags">
+                                ${data.combinations.map(combo => `<span class="combination-tag">${combo}</span>`).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="bead-types">
+                            <h4>珠子類型</h4>
+                            <div class="bead-tags">
+                                ${data.beads.map(bead => `<span class="bead-tag">${bead}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 打開珠子介紹指南
+        function openBeadGuide() {
+            const modal = document.getElementById('beadGuideModal');
+            const content = document.getElementById('beadGuideContent');
+            
+            // 生成珠子介紹指南內容
+            content.innerHTML = `
+                <div class="bead-guide-container">
+                    <div class="guide-header">
+                        <h1>🎨 珠子介紹指南</h1>
+                        <p>了解不同材質和顏色的珠子特性，為您的串珠創作提供靈感</p>
+                    </div>
+
+                    <div class="guide-tabs">
+                        <button class="tab-btn active" onclick="switchTab('materials')">
+                            📦 材質介紹
+                        </button>
+                        <button class="tab-btn" onclick="switchTab('colors')">
+                            🎨 顏色特性
+                        </button>
+                    </div>
+
+                    <div class="guide-content">
+                        <div id="materialsTab" class="materials-section">
+                            <div class="materials-grid">
+                                ${Object.entries(beadMaterials).map(([key, data]) => 
+                                    createMaterialCard(key, data, key === 'glass', `selectMaterial('${key}')`)
+                                ).join('')}
+                            </div>
+                            
+                            <div class="material-detail-container">
+                                ${createMaterialDetail('glass', beadMaterials.glass)}
+                            </div>
+                        </div>
+
+                        <div id="colorsTab" class="colors-section" style="display: none;">
+                            <div class="colors-grid">
+                                ${Object.entries(colorCharacteristics).map(([key, data]) => 
+                                    createColorCard(key, data)
+                                ).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 關閉珠子介紹指南
+        function closeBeadGuide() {
+            const modal = document.getElementById('beadGuideModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // 切換標籤頁
+        function switchTab(tab) {
+            const materialsTab = document.getElementById('materialsTab');
+            const colorsTab = document.getElementById('colorsTab');
+            const tabs = document.querySelectorAll('.tab-btn');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tab === 'materials') {
+                materialsTab.style.display = 'grid';
+                colorsTab.style.display = 'none';
+            } else {
+                materialsTab.style.display = 'none';
+                colorsTab.style.display = 'grid';
+            }
+        }
+
+        // 選擇材質
+        function selectMaterial(material) {
+            const cards = document.querySelectorAll('.material-card');
+            const detailContainer = document.querySelector('.material-detail-container');
+            
+            cards.forEach(card => card.classList.remove('active'));
+            event.target.closest('.material-card').classList.add('active');
+            
+            detailContainer.innerHTML = createMaterialDetail(material, beadMaterials[material]);
+        }
+
+        // 點擊彈窗外部關閉
+        window.onclick = function(event) {
+            const modal = document.getElementById('beadGuideModal');
+            if (event.target === modal) {
+                closeBeadGuide();
+            }
+        }
+
+        // 打開珠子介紹指南在新分頁
+        function openBeadGuideInNewTab() {
+            // 跳轉到 React 應用的珠子指南頁面
+            window.open('http://localhost:3000/guide', '_blank');
+        }
+
+        // 打開串珠評分區在新分頁
+        function openBeadRatingInNewTab() {
+            // 跳轉到 React 應用的串珠評分區頁面
+            window.open('http://localhost:3000/rating', '_blank');
+        }
+    </script>
+
+    <!-- 珠子介紹指南樣式 -->
+    <style>
+        /* 珠子介紹指南容器 */
+        .bead-guide-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        /* 頁面標題 */
+        .guide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        .guide-header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .guide-header p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 標籤頁 */
+        .guide-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .tab-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: translateY(-2px);
+        }
+        
+        /* 內容區域 */
+        .guide-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* 材質介紹區域 */
+        .materials-section {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            align-items: start;
+        }
+        
+        .materials-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        /* 材質卡片 */
+        .material-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+        }
+        
+        .material-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .material-card.active {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8ecff 100%);
+        }
+        
+        .material-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .material-card h3 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .material-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+        .material-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .price-tag, .care-tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        /* 材質詳情 */
+        .material-detail {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .detail-icon {
+            font-size: 3rem;
+        }
+        
+        .detail-info h2 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .detail-info p {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .detail-section {
+            margin-bottom: 25px;
+        }
+        
+        .detail-section h3 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .characteristics-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .characteristics-list li {
+            background: #f8f9ff;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        
+        .applications-grid, .colors-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .application-tag, .color-tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        /* 顏色特性區域 */
+        .colors-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        /* 顏色卡片 */
+        .color-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 3px solid;
+            transition: all 0.3s ease;
+        }
+        
+        .color-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .color-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .color-icon {
+            font-size: 2rem;
+        }
+        
+        .color-header h3 {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            flex: 1;
+        }
+        
+        .color-sample {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .color-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .color-content h4 {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .color-content p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .occasion-tags, .combination-tags, .bead-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .occasion-tag {
+            background: linear-gradient(135deg, #4ECDC4, #44A08D);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+        
+        .combination-tag {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+        
+        .bead-tag {
+            background: linear-gradient(135deg, #FFE66D, #FFD93D);
+            color: #333;
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .materials-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .colors-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .guide-header h1 {
+                font-size: 2rem;
+            }
+            
+            .guide-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .material-detail {
+                padding: 20px;
+            }
+            
+            .detail-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</body>
+</html>
