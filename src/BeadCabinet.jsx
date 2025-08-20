@@ -294,16 +294,18 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign }) => {
   const createCircularBracelet = () => {
     console.log('開始創建圓形手鍊');
     
-    // 建立圓形手鍊容器
+    // 建立圓形手鍊容器，放在浮空頁面內
     const braceletContainer = document.createElement('div');
     braceletContainer.className = 'bracelet-container';
     braceletContainer.style.cssText = `
-      position: fixed;
+      position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      z-index: 10000;
+      z-index: 1000;
       pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.8s ease-in;
     `;
     
     // 計算圓形排列
@@ -338,16 +340,22 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign }) => {
       braceletContainer.appendChild(beadElement);
     });
     
-    // 添加到頁面
-    document.body.appendChild(braceletContainer);
+    // 添加到浮空頁面內，而不是整個頁面
+    const floatingContainer = document.querySelector('.floating-beads-animation');
+    if (floatingContainer) {
+      floatingContainer.appendChild(braceletContainer);
+      console.log('圓形手鍊已添加到浮空頁面內');
+      
+      // 觸發淡入效果
+      setTimeout(() => {
+        braceletContainer.style.opacity = '1';
+      }, 100);
+    } else {
+      console.error('找不到浮空頁面容器');
+    }
     
-    // 0.67秒後自動關閉
-    setTimeout(() => {
-      if (braceletContainer.parentNode) {
-        braceletContainer.remove();
-      }
-      alert('圓形手鍊創建完成！');
-    }, 667);
+    // 圓形手鍊創建完成後，不自動關閉，等待用戶主動完成
+    console.log('圓形手鍊創建完成，等待用戶完成串珠');
   };
 
   // 完成串珠動畫
@@ -792,14 +800,27 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign }) => {
                   console.log('所有珠子串珠完成！開始手鍊成形動畫！');
                   setFloatingBeads([]);
                   
-                  // 延遲顯示完成動畫
+                  // 先淡出直線串珠元素，然後淡入圓形手鍊
                   setTimeout(() => {
-                    setShowFloatingAnimation(false);
-                    // 延遲開始圓形手鍊創建
+                    // 淡出直線串珠相關元素
+                    const stringingLine = document.querySelector('.stringing-line');
+                    const strungBeads = document.querySelectorAll('.strung-bead');
+                    
+                    if (stringingLine) {
+                      stringingLine.style.transition = 'opacity 0.5s ease-out';
+                      stringingLine.style.opacity = '0';
+                    }
+                    
+                    strungBeads.forEach(bead => {
+                      bead.style.transition = 'opacity 0.5s ease-out';
+                      bead.style.opacity = '0';
+                    });
+                    
+                    // 0.5秒後淡入圓形手鍊
                     setTimeout(() => {
                       createCircularBracelet();
-                    }, 167);
-                  }, 333);
+                    }, 500);
+                  }, 300);
                 }
               }}
             >
