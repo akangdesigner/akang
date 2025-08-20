@@ -310,9 +310,48 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign }) => {
     
     // 計算圓形排列
     const totalBeads = selectedBeads.length;
-    const radius = 80; // 手鍊半徑
+    
+    // 根據串珠長度設定固定半徑（與 SVG 圓形線一致）
+    let radius;
+    if (stringLength === 'half') {
+      radius = 80; // 半圓：固定半徑 80px
+    } else if (stringLength === 'four-thirds') {
+      radius = 100; // 4/3圓：固定半徑 100px
+    } else { // full
+      radius = 120; // 全圓：固定半徑 120px
+    }
+    
     const centerX = 0;
     const centerY = 0;
+
+    // 建立 SVG 元素
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("width", `${radius * 2}px`);  // 直徑 = 2 * 半徑
+    svg.setAttribute("height", `${radius * 2}px`); // 直徑 = 2 * 半徑
+    svg.style.position = "absolute";
+    svg.style.left = "50%";
+    svg.style.top = "50%";
+    svg.style.transform = "translate(-50%, -50%)";
+    svg.style.pointerEvents = "none";
+    svg.style.zIndex = "1";
+
+    // 建立圓形
+    const circle = document.createElementNS(svgNS, "circle");
+    circle.setAttribute("cx", `${radius}`);  // 圓心 x = 半徑
+    circle.setAttribute("cy", `${radius}`);  // 圓心 y = 半徑
+    circle.setAttribute("r", `${radius}`);   // 半徑
+    circle.setAttribute("fill", "transparent");
+    circle.setAttribute("stroke", "white");
+    circle.setAttribute("stroke-width", stringWidth === 'thin' ? 2 : stringWidth === 'medium' ? 3 : 4);
+
+    // 加入到 svg
+    svg.appendChild(circle);
+    braceletContainer.appendChild(svg);
+    
+
+    
+
     
     selectedBeads.forEach((bead, index) => {
       const angle = (2 * Math.PI / totalBeads) * index - Math.PI / 2; // 從12點開始
@@ -346,9 +385,11 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign }) => {
       floatingContainer.appendChild(braceletContainer);
       console.log('圓形手鍊已添加到浮空頁面內');
       
-      // 觸發淡入效果
+      // 觸發淡入效果 - 串珠線和珠子一起淡入
       setTimeout(() => {
         braceletContainer.style.opacity = '1';
+        
+
       }, 100);
     } else {
       console.error('找不到浮空頁面容器');
@@ -517,10 +558,12 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign }) => {
   const calculateBeadPosition = (index, totalBeads, beadType, selectedBeads) => {
     if (totalBeads === 0) return { left: '50%', top: '50%' };
     
-    // 串珠線的圓心和半徑（與 SVG 中的設定一致）
-    const centerX = 140; // 串珠線的圓心 X 座標
-    const centerY = 140; // 串珠線的圓心 Y 座標
-    const radius = 125;  // 串珠線的半徑
+    // 串珠盤上的珠子使用與靜態串珠線一致的半徑
+    const radius = 125; // 與靜態串珠線的 r 一致
+    
+    // 串珠線的圓心座標（與靜態串珠線一致）
+    const centerX = 142; // 與靜態串珠線的 cx 一致
+    const centerY = 140; // 與靜態串珠線的 cy 一致
     
     // 判斷當前珠子是否為小珠子
     const isCurrentSmall = beadType === '米珠' || beadType === '珍珠' || beadType === '過渡珠';
