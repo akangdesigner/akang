@@ -482,6 +482,159 @@
   margin: 0;
 }
 
+/* 名稱顯示容器樣式 */
+.name-display-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.design-name {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 5px 8px;
+  border-radius: 8px;
+  margin: 0;
+  position: relative;
+  user-select: none;
+}
+
+.design-name::after {
+  content: '✏️';
+  position: absolute;
+  right: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.design-name:hover {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+}
+
+.design-name:hover::after {
+  opacity: 1;
+  right: -30px;
+}
+
+.edit-name-btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+}
+
+.edit-name-btn:hover {
+  opacity: 1;
+  background: rgba(102, 126, 234, 0.1);
+  transform: scale(1.1);
+}
+
+/* 編輯名稱容器樣式 */
+.edit-name-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.edit-tip {
+  font-size: 0.75rem;
+  color: #667eea;
+  text-align: center;
+  padding: 4px 8px;
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.edit-name-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.edit-name-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 2px solid #667eea;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  background: white;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.edit-name-input:focus {
+  outline: none;
+  border-color: #764ba2;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  transform: scale(1.02);
+}
+
+.edit-name-input::placeholder {
+  color: #999;
+}
+
+.char-count {
+  font-size: 0.75rem;
+  color: #999;
+  text-align: center;
+  min-width: 35px;
+  padding: 2px 6px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.char-count-warning {
+  color: #FF9800;
+  background: rgba(255, 152, 0, 0.1);
+  font-weight: 500;
+}
+
+.edit-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+.save-edit-btn,
+.cancel-edit-btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.save-edit-btn:hover {
+  background: rgba(76, 175, 80, 0.1);
+  transform: scale(1.1);
+  color: #4CAF50;
+}
+
+.cancel-edit-btn:hover {
+  background: rgba(244, 67, 54, 0.1);
+  transform: scale(1.1);
+  color: #F44336;
+}
+
+.save-edit-btn:active,
+.cancel-edit-btn:active {
+  transform: scale(0.95);
+}
+
 .delete-design-btn {
   background: none;
   border: none;
@@ -809,41 +962,79 @@
 .bracelet-preview {
   margin-top: 10px;
   padding: 15px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   border-radius: 15px;
-  border: 2px solid #dee2e6;
-}
-
-.bracelet-circle-preview {
+  border: 2px solid #8B4513;
   position: relative;
-  width: 180px;
-  height: 180px;
+  overflow: hidden;
+  min-height: 200px;
+}
+
+/* 木製串珠盤背景圖片 */
+.wooden-tray-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.tray-bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 13px;
+}
+
+/* 圓形手串預覽樣式 */
+.circular-bracelet-preview {
   margin-top: 10px;
-  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 15px;
+  border: 2px solid #8B4513;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 260px; /* 調整為適合新的 SVG 尺寸 */
+  position: relative;
+  overflow: hidden;
 }
 
-.bracelet-circle-line {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 160px;
-  height: 160px;
-  transform: translate(-50%, -50%);
+.circular-bracelet-preview svg {
   border-radius: 50%;
-  border: 2px solid #ffffff;
-  box-shadow: 0 0 0 2px rgba(0,0,0,0.05) inset;
-}
-
-.bracelet-bead-circle {
-  position: absolute;
-  transform: translate(-50%, -50%);
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  border: none;
+  transition: all 0.3s ease;
+  position: relative;
   z-index: 2;
-  transition: transform .2s ease, filter .2s ease;
 }
 
-.bracelet-bead-circle:hover {
-  transform: translate(-50%, -50%) scale(1.1);
-  filter: brightness(1.1);
+.circular-bracelet-preview svg:hover {
+  box-shadow: none;
+  transform: scale(1.02);
+  background: transparent;
+}
+
+.circular-bracelet-preview circle {
+  transition: all 0.3s ease;
+  filter: none;
+}
+
+.circular-bracelet-preview circle:hover {
+  stroke-width: 4;
+  filter: none;
+}
+
+.circular-bracelet-preview image {
+  transition: all 0.3s ease;
+  filter: none;
+}
+
+.circular-bracelet-preview image:hover {
+  filter: brightness(1.2);
+  transform: scale(1.1);
 }
 
 .bracelet-line {
@@ -852,11 +1043,14 @@
   justify-content: center;
   gap: 8px;
   padding: 10px;
-  background: linear-gradient(90deg, #ffffff 0%, #f8f9fa 50%, #ffffff 100%);
+  background: transparent;
+  backdrop-filter: none;
   border-radius: 20px;
-  border: 2px solid #e9ecef;
+  border: none;
   min-height: 40px;
   position: relative;
+  z-index: 2;
+  box-shadow: none;
 }
 
 .bracelet-line::before {
@@ -866,9 +1060,10 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, #dee2e6 0%, #adb5bd 50%, #dee2e6 100%);
+  background: rgba(139, 69, 19, 0.6);
   transform: translateY(-50%);
   z-index: 1;
+  box-shadow: none;
 }
 
 .bracelet-bead-preview {
@@ -883,6 +1078,7 @@
 }
 
 .bracelet-bead-preview img {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  border: 2px solid #ffffff;
+  box-shadow: none;
+  border: none;
+  background: transparent;
 }

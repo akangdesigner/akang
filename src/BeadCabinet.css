@@ -1774,16 +1774,19 @@
 /* 響應式設計 */
 @media (max-width: 1200px) {
   .main-content {
-    flex-direction: column;
+    flex-direction: row;
     gap: 20px;
+    flex-wrap: wrap;
   }
   
   .cabinet-section {
-    order: 1;
+    flex: 1;
+    min-width: 600px;
   }
   
   .tray-section {
-    order: 2;
+    flex: 1;
+    min-width: 500px;
   }
   
   .bead-cabinet {
@@ -1803,6 +1806,22 @@
 }
 
 @media (max-width: 768px) {
+  .main-content {
+    flex-direction: row;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .cabinet-section {
+    flex: 1;
+    min-width: 400px;
+  }
+  
+  .tray-section {
+    flex: 1;
+    min-width: 350px;
+  }
+  
   .cabinet-title h1 {
     font-size: 2rem;
   }
@@ -1860,25 +1879,6 @@
 }
 
 /* ===== 木質串珠盤樣式 ===== */
-
-/* 主要內容區域佈局調整 */
-.main-content {
-  display: flex;
-  width: 100%;
-  max-width: 1600px;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-/* 左側收納櫃區域 */
-.cabinet-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 50%;
-}
 
 /* 右側串珠盤區域 */
 .tray-section {
@@ -2702,13 +2702,19 @@
 /* 響應式設計調整 */
 @media (max-width: 1400px) {
   .main-content {
-    flex-direction: column;
-    gap: 30px;
+    flex-direction: row;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .cabinet-section {
+    flex: 1;
+    min-width: 600px;
   }
   
   .tray-section {
-    flex: none;
-    width: 100%;
+    flex: 1;
+    min-width: 500px;
   }
   
   .wooden-bead-tray {
