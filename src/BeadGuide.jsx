@@ -272,8 +272,8 @@ const MaterialDetail = ({ material, data }) => {
 // 保存的設計組件
 const SavedDesigns = () => {
   const [savedDesigns, setSavedDesigns] = useState([]);
-
-
+  const [editingId, setEditingId] = useState(null);
+  const [editingName, setEditingName] = useState('');
 
   useEffect(() => {
     // 從 localStorage 讀取保存的設計
@@ -281,10 +281,189 @@ const SavedDesigns = () => {
     setSavedDesigns(designs);
   }, []);
 
+  // 點擊外部取消編輯
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (editingId && !event.target.closest('.edit-name-container')) {
+        cancelEdit();
+      }
+    };
+
+    if (editingId) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [editingId]);
+
   const deleteDesign = (designId) => {
     const updatedDesigns = savedDesigns.filter(design => design.id !== designId);
     localStorage.setItem('beadDesigns', JSON.stringify(updatedDesigns));
     setSavedDesigns(updatedDesigns);
+  };
+
+  const startEditing = (design) => {
+    setEditingId(design.id);
+    setEditingName(design.name);
+  };
+
+  const saveEdit = (designId) => {
+    const newName = editingName.trim();
+    if (!newName) {
+      alert('設計名稱不能為空！');
+      return;
+    }
+    
+    const updatedDesigns = savedDesigns.map(design => 
+      design.id === designId 
+        ? { ...design, name: newName }
+        : design
+    );
+    localStorage.setItem('beadDesigns', JSON.stringify(updatedDesigns));
+    setSavedDesigns(updatedDesigns);
+    setEditingId(null);
+    setEditingName('');
+    
+    // 顯示成功提示
+    const successMessage = document.createElement('div');
+    successMessage.textContent = '✅ 設計名稱已更新！';
+    successMessage.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      animation: slideIn 0.3s ease;
+    `;
+    
+    // 添加動畫樣式
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(successMessage);
+    
+    // 3秒後自動移除提示
+    setTimeout(() => {
+      if (successMessage.parentNode) {
+        successMessage.parentNode.removeChild(successMessage);
+      }
+    }, 3000);
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditingName('');
+  };
+
+  // 渲染圓形手串預覽
+  const renderCircularBracelet = (design) => {
+         // 根據串珠長度設定等比例縮小的半徑
+     let radius;
+     if (design.stringLength === 'half') {
+       radius = 65; // 半圓：調整到 65px
+     } else if (design.stringLength === 'four-thirds') {
+       radius = 70; // 4/3圓：保持 70px
+     } else { // full
+       radius = 70; // 全圓：調整到 70px
+     }
+
+    const centerX = 110; // 圓心 X 座標
+    const centerY = 110; // 圓心 Y 座標
+    
+    return (
+      <div className="circular-bracelet-preview">
+        {/* 木製串珠盤背景圖片 */}
+        <div className="wooden-tray-background">
+          <img 
+            src="/wooden-tray.png" 
+            alt="木製串珠盤"
+            className="tray-bg-image"
+            onError={(e) => {
+              // 如果圖片載入失敗，隱藏圖片但不設置背景色
+              e.target.style.display = 'none';
+            }}
+          />
+        </div>
+        
+        <svg width="220" height="220" viewBox="0 0 220 220" className="bracelet-svg-overlay">
+          {/* 圓形串珠線 - 與圓形手鍊動畫邏輯相同 */}
+          <circle
+            cx={centerX}
+            cy={centerY}
+            r={radius}
+            fill="none"
+            stroke={design.braceletStyle?.strokeColor || "#FFFFFF"}
+            strokeWidth={(() => {
+              // 根據手鍊寬度動態調整線條寬度
+              switch (design.stringWidth) {
+                case '細線':
+                  return 1;
+                case '中等':
+                  return 3;
+                case '粗線':
+                  return 5;
+                default:
+                  return 3;
+              }
+            })()}
+            strokeDasharray="none"
+          />
+          {/* 珠子放在圓形線上 - 與圓形手鍊動畫邏輯相同 */}
+          {design.beads.map((bead, index) => {
+            const angle = (2 * Math.PI / design.beads.length) * index - Math.PI / 2; // 從12點開始，與動畫邏輯一致
+            const beadX = centerX + radius * Math.cos(angle);
+            const beadY = centerY + radius * Math.sin(angle);
+                         // 根據手鍊長度調整珠子大小：半圓最大，4/3圓次之，全圓最小
+             let baseSize;
+             if (design.stringLength === 'half') {
+               baseSize = 1.1; // 半圓：珠子最大
+             } else if (design.stringLength === 'four-thirds') {
+               baseSize = 1.0; // 4/3圓：珠子中等
+             } else { // full
+               baseSize = 0.9; // 全圓：珠子最小
+             }
+             
+             const beadSize = bead.type === '過渡珠' ? Math.round(5 * baseSize) : 
+                            (bead.type === '米珠' || bead.type === '珍珠') ? Math.round(7 * baseSize) : 
+                            Math.round(20 * baseSize);
+            
+            return (
+              <g key={index}>
+                {/* 珠子圖片 - 直接放在圓形線上 */}
+                <image
+                  href={bead.image}
+                  x={beadX - beadSize}
+                  y={beadY - beadSize}
+                  width={beadSize * 2}
+                  height={beadSize * 2}
+                  style={{ filter: 'brightness(1.1)' }}
+                />
+              </g>
+            );
+          })}
+        </svg>
+      </div>
+    );
+  };
+
+  // 渲染直線手串預覽（現在也改為圓形）
+  const renderLinearBracelet = (design) => {
+    // 所有手串都使用圓形樣式
+    return renderCircularBracelet(design);
   };
 
   if (savedDesigns.length === 0) {
@@ -308,7 +487,79 @@ const SavedDesigns = () => {
             <div className="design-content">
               <div className="design-info">
                 <div className="design-header">
-                  <h4>{design.name}</h4>
+                  {editingId === design.id ? (
+                    <div className="edit-name-container">
+                      <div className="edit-tip">編輯模式 - 按Enter保存，按Escape取消</div>
+                      <div className="edit-name-input-row">
+                        <input
+                          type="text"
+                          value={editingName}
+                          onChange={(e) => setEditingName(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              saveEdit(design.id);
+                            } else if (e.key === 'Escape') {
+                              cancelEdit();
+                            }
+                          }}
+                          onBlur={() => {
+                            if (editingName.trim()) {
+                              saveEdit(design.id);
+                            } else {
+                              cancelEdit();
+                            }
+                          }}
+                          onInput={(e) => {
+                            if (e.target.value.length >= 30) {
+                              e.target.style.borderColor = '#FF9800';
+                            } else {
+                              e.target.style.borderColor = '#667eea';
+                            }
+                          }}
+                          className="edit-name-input"
+                          placeholder="輸入設計名稱"
+                          maxLength="30"
+                          autoFocus
+                        />
+                        <div className={`char-count ${editingName.length >= 25 ? 'char-count-warning' : ''}`}>
+                          {editingName.length}/30
+                        </div>
+                        <div className="edit-buttons">
+                          <button 
+                            className="save-edit-btn"
+                            onClick={() => saveEdit(design.id)}
+                            title="保存名稱"
+                          >
+                            ✅
+                          </button>
+                          <button 
+                            className="cancel-edit-btn"
+                            onClick={cancelEdit}
+                            title="取消編輯"
+                          >
+                            ❌
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="name-display-container">
+                      <h4 
+                        className="design-name"
+                        onClick={() => startEditing(design)}
+                        title="點擊編輯名稱"
+                      >
+                        {design.name}
+                      </h4>
+                      <button 
+                        className="edit-name-btn"
+                        onClick={() => startEditing(design)}
+                        title="編輯名稱"
+                      >
+                        ✏️
+                      </button>
+                    </div>
+                  )}
                   <button 
                     className="delete-design-btn"
                     onClick={() => deleteDesign(design.id)}
@@ -325,32 +576,14 @@ const SavedDesigns = () => {
                   </div>
                   <div className="design-beads">
                     <h5>手串預覽:</h5>
-                    <div className="bracelet-preview">
-                      <div className="bracelet-line">
-                        {design.beads.map((bead, index) => (
-                          <div key={index} className="bracelet-bead-preview">
-                            <img 
-                              src={bead.image} 
-                              alt={bead.name}
-                              style={{
-                                width: bead.type === '過渡珠' || bead.type === '米珠' || bead.type === '珍珠' ? '16px' : '24px',
-                                height: bead.type === '過渡珠' || bead.type === '米珠' || bead.type === '珍珠' ? '16px' : '24px',
-                                objectFit: 'contain',
-                                borderRadius: '50%',
-                                filter: 'brightness(1.1)'
-                              }}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                    {/* 所有手串都使用圓形樣式 */}
+                    {renderCircularBracelet(design)}
                   </div>
                   <div className="design-date">
                     創建於: {new Date(design.createdAt).toLocaleDateString('zh-TW')}
                   </div>
                 </div>
               </div>
-              
             </div>
           </div>
         ))}
