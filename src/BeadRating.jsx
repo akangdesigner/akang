@@ -495,7 +495,7 @@ const BeadRating = () => {
 
 
   return (
-    <div className="bead-rating-container">
+    <div className="bead-rating-container bead-rating-page">
       {/* 返回按鈕 */}
       <div className="rating-header">
         <button className="back-btn" onClick={goHome}>

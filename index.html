@@ -218,10 +218,10 @@
                 <p class="menu-description">能量分析與水晶建議</p>
             </div>
 
-            <div class="menu-item" onclick="alert('🏪 推薦串珠店家 - 功能開發中')">
+            <div class="menu-item" onclick="openBeadStoresInNewTab()">
                 <span class="menu-icon">🏪</span>
                 <h3 class="menu-title">推薦串珠店家</h3>
-                <p class="menu-description">店家資訊與收藏功能</p>
+                <p class="menu-description">精選優質串珠材料與服務店家，讓您的創作之路更加順暢</p>
             </div>
         </div>
 
@@ -567,6 +567,12 @@
         function openBeadRatingInNewTab() {
             // 跳轉到 React 應用的串珠評分區頁面
             window.open('http://localhost:3000/rating', '_blank');
+        }
+
+        // 打開串珠店家推薦在新分頁
+        function openBeadStoresInNewTab() {
+            // 跳轉到 React 應用的串珠店家推薦頁面
+            window.open('http://localhost:3000/stores', '_blank');
         }
     </script>
 
