@@ -115,8 +115,8 @@
   to { opacity: 1; }
 }
 
-/* 浮空珠子 */
-.floating-bead {
+/* 調試頁面的浮空珠子 */
+.debug-container .floating-bead {
   position: absolute;
   width: 60px;
   height: 60px;
@@ -130,8 +130,8 @@
 
 
 
-/* 浮空珠子光澤 */
-.floating-bead .bead-shine {
+/* 調試頁面的浮空珠子光澤 */
+.debug-container .floating-bead .bead-shine {
   position: absolute;
   top: 8px;
   left: 8px;
@@ -144,8 +144,8 @@
 
 
 
-/* 浮空珠子反射 */
-.floating-bead .bead-reflection {
+/* 調試頁面的浮空珠子反射 */
+.debug-container .floating-bead .bead-reflection {
   position: absolute;
   bottom: 10px;
   right: 10px;
@@ -158,8 +158,8 @@
 
 
 
-/* 浮空珠子光暈 */
-.floating-bead .bead-glow {
+/* 調試頁面的浮空珠子光暈 */
+.debug-container .floating-bead .bead-glow {
   position: absolute;
   top: -8px;
   left: -8px;
@@ -171,8 +171,8 @@
 
 
 
-/* 浮空珠子資訊面板 */
-.floating-bead-info {
+/* 調試頁面的浮空珠子資訊面板 */
+.debug-container .floating-bead-info {
   position: absolute;
   bottom: 50px;
   left: 50%;
@@ -244,10 +244,211 @@
   }
 }
 
-.floating-bead {
+.debug-container .floating-bead {
   animation: beadBounce 2s ease-in-out infinite;
 }
 
-.floating-bead:hover {
+.debug-container .floating-bead:hover {
   animation-play-state: paused;
+}
+
+/* 手機版響應式設計優化 */
+@media (max-width: 768px) {
+  .debug-container {
+    padding: 15px;
+  }
+  
+  .debug-container h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .debug-controls {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .debug-btn {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    min-height: 44px;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .debug-info,
+  .debug-instructions {
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+  }
+  
+  .debug-info h3,
+  .debug-instructions h3 {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+  
+  .debug-info pre {
+    padding: 12px;
+    font-size: 0.8rem;
+    border-radius: 8px;
+  }
+  
+  .debug-instructions ol {
+    padding-left: 15px;
+  }
+  
+  .debug-instructions li {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  
+  .floating-beads-container {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    height: auto;
+    min-height: 400px;
+    border-radius: 15px;
+    margin-top: 20px;
+  }
+  
+  .debug-container .floating-bead {
+    width: 40px;
+    height: 40px;
+    margin: 8px;
+  }
+  
+  .floating-bead-label {
+    font-size: 0.7rem;
+    padding: 4px 6px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .debug-container {
+    padding: 10px;
+  }
+  
+  .debug-container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+  
+  .debug-btn {
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    border-radius: 18px;
+  }
+  
+  .debug-info,
+  .debug-instructions {
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .debug-info h3,
+  .debug-instructions h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+  
+  .debug-info pre {
+    padding: 10px;
+    font-size: 0.75rem;
+    border-radius: 6px;
+  }
+  
+  .debug-instructions li {
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+  }
+  
+  .debug-container .floating-bead {
+    width: 35px;
+    height: 35px;
+    margin: 6px;
+  }
+  
+  .floating-bead-label {
+    font-size: 0.6rem;
+    padding: 3px 5px;
+    border-radius: 6px;
+  }
+}
+
+/* 觸控優化 */
+@media (hover: none) and (pointer: coarse) {
+  .debug-btn:hover {
+    transform: none;
+  }
+  
+  .debug-btn:active {
+    transform: scale(0.98);
+  }
+  
+  .debug-container .floating-bead:hover {
+    transform: none;
+  }
+  
+  .debug-container .floating-bead:active {
+    transform: scale(0.95);
+  }
+}
+
+/* 手機滑動優化 */
+@media (max-width: 768px) {
+  .debug-container {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* 手機觸控優化 */
+  .debug-btn,
+  .debug-container .floating-bead {
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* 手機字體大小優化 */
+  .debug-info pre {
+    line-height: 1.3;
+  }
+  
+  .debug-instructions li {
+    line-height: 1.4;
+  }
+  
+  /* 手機間距優化 */
+  .debug-controls {
+    gap: 12px;
+  }
+  
+  .debug-info,
+  .debug-instructions {
+    margin-bottom: 15px;
+  }
+}
+
+/* 手機專用動畫優化 */
+@media (max-width: 768px) {
+  .debug-btn,
+  .debug-container .floating-bead {
+    transition: all 0.2s ease;
+  }
+  
+  /* 減少動畫複雜度以提升手機效能 */
+  .debug-btn::before,
+  .debug-container .floating-bead::before {
+    opacity: 0.5;
+  }
 }

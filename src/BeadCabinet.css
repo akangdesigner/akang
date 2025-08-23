@@ -15,24 +15,26 @@
 /* 標題區域 */
 .cabinet-title {
   text-align: center;
-  margin-bottom: 30px;
-  color: #333;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  backdrop-filter: blur(5px);
 }
 
-.cabinet-title h1 {
-  margin: 0 0 10px 0;
-  font-size: 2.5rem;
+.cabinet-title h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
   font-weight: bold;
-  background: linear-gradient(45deg, #667eea, #764ba2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #333;
+  text-shadow: none;
 }
 
 .cabinet-title p {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   color: #666;
+  text-shadow: none;
 }
 
 .title-header {
@@ -169,9 +171,36 @@
 /* 珠子收納櫃主體 */
 .bead-cabinet {
   display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+  max-width: 100%;
+  overflow: visible;
+}
+
+/* 櫃子上半部分 */
+.cabinet-upper-section {
+  display: flex;
   gap: 20px;
   align-items: flex-start;
-  perspective: 1000px;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
+}
+
+/* 櫃子下半部分 */
+.cabinet-lower-section {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
+  margin-top: 20px;
 }
 
 /* 收納櫃單元 */
@@ -179,6 +208,8 @@
   position: relative;
   transform-style: preserve-3d;
   perspective: 1200px;
+  flex-shrink: 0;
+  margin-right: 60px;
 }
 
 .cabinet-frame {
@@ -196,6 +227,8 @@
     inset 0 -2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
   transform: translateZ(10px);
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .cabinet-frame::after {
@@ -213,20 +246,24 @@
     0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
-/* 左側單元 - 5層3格 */
+/* 左側單元 - 調整為實際抽屜數量 */
 .left-unit .cabinet-frame {
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  width: 350px;
-  height: 500px;
+  grid-template-rows: repeat(3, 1fr);
+  width: 300px;
+  height: 300px;
+  gap: 12px;
+  padding: 20px;
 }
 
-/* 右側單元 - 5層2格 */
+/* 右側單元 - 調整為實際抽屜數量 */
 .right-unit .cabinet-frame {
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  width: 250px;
-  height: 500px;
+  grid-template-rows: repeat(3, 1fr);
+  width: 200px;
+  height: 300px;
+  gap: 12px;
+  padding: 20px;
 }
 
 /* 抽屜容器 */
@@ -234,6 +271,8 @@
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: 85px;
+  min-width: 85px;
 }
 
 /* 抽屜 */
@@ -246,10 +285,13 @@
   cursor: pointer;
   z-index: 10;
   perspective: 1000px;
+  border-radius: 10px;
+  overflow: hidden;
+  pointer-events: auto;
 }
 
 .drawer.open {
-  transform: translateZ(30px) rotateX(-5deg);
+  transform: translateZ(40px) rotateX(-8deg);
   z-index: 20;
 }
 
@@ -262,607 +304,20 @@
   bottom: 0;
   background: linear-gradient(145deg, rgba(255, 255, 255, 1), rgba(250, 250, 250, 0.98));
   border: 2px solid rgba(255, 255, 255, 0.8);
-  border-radius: 12px;
+  border-radius: 10px;
   box-shadow: 
     0 8px 25px rgba(0, 0, 0, 0.15),
     0 4px 10px rgba(0, 0, 0, 0.1),
-    inset 0 2px 4px rgba(255, 255, 255, 0.8),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.08);
+    inset 0 2px 4px rgba(255, 255, 255, 0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 10px;
+  text-align: center;
   transition: all 0.3s ease;
   pointer-events: auto;
-  z-index: 10;
-  transform: translateZ(2px);
-}
-
-/* 所有抽屜正面 - 玻璃材質效果 */
-.drawer-front {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 
-    0 8px 25px rgba(0, 0, 0, 0.2),
-    0 4px 10px rgba(0, 0, 0, 0.15),
-    inset 0 2px 4px rgba(255, 255, 255, 0.2),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* 抽屜內部珠珠示意圖 - 根據圖片顏色設定 */
-/* 第1個抽屜 - 淺粉紅色珠子 */
-.drawer-container:nth-child(1) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(255, 182, 193, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(255, 182, 193, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(255, 182, 193, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(255, 182, 193, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(255, 182, 193, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(255, 182, 193, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(255, 182, 193, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(255, 182, 193, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(255, 182, 193, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(255, 182, 193, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第2個抽屜 - 薄荷綠色珠子 */
-.drawer-container:nth-child(2) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(152, 251, 152, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(152, 251, 152, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(152, 251, 152, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(152, 251, 152, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(152, 251, 152, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(152, 251, 152, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(152, 251, 152, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(152, 251, 152, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(152, 251, 152, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(152, 251, 152, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第3個抽屜 - 橘色珠子 */
-.drawer-container:nth-child(3) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(255, 165, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(255, 165, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(255, 165, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(255, 165, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(255, 165, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(255, 165, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(255, 165, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(255, 165, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(255, 165, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(255, 165, 0, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第4個抽屜 - 金棕色珠子 */
-.drawer-container:nth-child(4) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(218, 165, 32, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(218, 165, 32, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(218, 165, 32, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(218, 165, 32, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(218, 165, 32, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(218, 165, 32, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(218, 165, 32, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(218, 165, 32, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(218, 165, 32, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(218, 165, 32, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第5個抽屜 - 紅色珠子 */
-.drawer-container:nth-child(5) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(255, 0, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(255, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(255, 0, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(255, 0, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(255, 0, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(255, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(255, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(255, 0, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(255, 0, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(255, 0, 0, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第6個抽屜 - 金棕色珠子 */
-.drawer-container:nth-child(6) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(218, 165, 32, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(218, 165, 32, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(218, 165, 32, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(218, 165, 32, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(218, 165, 32, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(218, 165, 32, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(218, 165, 32, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(218, 165, 32, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(218, 165, 32, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(218, 165, 32, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第7個抽屜 - 淺藍色珠子 */
-.drawer-container:nth-child(7) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(173, 216, 230, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(173, 216, 230, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(173, 216, 230, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(173, 216, 230, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(173, 216, 230, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(173, 216, 230, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(173, 216, 230, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(173, 216, 230, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(173, 216, 230, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(173, 216, 230, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第8個抽屜 - 天空藍色珠子 */
-.drawer-container:nth-child(8) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(135, 206, 235, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(135, 206, 235, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(135, 206, 235, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(135, 206, 235, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(135, 206, 235, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(135, 206, 235, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(135, 206, 235, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(135, 206, 235, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(135, 206, 235, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(135, 206, 235, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第9個抽屜 - 粉色珠子 */
-.drawer-container:nth-child(9) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(255, 192, 203, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(255, 192, 203, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(255, 192, 203, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(255, 192, 203, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(255, 192, 203, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(255, 192, 203, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(255, 192, 203, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(255, 192, 203, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(255, 192, 203, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(255, 192, 203, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第10個抽屜 - 紅色珠子 */
-.drawer-container:nth-child(10) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(255, 0, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(255, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(255, 0, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(255, 0, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(255, 0, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(255, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(255, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(255, 0, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(255, 0, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(255, 0, 0, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第11個抽屜 - 天藍色珠子 */
-.drawer-container:nth-child(11) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(135, 206, 235, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(135, 206, 235, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(135, 206, 235, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(135, 206, 235, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(135, 206, 235, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(135, 206, 235, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(135, 206, 235, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(135, 206, 235, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(135, 206, 235, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(135, 206, 235, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第12個抽屜 - 紅棕色珠子 */
-.drawer-container:nth-child(12) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(139, 69, 19, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(139, 69, 19, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(139, 69, 19, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(139, 69, 19, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(139, 69, 19, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(139, 69, 19, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(139, 69, 19, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(139, 69, 19, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(139, 69, 19, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(139, 69, 19, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第13個抽屜 - 深棕色珠子 */
-.drawer-container:nth-child(13) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(101, 67, 33, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(101, 67, 33, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(101, 67, 33, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(101, 67, 33, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(101, 67, 33, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(101, 67, 33, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(101, 67, 33, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(101, 67, 33, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(101, 67, 33, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(101, 67, 33, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第14個抽屜 - 淺棕色珠子 */
-.drawer-container:nth-child(14) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(210, 180, 140, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(210, 180, 140, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(210, 180, 140, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(210, 180, 140, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(210, 180, 140, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(210, 180, 140, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(210, 180, 140, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(210, 180, 140, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(210, 180, 140, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(210, 180, 140, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第15個抽屜 - 黑色珠子 */
-.drawer-container:nth-child(15) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(0, 0, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(0, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(0, 0, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(0, 0, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(0, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(0, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(0, 0, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(0, 0, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(0, 0, 0, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第16個抽屜 - 深紅色珠子 */
-.drawer-container:nth-child(16) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(139, 0, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(139, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(139, 0, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(139, 0, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(139, 0, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(139, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(139, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(139, 0, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(139, 0, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(139, 0, 0, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第17個抽屜 - 青色珠子 */
-.drawer-container:nth-child(17) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(0, 255, 255, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(0, 255, 255, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(0, 255, 255, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(0, 255, 255, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(0, 255, 255, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(0, 255, 255, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(0, 255, 255, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(0, 255, 255, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(0, 255, 255, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(0, 255, 255, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第18個抽屜 - 薄荷綠色珠子 */
-.drawer-container:nth-child(18) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(152, 251, 152, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(152, 251, 152, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(152, 251, 152, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(152, 251, 152, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(152, 251, 152, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(152, 251, 152, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(152, 251, 152, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(152, 251, 152, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(152, 251, 152, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(152, 251, 152, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第19個抽屜 - 金色珠子 */
-.drawer-container:nth-child(19) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(255, 215, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(255, 215, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(255, 215, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(255, 215, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(255, 215, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(255, 215, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(255, 215, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(255, 215, 0, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第20個抽屜 - 深粉紅色珠子 */
-.drawer-container:nth-child(20) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(255, 20, 147, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(255, 20, 147, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(255, 20, 147, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(255, 20, 147, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(255, 20, 147, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(255, 20, 147, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(255, 20, 147, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(255, 20, 147, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(255, 20, 147, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(255, 20, 147, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第21個抽屜 - 金色星星飾品 */
-.drawer-container:nth-child(21) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(255, 215, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(255, 215, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(255, 215, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(255, 215, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(255, 215, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(255, 215, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(255, 215, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(255, 215, 0, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第22個抽屜 - 酒紅色珠子 */
-.drawer-container:nth-child(22) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(128, 0, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(128, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(128, 0, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(128, 0, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(128, 0, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(128, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(128, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(128, 0, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(128, 0, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(128, 0, 0, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第23個抽屜 - 黑色珠子 */
-.drawer-container:nth-child(23) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(0, 0, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(0, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(0, 0, 0, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(0, 0, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(0, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(0, 0, 0, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(0, 0, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(0, 0, 0, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(0, 0, 0, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第24個抽屜 - 白色珠子 */
-.drawer-container:nth-child(24) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(255, 255, 255, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(255, 255, 255, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(255, 255, 255, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(255, 255, 255, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(255, 255, 255, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(255, 255, 255, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(255, 255, 255, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(255, 255, 255, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 第25個抽屜 - 深藍色珠子 */
-.drawer-container:nth-child(25) .drawer-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 85%, rgba(0, 0, 139, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 50% 90%, rgba(0, 0, 139, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 70% 85%, rgba(0, 0, 139, 0.7) 0%, transparent 6px),
-    radial-gradient(circle at 20% 80%, rgba(0, 0, 139, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 80% 80%, rgba(0, 0, 139, 0.5) 0%, transparent 4px),
-    radial-gradient(circle at 40% 75%, rgba(0, 0, 139, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 60% 75%, rgba(0, 0, 139, 0.6) 0%, transparent 5px),
-    radial-gradient(circle at 35% 70%, rgba(0, 0, 139, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 65% 70%, rgba(0, 0, 139, 0.4) 0%, transparent 3px),
-    radial-gradient(circle at 50% 65%, rgba(0, 0, 139, 0.5) 0%, transparent 4px);
-  pointer-events: none;
-  z-index: -1;
+  z-index: 15;
 }
 
 .drawer-front:hover {
@@ -886,32 +341,34 @@
 }
 
 .drawer.open .drawer-front {
-  transform: translateZ(35px) rotateX(-10deg);
+  transform: translateZ(40px) rotateX(-12deg);
   box-shadow: 
-    0 15px 40px rgba(0, 0, 0, 0.25),
-    0 8px 20px rgba(0, 0, 0, 0.2),
-    inset 0 2px 4px rgba(255, 255, 255, 0.6),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+    0 20px 50px rgba(0, 0, 0, 0.35),
+    0 12px 25px rgba(0, 0, 0, 0.3),
+    inset 0 3px 6px rgba(255, 255, 255, 0.8),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.15);
   z-index: 35;
 }
 
 /* 所有抽屜開啟狀態 - 玻璃材質效果 */
 .drawer.open .drawer-front {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.12));
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(250, 250, 250, 0.9));
   box-shadow: 
     0 15px 40px rgba(0, 0, 0, 0.3),
     0 8px 20px rgba(0, 0, 0, 0.25),
-    inset 0 2px 4px rgba(255, 255, 255, 0.3),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.25);
+    inset 0 2px 4px rgba(255, 255, 255, 0.6),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateZ(35px) rotateX(-10deg);
+  z-index: 35;
 }
 
 /* 抽屜把手 - 圓球狀深色木質風格 */
 .drawer-handle {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   background: radial-gradient(circle at 30% 30%, #A0522D, #8B4513, #654321);
   border-radius: 50%;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
   box-shadow: none;
   position: relative;
   border: 1px solid #654321;
@@ -955,27 +412,27 @@
 
 /* 抽屜正面文字樣式 */
 .drawer-front p {
-  margin: 0;
-  font-size: 13px;
+  margin: 0 0 3px 0;
+  font-size: 10px;
   font-weight: bold;
   color: #000000;
   text-align: center;
   text-shadow: 0 1px 3px rgba(255, 255, 255, 1);
-  line-height: 1.3;
-  letter-spacing: 0.8px;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
 }
 
 /* 抽屜正面標題文字樣式 */
 .drawer-front h3,
 .drawer-front h4 {
-  margin: 0 0 8px 0;
-  font-size: 14px;
+  margin: 0 0 6px 0;
+  font-size: 12px;
   font-weight: bold;
   color: #000000;
   text-align: center;
   text-shadow: 0 1px 3px rgba(255, 255, 255, 1);
-  line-height: 1.3;
-  letter-spacing: 0.5px;
+  line-height: 1.2;
+  letter-spacing: 0.3px;
 }
 
 .bead-sample {
@@ -1018,8 +475,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.96));
-  border: 2px solid rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   box-shadow: 
     0 8px 25px rgba(0, 0, 0, 0.15),
@@ -1030,7 +487,7 @@
   opacity: 1;
   transition: all 0.4s ease 0.2s;
   pointer-events: none;
-  overflow: hidden;
+  overflow: visible;
   z-index: 20;
 }
 
@@ -1038,12 +495,12 @@
   opacity: 1;
   pointer-events: auto;
   z-index: 30;
-  transform: translateZ(-5px);
+  transform: translateZ(-3px);
   box-shadow: 
-    0 15px 40px rgba(0, 0, 0, 0.25),
-    0 8px 20px rgba(0, 0, 0, 0.2),
-    inset 0 3px 6px rgba(0, 0, 0, 0.1),
-    inset 0 -2px 4px rgba(255, 255, 255, 0.3);
+    0 20px 50px rgba(0, 0, 0, 0.35),
+    0 12px 25px rgba(0, 0, 0, 0.3),
+    inset 0 3px 6px rgba(0, 0, 0, 0.15),
+    inset 0 -2px 4px rgba(255, 255, 255, 0.4);
   background: linear-gradient(145deg, rgba(255, 255, 255, 1), rgba(250, 250, 250, 0.98));
 }
 
@@ -1069,6 +526,13 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* 抽屜開啟時顯示標題 */
+.drawer.open .drawer-header {
+  opacity: 1;
 }
 
 .drawer-header h3 {
@@ -1126,6 +590,13 @@
   color: #000000;
   line-height: 1.4;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* 抽屜開啟時顯示說明文字 */
+.drawer.open .bead-info p {
+  opacity: 1;
 }
 
 /* 珠子堆 */
@@ -1135,13 +606,14 @@
   height: 60px;
   margin: 10px 0;
   border-radius: 8px;
-  overflow: hidden;
-  background: linear-gradient(145deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.02));
+  overflow: visible;
+  background: linear-gradient(145deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.04));
   box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.1),
-    inset 0 -1px 2px rgba(255, 255, 255, 0.3);
+    inset 0 2px 4px rgba(0, 0, 0, 0.15),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.4);
   opacity: 1;
   visibility: visible;
+  z-index: 25;
 }
 
 /* 米珠類珠子堆 - 高度減少3分之1 */
@@ -1152,12 +624,15 @@
 /* 珠子 */
 .bead {
   position: absolute;
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  box-shadow: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
   animation: none;
   transform-style: preserve-3d;
+  opacity: 1;
+  visibility: visible;
+  z-index: 30;
 }
 
 /* 米珠類珠子 - 大小減少3分之1 */
@@ -1212,6 +687,13 @@
   flex-direction: column;
   gap: 6px;
   margin-top: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* 抽屜開啟時顯示操作按鈕 */
+.drawer.open .drawer-links {
+  opacity: 1;
 }
 
 .link-btn {
@@ -1588,8 +1070,7 @@
   align-items: center;
   justify-content: center;
   animation: fadeIn 0.3s ease-out;
-  pointer-events: none;
-  backdrop-filter: blur(2px);
+  pointer-events: auto;
   border-radius: 15px;
 }
 
@@ -1611,127 +1092,111 @@
   }
 }
 
-/* 浮空珠子 */
+/* ===== 浮空珠子 - 統一樣式 ===== */
+/* 使用 Bootstrap 5 + Swiper.js 重構，整合手機版和桌面版 */
+
+/* 基礎浮空珠子樣式 */
 .floating-bead {
   position: absolute;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-
   box-shadow: none;
   pointer-events: auto;
   transform-style: preserve-3d;
   border: none;
   transition: all 0.3s ease;
-  cursor: grab;
-}
-
-.floating-bead:active {
-  cursor: grabbing;
-}
-
-.floating-bead.dragging {
-  cursor: grabbing;
-  transform: scale(1.1);
+  cursor: pointer;
   z-index: 2001;
-  box-shadow: none;
-}
-
-.floating-bead:hover {
-  transform: scale(1.1);
-  box-shadow: none;
+  filter: none;
+  animation: floatingBeadBounce 2s ease-in-out infinite;
+  top: -45px;
 }
 
 .floating-bead:active {
   transform: scale(0.95);
+  box-shadow: none;
+  filter: none;
 }
 
-
-
-/* 浮空珠子光澤 */
-.floating-bead .bead-shine {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  width: 12px;
-  height: 12px;
-  background: none;
-  border-radius: 50%;
-  animation: none;
+.floating-bead:hover {
+  transform: scale(1.05);
+  box-shadow: none;
+  filter: none;
 }
 
-
-
-
-
-/* 浮空珠子反射 */
+/* 浮空珠子光澤和反射 - 統一隱藏 */
+.floating-bead .bead-shine,
 .floating-bead .bead-reflection {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 10px;
-  height: 10px;
-  background: none;
-  border-radius: 50%;
-  animation: none;
+  display: none;
 }
 
 
 
 
 
-/* 浮空珠子光暈 */
-.floating-bead .bead-glow {
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  right: -10px;
-  bottom: -10px;
-  border-radius: 50%;
-  animation: none;
-}
 
 
 
 
 
-/* 浮空珠子資訊面板 */
+/* 浮空珠子資訊面板 - Bootstrap 樣式 */
 .floating-bead-info {
   position: absolute;
-  bottom: 15px;
+  bottom: 60px;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(255, 255, 255, 0.95);
-  padding: 8px 12px;
-  border-radius: 8px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
-  animation: slideInUp 0.5s ease-out;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 2001;
   pointer-events: auto;
-  min-width: 100px;
-  max-width: 120px;
+  min-width: 120px;
+  max-width: 150px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 0.75rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 浮空珠子跳動動畫 */
+@keyframes floatingBeadBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* 手機版浮空珠子跳動動畫 */
+@keyframes floatingBeadBounceMobile {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
 }
 
 .floating-bead-info h4 {
   margin: 0;
   color: #333;
-  font-size: 11px;
-  font-weight: bold;
+  font-size: 0.875rem;
+  font-weight: 600;
   line-height: 1.2;
-  margin-top: 6px;
 }
 
 .floating-bead-info small {
   margin: 0;
   color: #666;
-  font-size: 9px;
+  font-size: 0.75rem;
   display: block;
   line-height: 1.2;
-  margin-top: 3px;
+  opacity: 0.8;
 }
 
 .floating-bead-text {
@@ -1742,33 +1207,35 @@
   flex: 1;
 }
 
-/* 關閉浮空展示按鈕 */
+/* 關閉浮空展示按鈕 - Bootstrap 樣式 */
 .close-floating-btn {
-  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  background: linear-gradient(135deg, #dc3545, #c82333);
   color: white;
   border: none;
-  padding: 3px 6px;
-  border-radius: 10px;
-  font-size: 8px;
-  font-weight: bold;
+  padding: 0.375rem 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 1px 4px rgba(255, 107, 107, 0.3);
-  min-width: 20px;
-  height: 20px;
+  transition: all 0.2s ease;
+  min-width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
 }
 
 .close-floating-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+  background: linear-gradient(135deg, #c82333, #dc3545);
 }
 
 .close-floating-btn:active {
   transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
 }
 
 /* 響應式設計 */
@@ -2145,7 +1612,8 @@
 
 
 
-.floating-bead {
+/* 串珠動畫中的珠子樣式 */
+.stringing-bead {
   position: absolute;
   z-index: 2;
   pointer-events: none;
@@ -2762,6 +2230,1103 @@
 
 
 
-.floating-bead {
-  /* 允許動畫 */
+
+
+/* ===== 手機版浮空珠子響應式樣式 ===== */
+@media (max-width: 768px) {
+  .floating-bead {
+    width: 40px;
+    height: 40px;
+    top: -40px;
+    animation: floatingBeadBounceMobile 1.5s ease-in-out infinite;
+  }
+  
+  .floating-bead-info {
+    bottom: 50px;
+    min-width: 100px;
+    max-width: 120px;
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .floating-bead-info h4 {
+    font-size: 0.75rem;
+  }
+  
+  .floating-bead-info small {
+    font-size: 0.625rem;
+  }
+  
+  .close-floating-btn {
+    min-width: 20px;
+    height: 20px;
+    padding: 0.25rem;
+    font-size: 0.625rem;
+  }
+}
+
+/* 手機版響應式設計優化 */
+@media (max-width: 768px) {
+  .bead-cabinet-container {
+    padding: 15px;
+    min-height: 100vh;
+  }
+  
+  .cabinet-title {
+    margin-bottom: 20px;
+  }
+  
+  .cabinet-title h1 {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+  }
+  
+  .cabinet-title p {
+    font-size: 0.9rem;
+  }
+  
+  .title-header {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .home-btn,
+  .guide-btn {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    min-height: 44px;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .main-content {
+    flex-direction: column;
+    gap: 20px;
+    flex-wrap: nowrap;
+  }
+  
+  .cabinet-section {
+    flex: none;
+    min-width: 100%;
+    width: 100%;
+  }
+  
+  .tray-section {
+    flex: none;
+    min-width: 100%;
+    width: 100%;
+  }
+  
+  .bead-cabinet {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .left-unit .cabinet-frame {
+    width: 280px;
+    height: 350px;
+  }
+  
+  .right-unit .cabinet-frame {
+    width: 180px;
+    height: 350px;
+  }
+  
+  .drawer {
+    width: 60px;
+    height: 60px;
+    margin: 8px;
+    border-radius: 12px;
+  }
+  
+  .drawer-label {
+    font-size: 0.7rem;
+    padding: 4px 6px;
+    border-radius: 8px;
+  }
+  
+  .wooden-bead-tray {
+    width: 100%;
+    max-width: 350px;
+    height: 250px;
+    border-radius: 15px;
+  }
+  
+  .tray-controls {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .control-btn {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    min-height: 44px;
+    width: 100%;
+  }
+  
+  .stringing-stats {
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+    border-radius: 12px;
+  }
+  
+  .stat-item {
+    padding: 10px 15px;
+    border-radius: 10px;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+  }
+  
+  .stat-label {
+    font-size: 0.8rem;
+  }
+  
+  .floating-bead-container {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 3000;
+  }
+  
+  .floating-bead-info {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+  }
+  
+  .floating-bead-text h4 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+  }
+  
+  .floating-bead-text small {
+    font-size: 0.8rem;
+  }
+  
+  .close-floating-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 1rem;
+    min-height: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bead-cabinet-container {
+    padding: 10px;
+  }
+  
+  .cabinet-title h1 {
+    font-size: 1.8rem;
+  }
+  
+  .cabinet-title p {
+    font-size: 0.9rem;
+  }
+  
+  .home-btn,
+  .guide-btn {
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    min-height: 40px;
+  }
+  
+  /* 小螢幕櫃子上下分割 */
+  .bead-cabinet {
+    gap: 12px;
+  }
+  
+  .cabinet-upper-section,
+  .cabinet-lower-section {
+    gap: 12px;
+  }
+  
+  .cabinet-lower-section {
+    margin-top: 12px;
+  }
+  
+  .cabinet-frame {
+    padding: 15px;
+    gap: 6px;
+  }
+  
+  /* 小螢幕左側單元 */
+  .left-unit .cabinet-frame {
+    min-height: 250px;
+  }
+  
+  /* 小螢幕右側單元 */
+  .right-unit .cabinet-frame {
+    min-height: 250px;
+  }
+  
+  /* 小螢幕抽屜 */
+  .drawer-container {
+    min-height: 50px;
+    min-width: 50px;
+  }
+  
+  .drawer-front {
+    padding: 5px;
+    border-radius: 6px;
+  }
+  
+  .drawer-front h3,
+  .drawer-front h4 {
+    font-size: 0.75rem;
+    margin-bottom: 2px;
+  }
+  
+  .drawer-front p {
+    font-size: 0.65rem;
+    line-height: 1.0;
+  }
+}
+
+@media (max-width: 480px) {
+  .bead-cabinet-container {
+    padding: 10px;
+  }
+  
+  .cabinet-title h1 {
+    font-size: 1.6rem;
+  }
+  
+  .cabinet-title p {
+    font-size: 0.8rem;
+  }
+  
+  .home-btn,
+  .guide-btn {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    border-radius: 18px;
+  }
+  
+  /* 超小螢幕抽屜尺寸 */
+  .drawer-container {
+    min-height: 70px;
+    min-width: 70px;
+  }
+  
+  .drawer {
+    width: 70px;
+    height: 70px;
+    margin: 6px;
+    border-radius: 10px;
+  }
+  
+  .drawer-front {
+    padding: 6px;
+    border-radius: 8px;
+  }
+  
+  .drawer-front h3,
+  .drawer-front h4 {
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+  }
+  
+  .drawer-front p {
+    font-size: 0.7rem;
+    line-height: 1.1;
+  }
+  
+  .drawer-handle {
+    width: 10px;
+    height: 10px;
+    margin-bottom: 8px;
+  }
+  
+  .cabinet-frame {
+    padding: 20px;
+    gap: 8px;
+  }
+  
+  .wooden-bead-tray {
+    max-width: 300px;
+    height: 200px;
+    border-radius: 12px;
+  }
+  
+  .control-btn {
+    padding: 10px 14px;
+    font-size: 0.8rem;
+    border-radius: 10px;
+  }
+  
+  .stringing-stats {
+    padding: 12px;
+    border-radius: 10px;
+  }
+  
+  .stat-item {
+    padding: 8px 12px;
+    border-radius: 8px;
+  }
+  
+  .stat-number {
+    font-size: 1.3rem;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem;
+  }
+}
+
+/* 觸控優化 */
+@media (hover: none) and (pointer: coarse) {
+  .home-btn:hover,
+  .guide-btn:hover,
+  .control-btn:hover,
+  .drawer:hover {
+    transform: none;
+  }
+  
+  .home-btn:active,
+  .guide-btn:active,
+  .control-btn:active {
+    transform: scale(0.98);
+  }
+  
+  .drawer:active {
+    transform: scale(0.95);
+  }
+  
+  .floating-bead:hover {
+    transform: none;
+  }
+  
+  .floating-bead:active {
+    transform: scale(0.9);
+  }
+  
+  .floating-bead {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
+    transition: all 0.2s ease;
+  }
+  
+  .floating-bead-info {
+    touch-action: manipulation;
+  }
+  
+  .close-floating-btn {
+    -webkit-tap-highlight-color: rgba(220, 53, 69, 0.2);
+    touch-action: manipulation;
+    min-height: 44px;
+  }
+  
+  /* 手機版抽屜觸控優化 */
+  .drawer {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  
+  .drawer-front {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(102, 126, 234, 0.1);
+  }
+  
+  .drawer-links .link-btn,
+  .drawer-links .draggable-bead {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
+    min-height: 44px; /* 確保按鈕有足夠的觸控區域 */
+  }
+}
+
+/* 手機滑動優化 */
+@media (max-width: 768px) {
+  .bead-cabinet-container {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* 手機觸控優化 */
+  .drawer,
+  .control-btn,
+  .home-btn,
+  .guide-btn {
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* 手機導航優化 */
+  .title-header {
+    scroll-snap-type: x mandatory;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .home-btn,
+  .guide-btn {
+    scroll-snap-align: center;
+    flex-shrink: 0;
+  }
+  
+  /* 手機字體大小優化 */
+  .drawer-label {
+    line-height: 1.2;
+  }
+  
+  /* 手機間距優化 */
+  .bead-cabinet {
+    gap: 15px;
+  }
+  
+  .drawer {
+    margin: 5px;
+  }
+}
+
+/* 手機專用動畫優化 */
+@media (max-width: 768px) {
+  .drawer {
+    transition: all 0.2s ease;
+  }
+  
+  .control-btn {
+    transition: all 0.2s ease;
+  }
+  
+
+  
+  /* 減少動畫複雜度以提升手機效能 */
+  .bead::before {
+    display: none;
+  }
+  
+  .cabinet-frame::before {
+    opacity: 0.5;
+  }
+}
+
+/* 手機版響應式設計 */
+@media (max-width: 768px) {
+  .bead-cabinet-container {
+    padding: 15px;
+    min-height: 100vh;
+  }
+  
+  .cabinet-title {
+    margin-bottom: 20px;
+  }
+  
+  .cabinet-title h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+  
+  .cabinet-title p {
+    font-size: 1rem;
+  }
+  
+  .title-header {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .home-btn,
+  .guide-btn {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    min-height: 44px;
+  }
+  
+  /* 手機版櫃子上下分割 */
+  .bead-cabinet {
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+  }
+  
+  .cabinet-upper-section,
+  .cabinet-lower-section {
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+  }
+  
+  .cabinet-lower-section {
+    margin-top: 15px;
+  }
+  
+  /* 手機版櫃子單元 */
+  .cabinet-unit {
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+  }
+  
+  .cabinet-frame {
+    width: 100%;
+    max-width: 100%;
+    padding: 25px;
+    gap: 12px;
+    box-sizing: border-box;
+  }
+  
+  /* 手機版玻璃珠櫃子 */
+  .glass-unit .cabinet-frame {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 300px;
+  }
+  
+  /* 手機版水晶珠櫃子 */
+  .crystal-unit .cabinet-frame {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 300px;
+  }
+  
+  /* 手機版木珠櫃子 */
+  .wood-unit .cabinet-frame {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 300px;
+  }
+  
+  /* 手機版小珠子櫃子 */
+  .small-unit .cabinet-frame {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 300px;
+  }
+  
+  /* 手機版抽屜 - 加大尺寸 */
+  .drawer-container {
+    min-height: 80px;
+    min-width: 80px;
+  }
+  
+  .drawer {
+    width: 80px;
+    height: 80px;
+    margin: 8px;
+    border-radius: 12px;
+  }
+  
+  .drawer-front {
+    padding: 8px;
+    border-radius: 10px;
+  }
+  
+  .drawer-front h3,
+  .drawer-front h4 {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+  
+  .drawer-front p {
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+  
+  /* 手機版抽屜把手 */
+  .drawer-handle {
+    width: 12px;
+    height: 12px;
+    margin-bottom: 12px;
+  }
+  
+  /* 手機版抽屜內容 */
+  .drawer-content {
+    padding: 12px;
+  }
+  
+  .drawer-content .bead-info h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  
+  .drawer-content .bead-info p {
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+  }
+  
+  /* 手機版抽屜按鈕 */
+  .drawer-links .link-btn,
+  .drawer-links .draggable-bead {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    border-radius: 8px;
+    margin-bottom: 6px;
+  }
+}
+
+/* 手機版浮空珠子點擊優化 */
+@media (max-width: 768px) {
+  .floating-bead {
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
+    transition: all 0.2s ease;
+    box-shadow: none;
+    filter: none;
+  }
+  
+  .floating-bead:active {
+    transform: translateX(-50%) scale(0.95);
+    box-shadow: none;
+    filter: none;
+  }
+  
+  .floating-bead:hover {
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: none;
+    filter: none;
+  }
+  
+  /* 手機版串珠盤點擊優化 */
+  .wooden-bead-tray {
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.drawer-front h3,
+.drawer-front h4 {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.2;
+  margin-bottom: 3px;
+  text-shadow: none;
+}
+
+.drawer-front p {
+  margin: 0;
+  font-size: 0.7rem;
+  color: #666;
+  line-height: 1.1;
+  text-shadow: none;
+}
+
+/* 玻璃珠櫃子 */
+.glass-unit .cabinet-frame {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 300px;
+  height: 300px;
+  gap: 6px;
+  padding: 12px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(240, 240, 240, 0.1));
+  border: 2px solid rgba(135, 206, 235, 0.3);
+}
+
+/* 水晶珠櫃子 */
+.crystal-unit .cabinet-frame {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 300px;
+  height: 300px;
+  gap: 6px;
+  padding: 12px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(240, 240, 240, 0.1));
+  border: 2px solid rgba(147, 112, 219, 0.3);
+}
+
+/* 木珠櫃子 */
+.wood-unit .cabinet-frame {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 300px;
+  height: 300px;
+  gap: 6px;
+  padding: 12px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(240, 240, 240, 0.1));
+  border: 2px solid rgba(139, 69, 19, 0.3);
+}
+
+/* 小珠子櫃子 */
+.small-unit .cabinet-frame {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 300px;
+  height: 300px;
+  gap: 6px;
+  padding: 12px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(240, 240, 240, 0.1));
+  border: 2px solid rgba(255, 182, 193, 0.3);
+}
+
+/* 空抽屜樣式 */
+.empty-drawer {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.empty-drawer-front {
+  background: linear-gradient(145deg, rgba(200, 200, 200, 0.8), rgba(180, 180, 180, 0.6));
+  border: 2px dashed rgba(150, 150, 150, 0.5);
+  color: #999;
+}
+
+.empty-drawer-front h4 {
+  color: #999;
+  font-style: italic;
+}
+
+.empty-drawer-front p {
+  color: #bbb;
+  font-style: italic;
+}
+
+/* 櫃子類型標籤 - 直式標題 */
+.cabinet-type-label {
+  position: absolute;
+  right: -50px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.cabinet-type-label span {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 8px 4px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  pointer-events: auto;
+}
+
+/* 玻璃珠標籤樣式 */
+.glass-label span {
+  color: #1e88e5;
+  background: linear-gradient(145deg, rgba(30, 136, 229, 0.1), rgba(255, 255, 255, 0.95));
+  border: 1px solid rgba(30, 136, 229, 0.4);
+}
+
+/* 水晶珠標籤樣式 */
+.crystal-label span {
+  color: #7b1fa2;
+  background: linear-gradient(145deg, rgba(123, 31, 162, 0.1), rgba(255, 255, 255, 0.95));
+  border: 1px solid rgba(123, 31, 162, 0.4);
+}
+
+/* 木珠標籤樣式 */
+.wood-label span {
+  color: #8b4513;
+  background: linear-gradient(145deg, rgba(139, 69, 19, 0.1), rgba(255, 255, 255, 0.95));
+  border: 1px solid rgba(139, 69, 19, 0.4);
+}
+
+/* 小珠子標籤樣式 */
+.small-label span {
+  color: #e91e63;
+  background: linear-gradient(145deg, rgba(233, 30, 99, 0.1), rgba(255, 255, 255, 0.95));
+  border: 1px solid rgba(233, 30, 99, 0.4);
+}
+
+/* 手機版直式標題 */
+@media (max-width: 768px) {
+  .cabinet-type-label {
+    position: absolute;
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .cabinet-type-label span {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 1.1rem;
+    padding: 6px 8px;
+  }
+}
+
+/* 手機版 Bootstrap 和 Swiper 樣式 */
+@media (max-width: 991px) {
+  /* 手機版櫃子區域 */
+  .mobile-cabinet-section {
+    margin-bottom: 20px;
+  }
+
+  /* 手機版網格佈局 */
+  .mobile-cabinet-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .mobile-cabinet-grid .cabinet-unit {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 25px;
+    border: 2px solid rgba(135, 206, 235, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+
+
+  /* 手機版 Swiper 樣式 */
+  .mobile-cabinet-swiper {
+    padding: 20px 0;
+  }
+
+  .mobile-cabinet-swiper .swiper-slide {
+    height: auto;
+  }
+
+  .mobile-cabinet-swiper .swiper-button-next,
+  .mobile-cabinet-swiper .swiper-button-prev {
+    color: #667eea;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+  }
+
+  .mobile-cabinet-swiper .swiper-pagination-bullet {
+    background: #667eea;
+    opacity: 0.5;
+  }
+
+  .mobile-cabinet-swiper .swiper-pagination-bullet-active {
+    opacity: 1;
+    background: #667eea;
+  }
+
+  /* 手機版櫃子樣式調整 */
+  .mobile-cabinet-section .cabinet-unit {
+    margin: 0 0 0 -15px;
+    max-width: 100%;
+  }
+
+  .mobile-cabinet-section .cabinet-frame {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 300px;
+    height: 300px;
+    gap: 6px;
+    padding: 20px;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    border: 2px solid rgba(135, 206, 235, 0.3);
+  }
+
+  /* 手機版抽屜樣式調整 */
+  .mobile-cabinet-section .drawer {
+    width: 85px;
+    height: 85px;
+    margin: 2px;
+  }
+
+  .mobile-cabinet-section .drawer-content {
+    padding: 15px;
+  }
+
+  .mobile-cabinet-section .bead-info h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+
+  .mobile-cabinet-section .bead-info p {
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+  }
+
+  /* 手機版串珠盤區域 */
+  .mobile-tray-section {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* 手機版控制按鈕樣式 */
+  .mobile-cabinet-section .cabinet-controls {
+    margin-top: 20px;
+  }
+
+  .mobile-cabinet-section .cabinet-controls .btn {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+
+  /* 手機版標題樣式 */
+  .mobile-cabinet-section .cabinet-title h1 {
+    font-size: 1.5rem;
+  }
+
+  .mobile-cabinet-section .title-header .btn {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  /* 手機版說明文字樣式 */
+  .mobile-cabinet-section .cabinet-instructions {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .mobile-cabinet-section .cabinet-instructions h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+  }
+
+  .mobile-cabinet-section .cabinet-instructions p {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+
+  /* 手機版抽屜按鈕樣式 */
+  .mobile-cabinet-section .drawer-links .btn {
+    font-size: 0.8rem;
+    padding: 6px 8px;
+    margin: 2px 0;
+  }
+
+  /* 手機版珠子堆樣式 */
+  .mobile-cabinet-section .bead-pile {
+    margin: 10px 0;
+  }
+
+  .mobile-cabinet-section .bead {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* 手機版櫃子標籤樣式 */
+  .mobile-cabinet-section .cabinet-type-label {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .mobile-cabinet-section .cabinet-type-label span {
+    font-size: 0.8rem;
+    margin: 0 2px;
+  }
+}
+
+/* 手機版 Swiper 導航按鈕樣式 */
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* 手機版 Swiper 分頁器樣式 */
+.swiper-pagination {
+  bottom: 10px;
+}
+
+.swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  margin: 0 4px;
+}
+
+/* 手機版響應式網格調整 */
+@media (max-width: 576px) {
+  .mobile-cabinet-section .cabinet-frame {
+    width: 300px;
+    height: 300px;
+    gap: 6px;
+    padding: 18px;
+  }
+
+  .mobile-cabinet-section .drawer-content {
+    padding: 12px;
+  }
+
+  .mobile-cabinet-section .bead-info h3 {
+    font-size: 0.9rem;
+  }
+
+  .mobile-cabinet-section .bead-info p {
+    font-size: 0.8rem;
+  }
+
+  .mobile-cabinet-section .drawer-links .btn {
+    font-size: 0.75rem;
+    padding: 5px 6px;
+  }
+
+  .mobile-cabinet-section .cabinet-type-label {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
+
+  .mobile-cabinet-section .cabinet-type-label span {
+    font-size: 0.7rem;
+    margin: 0 1px;
+  }
+}
+
+/* 手機版觸控優化 */
+@media (hover: none) and (pointer: coarse) {
+  .mobile-cabinet-section .drawer {
+    -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
+    touch-action: manipulation;
+  }
+
+  .mobile-cabinet-section .btn {
+    -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
+    touch-action: manipulation;
+  }
+
+  .mobile-cabinet-section .swiper-button-next,
+  .mobile-cabinet-section .swiper-button-prev {
+    -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
+    touch-action: manipulation;
+  }
 }

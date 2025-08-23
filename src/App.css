@@ -2,7 +2,8 @@
   text-align: center;
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  font-family: 'Arial', sans-serif;
+  font-family: 'Microsoft JhengHei', Arial, sans-serif;
+  overflow-x: hidden;
 }
 
 .App-header {
@@ -35,13 +36,82 @@ main {
   padding: 20px;
 }
 
-/* 響應式設計 */
+/* 手機版響應式設計 */
 @media (max-width: 768px) {
+  .App {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  .App-header {
+    padding: 15px;
+  }
+  
   .App-header h1 {
     font-size: 2rem;
+    margin-bottom: 8px;
   }
   
   .App-header p {
     font-size: 1rem;
+  }
+  
+  main {
+    padding: 15px;
+    min-height: calc(100vh - 100px);
+  }
+}
+
+@media (max-width: 480px) {
+  .App-header {
+    padding: 10px;
+  }
+  
+  .App-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+  }
+  
+  .App-header p {
+    font-size: 0.9rem;
+  }
+  
+  main {
+    padding: 10px;
+  }
+}
+
+/* 觸控優化 */
+@media (hover: none) and (pointer: coarse) {
+  .App {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* 手機專用優化 */
+@media (max-width: 768px) {
+  /* 滑動優化 */
+  .App {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* 觸控區域優化 */
+  button, 
+  [role="button"] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+    min-height: 44px; /* 觸控友好的按鈕高度 */
+  }
+  
+  /* 手機字體大小優化 */
+  body {
+    font-size: 16px; /* 防止手機縮放 */
+  }
+  
+  /* 手機間距優化 */
+  * {
+    box-sizing: border-box;
   }
 }

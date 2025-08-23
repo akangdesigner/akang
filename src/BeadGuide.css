@@ -1082,3 +1082,543 @@
   border: none;
   background: transparent;
 }
+
+/* 手機版響應式設計優化 */
+@media (max-width: 768px) {
+  .bead-guide-container {
+    padding: 15px;
+  }
+  
+  /* 修復容器寬度限制 */
+  .guide-header p {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  
+  .guide-content {
+    max-width: 100%;
+    padding: 0;
+  }
+  
+  .materials-section {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .materials-grid {
+    order: 2;
+  }
+  
+  .material-detail {
+    order: 1;
+  }
+  
+  .guide-header {
+    padding: 20px 15px;
+    margin-bottom: 20px;
+  }
+  
+  .guide-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+  }
+  
+  .guide-header p {
+    font-size: 0.9rem;
+  }
+  
+  .guide-tabs {
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .guide-tab {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    border-radius: 15px;
+    min-height: 44px;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .materials-section,
+  .colors-section {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .material-card,
+  .color-card {
+    padding: 15px;
+    border-radius: 12px;
+  }
+  
+  .material-card h3,
+  .color-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+  
+  .material-card p,
+  .color-card p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  
+  .material-detail {
+    padding: 15px;
+    border-radius: 12px;
+  }
+  
+  .detail-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .detail-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .detail-header p {
+    font-size: 0.9rem;
+  }
+  
+  .placeholder-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .placeholder-content h3 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+  }
+  
+  .placeholder-content p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  
+  .designs-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .design-content {
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+  }
+  
+  .saved-designs h3,
+  .empty-content h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+  
+  .bracelet-preview,
+  .circular-bracelet-preview {
+    margin-top: 8px;
+    padding: 12px;
+    border-radius: 12px;
+    min-height: 180px;
+  }
+  
+  .circular-bracelet-preview {
+    min-height: 220px;
+  }
+  
+  /* 手機版串珠盤額外修復 */
+  .design-name::after {
+    position: static;
+    right: auto;
+    top: auto;
+    transform: none;
+    margin-left: 8px;
+    opacity: 1;
+  }
+  
+  .design-name:hover::after {
+    right: auto;
+    transform: none;
+  }
+  
+  /* 修復編輯按鈕定位 */
+  .edit-name-container {
+    position: relative;
+    width: 100%;
+  }
+  
+  .edit-name-input-row {
+    position: relative;
+    width: 100%;
+  }
+  
+  .edit-name-input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .char-count {
+    position: static;
+    margin-top: 5px;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .bead-guide-container {
+    padding: 10px;
+  }
+  
+  /* 小螢幕容器寬度修復 */
+  .guide-header p {
+    padding: 0 5px;
+  }
+  
+  .guide-content {
+    padding: 0;
+  }
+  
+  .materials-section {
+    gap: 15px;
+  }
+  
+  .guide-header {
+    padding: 15px 10px;
+    margin-bottom: 15px;
+  }
+  
+  .guide-header h1 {
+    font-size: 1.6rem;
+  }
+  
+  .guide-header p {
+    font-size: 0.8rem;
+  }
+  
+  .guide-tab {
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    border-radius: 12px;
+  }
+  
+  .material-card,
+  .color-card {
+    padding: 12px;
+    border-radius: 10px;
+  }
+  
+  .material-card h3,
+  .color-card h3 {
+    font-size: 1.1rem;
+  }
+  
+  .material-card p,
+  .color-card p {
+    font-size: 0.8rem;
+  }
+  
+  .material-detail {
+    padding: 12px;
+    border-radius: 10px;
+  }
+  
+  .detail-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .detail-header p {
+    font-size: 0.8rem;
+  }
+  
+  .placeholder-content h3 {
+    font-size: 1.2rem;
+  }
+  
+  .placeholder-content p {
+    font-size: 0.8rem;
+  }
+  
+  .design-content {
+    padding: 12px;
+  }
+  
+  .saved-designs h3,
+  .empty-content h3 {
+    font-size: 1.2rem;
+  }
+  
+  .bracelet-preview,
+  .circular-bracelet-preview {
+    padding: 10px;
+    border-radius: 10px;
+    min-height: 160px;
+  }
+  
+  .circular-bracelet-preview {
+    min-height: 200px;
+  }
+  
+  /* 小螢幕串珠盤額外修復 */
+  .design-name::after {
+    font-size: 0.7rem;
+    margin-left: 6px;
+  }
+  
+  .edit-name-input {
+    font-size: 0.9rem;
+    padding: 6px 10px;
+  }
+  
+  .edit-tip {
+    font-size: 0.7rem;
+    padding: 3px 6px;
+  }
+  
+  .char-count {
+    font-size: 0.7rem;
+    padding: 2px 4px;
+  }
+}
+
+/* 觸控優化 */
+@media (hover: none) and (pointer: coarse) {
+  .guide-tab:hover,
+  .material-card:hover,
+  .color-card:hover {
+    transform: none;
+  }
+  
+  .guide-tab:active,
+  .material-card:active,
+  .color-card:active {
+    transform: scale(0.98);
+  }
+}
+
+/* 手機滑動優化 */
+@media (max-width: 768px) {
+  .bead-guide-container {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* 手機觸控優化 */
+  .guide-tab,
+  .material-card,
+  .color-card {
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(102, 126, 234, 0.1);
+  }
+  
+  /* 手機導航優化 */
+  .guide-tabs {
+    scroll-snap-type: x mandatory;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .guide-tab {
+    scroll-snap-align: center;
+    flex-shrink: 0;
+  }
+  
+  /* 手機字體大小優化 */
+  .material-card p,
+  .color-card p {
+    line-height: 1.4;
+  }
+  
+  /* 手機間距優化 */
+  .materials-section,
+  .colors-section {
+    gap: 12px;
+  }
+  
+  .material-card,
+  .color-card {
+    margin-bottom: 10px;
+  }
+}
+
+/* 手機專用動畫優化 */
+@media (max-width: 768px) {
+  .guide-tab,
+  .material-card,
+  .color-card {
+    transition: all 0.2s ease;
+  }
+  
+  /* 減少動畫複雜度以提升手機效能 */
+  .material-card::before,
+  .color-card::before {
+    opacity: 0.5;
+  }
+}
+
+/* 手機版串珠盤響應式修復 */
+@media (max-width: 768px) {
+  /* 修復串珠盤佈局 */
+  .bracelet-preview,
+  .circular-bracelet-preview {
+    margin-top: 8px;
+    padding: 12px;
+    border-radius: 12px;
+    min-height: 180px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: visible;
+  }
+  
+  .circular-bracelet-preview {
+    min-height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  /* 修復 SVG 定位 */
+  .circular-bracelet-preview svg {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    position: relative;
+    z-index: 2;
+    transform: none;
+  }
+  
+  /* 修復串珠線定位 */
+  .bracelet-line {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    z-index: 2;
+  }
+  
+  .bracelet-line::before {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(139, 69, 19, 0.6);
+    transform: translateY(-50%);
+    z-index: 1;
+    width: 100%;
+  }
+  
+  /* 修復珠子預覽定位 */
+  .bracelet-bead-preview {
+    position: relative;
+    z-index: 3;
+    transform: none;
+  }
+  
+  .bracelet-bead-preview img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  /* 修復木製托盤背景 */
+  .wooden-tray-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .tray-bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  /* 確保內容不會溢出 */
+  .circular-bracelet-preview * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 480px) {
+  /* 小螢幕串珠盤優化 */
+  .bracelet-preview,
+  .circular-bracelet-preview {
+    padding: 10px;
+    border-radius: 10px;
+    min-height: 160px;
+  }
+  
+  .circular-bracelet-preview {
+    min-height: 200px;
+  }
+  
+  /* 小螢幕 SVG 優化 */
+  .circular-bracelet-preview svg {
+    transform: scale(0.9);
+  }
+  
+  /* 小螢幕珠子優化 */
+  .bracelet-bead-preview img {
+    max-width: 80%;
+    height: auto;
+  }
+  
+  /* 小螢幕串珠線優化 */
+  .bracelet-line::before {
+    height: 1.5px;
+  }
+}
+
+/* 手機版觸控優化 */
+@media (max-width: 768px) {
+  .bracelet-preview,
+  .circular-bracelet-preview {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .circular-bracelet-preview svg {
+    touch-action: manipulation;
+  }
+  
+  .bracelet-bead-preview {
+    touch-action: manipulation;
+  }
+}
+
+/* 手機版效能優化 */
+@media (max-width: 768px) {
+  .circular-bracelet-preview svg {
+    will-change: transform;
+  }
+  
+  .bracelet-bead-preview {
+    will-change: transform;
+  }
+  
+  /* 減少手機上的動畫複雜度 */
+  .circular-bracelet-preview svg:hover {
+    transform: none;
+  }
+  
+  .bracelet-bead-preview:hover {
+    transform: scale(1.1);
+  }
+}

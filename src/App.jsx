@@ -2,6 +2,7 @@ import React from 'react';
 import BeadCabinet from './BeadCabinet';
 import BeadGuide from './BeadGuide';
 import BeadRating from './BeadRating';
+import BeadStores from './BeadStores';
 import DebugFloatingBeads from './DebugFloatingBeads';
 import './App.css';
 
@@ -19,6 +20,10 @@ function App() {
   
   if (path === '/rating') {
     return <BeadRating />;
+  }
+  
+  if (path === '/stores') {
+    return <BeadStores />;
   }
   
   return (
