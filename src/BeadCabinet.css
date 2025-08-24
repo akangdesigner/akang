@@ -3330,3 +3330,140 @@
     touch-action: manipulation;
   }
 }
+
+/* ===== 通用浮空珠子組件 ===== */
+/* 支持手機版和桌面版 */
+
+/* 基礎浮空珠子容器 */
+.floating-bead-container {
+  background: transparent;
+  border-radius: 15px;
+  backdrop-filter: none;
+  border: none;
+  transition: all 0.3s ease;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* 桌面版浮空珠子 */
+.floating-bead-container.desktop {
+  width: 200px;
+  height: 250px;
+}
+
+/* 手機版浮空珠子 */
+.floating-bead-container.mobile {
+  width: 250px;
+  height: 300px;
+}
+
+/* 浮空珠子圖片 */
+.floating-bead {
+  position: relative;
+  border-radius: 50%;
+  box-shadow: none;
+  filter: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  z-index: 2001;
+  margin-top: 20px;
+}
+
+.floating-bead:hover {
+  transform: scale(1.1);
+}
+
+.floating-bead:active {
+  transform: scale(0.95);
+}
+
+/* 浮空珠子信息面板 */
+.floating-bead-info {
+  position: relative;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 2001;
+  pointer-events: auto;
+  min-width: 120px;
+  max-width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin-top: 15px;
+}
+
+.floating-bead-text h4 {
+  margin: 0;
+  color: #333;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.floating-bead-text small {
+  color: #666;
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+/* 關閉按鈕 */
+.close-floating-btn {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
+}
+
+.close-floating-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(255, 107, 107, 0.4);
+}
+
+.close-floating-btn:active {
+  transform: scale(0.95);
+}
+
+/* 手機版特殊樣式 */
+@media (max-width: 991px) {
+  .floating-bead-container.mobile {
+    width: 220px;
+    height: 280px;
+  }
+  
+  .floating-bead-info {
+    padding: 0.5rem 0.75rem;
+    min-width: 100px;
+    max-width: 120px;
+  }
+  
+  .floating-bead-text h4 {
+    font-size: 0.8rem;
+  }
+  
+  .floating-bead-text small {
+    font-size: 0.7rem;
+  }
+  
+  .close-floating-btn {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+}
