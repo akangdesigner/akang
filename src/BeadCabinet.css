@@ -1,3 +1,11 @@
+/* CSS 變數 - 浮空珠子說明方塊位置管理 */
+:root {
+  --floating-bead-info-top: -80px;
+  --floating-bead-info-right: 60px;
+  --floating-bead-info-top-mobile: 0px;
+  --floating-bead-info-right-mobile: 50px;
+}
+
 /* 珠子收納櫃容器 */
 .bead-cabinet-container {
   display: flex;
@@ -1061,7 +1069,7 @@
 
 /* 浮空展示的珠子容器 */
 .floating-bead-container {
-  position: fixed;
+  position: absolute;
   width: 200px;
   height: 200px;
   background: rgba(0, 0, 0, 0.1);
@@ -1069,7 +1077,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: fadeIn 0.3s ease-out;
   pointer-events: auto;
   border-radius: 15px;
 }
@@ -1105,22 +1112,18 @@
   pointer-events: auto;
   transform-style: preserve-3d;
   border: none;
-  transition: all 0.3s ease;
   cursor: pointer;
   z-index: 2001;
   filter: none;
-  animation: floatingBeadBounce 2s ease-in-out infinite;
   top: -45px;
 }
 
 .floating-bead:active {
-  transform: scale(0.95);
   box-shadow: none;
   filter: none;
 }
 
 .floating-bead:hover {
-  transform: scale(1.05);
   box-shadow: none;
   filter: none;
 }
@@ -1143,9 +1146,8 @@
 /* 浮空珠子資訊面板 - Bootstrap 樣式 */
 .floating-bead-info {
   position: absolute;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: var(--floating-bead-info-top);
+  right: var(--floating-bead-info-right);
   background: rgba(255, 255, 255, 0.95);
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
@@ -1162,25 +1164,7 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* 浮空珠子跳動動畫 */
-@keyframes floatingBeadBounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
 
-/* 手機版浮空珠子跳動動畫 */
-@keyframes floatingBeadBounceMobile {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
-}
 
 .floating-bead-info h4 {
   margin: 0;
@@ -2238,11 +2222,11 @@
     width: 40px;
     height: 40px;
     top: -40px;
-    animation: floatingBeadBounceMobile 1.5s ease-in-out infinite;
   }
   
   .floating-bead-info {
-    bottom: 50px;
+    top: var(--floating-bead-info-top-mobile);
+    right: var(--floating-bead-info-right-mobile);
     min-width: 100px;
     max-width: 120px;
     padding: 0.5rem 0.75rem;
@@ -2389,10 +2373,7 @@
   }
   
   .floating-bead-container {
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
+    position: absolute;
     z-index: 3000;
   }
   
@@ -2609,13 +2590,12 @@
   }
   
   .floating-bead:active {
-    transform: scale(0.9);
+    transform: none;
   }
   
   .floating-bead {
     touch-action: manipulation;
     -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
-    transition: all 0.2s ease;
   }
   
   .floating-bead-info {
@@ -2894,19 +2874,18 @@
     cursor: pointer;
     touch-action: manipulation;
     -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
-    transition: all 0.2s ease;
     box-shadow: none;
     filter: none;
   }
   
   .floating-bead:active {
-    transform: translateX(-50%) scale(0.95);
+    transform: translateX(-50%);
     box-shadow: none;
     filter: none;
   }
   
   .floating-bead:hover {
-    transform: translateX(-50%) scale(1.05);
+    transform: translateX(-50%);
     box-shadow: none;
     filter: none;
   }
@@ -3340,7 +3319,6 @@
   border-radius: 15px;
   backdrop-filter: none;
   border: none;
-  transition: all 0.3s ease;
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -3366,23 +3344,24 @@
   border-radius: 50%;
   box-shadow: none;
   filter: none;
-  transition: all 0.3s ease;
   cursor: pointer;
   z-index: 2001;
   margin-top: 20px;
 }
 
 .floating-bead:hover {
-  transform: scale(1.1);
+  transform: none;
 }
 
 .floating-bead:active {
-  transform: scale(0.95);
+  transform: none;
 }
 
 /* 浮空珠子信息面板 */
 .floating-bead-info {
-  position: relative;
+  position: absolute;
+  top: var(--floating-bead-info-top);
+  right: var(--floating-bead-info-right);
   background: rgba(255, 255, 255, 0.9);
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
@@ -3397,7 +3376,6 @@
   gap: 0.75rem;
   backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  margin-top: 15px;
 }
 
 .floating-bead-text h4 {
@@ -3427,17 +3405,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
   box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
 }
 
 .close-floating-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 4px 8px rgba(255, 107, 107, 0.4);
+  transform: none;
+  box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
 }
 
 .close-floating-btn:active {
-  transform: scale(0.95);
+  transform: none;
 }
 
 /* 手機版特殊樣式 */
@@ -3448,6 +3425,8 @@
   }
   
   .floating-bead-info {
+    top: var(--floating-bead-info-top-mobile);
+    right: var(--floating-bead-info-right-mobile);
     padding: 0.5rem 0.75rem;
     min-width: 100px;
     max-width: 120px;
