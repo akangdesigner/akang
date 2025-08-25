@@ -44,19 +44,111 @@ const FloatingBead = ({ drawer, drawerId, onClose, onClickToTray }) => {
       const drawerElement = document.querySelector(`[data-drawer-id="${drawerId}"]`);
       if (drawerElement) {
         const rect = drawerElement.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
         
-        // 浮空珠子顯示在各自抽屜的正上方
+        // 浮空珠子顯示在各自抽屜的正上方，考慮滾動位置
         setPosition({
-          top: rect.top - 200, // 在抽屜上方200px，給說明方塊和珠子留足夠空間
-          left: rect.left + rect.width / 2
+          top: rect.top + scrollTop - 200, // 在抽屜上方200px，給說明方塊和珠子留足夠空間
+          left: rect.left + scrollLeft + rect.width / 2
         });
       }
     };
     
+    // 立即更新位置
     updatePosition();
-    window.addEventListener('resize', updatePosition);
     
-    return () => window.removeEventListener('resize', updatePosition);
+    // 添加事件監聽器
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition);
+    
+    // 使用 requestAnimationFrame 確保位置更新
+    const animationFrame = requestAnimationFrame(updatePosition);
+    
+    // 添加 MutationObserver 監聽抽屜元素變化
+    const observer = new MutationObserver(updatePosition);
+    const drawerElement = document.querySelector(`[data-drawer-id="${drawerId}"]`);
+    if (drawerElement) {
+      observer.observe(drawerElement, {
+        attributes: true,
+        childList: true,
+        subtree: true
+      });
+    }
+    
+    // 添加定時器定期更新位置，確保位置始終準確
+    const intervalId = setInterval(updatePosition, 100);
+    
+    // 監聽抽屜的開關狀態變化
+    const checkDrawerState = () => {
+      const drawerElement = document.querySelector(`[data-drawer-id="${drawerId}"]`);
+      if (drawerElement && drawerElement.classList.contains('open')) {
+        updatePosition();
+      }
+    };
+    
+    // 定期檢查抽屜狀態
+    const stateCheckInterval = setInterval(checkDrawerState, 50);
+    
+    // 監聽抽屜的 CSS 類變化
+    const checkDrawerClass = () => {
+      const drawerElement = document.querySelector(`[data-drawer-id="${drawerId}"]`);
+      if (drawerElement) {
+        const isOpen = drawerElement.classList.contains('open');
+        if (isOpen) {
+          updatePosition();
+        }
+      }
+    };
+    
+    // 定期檢查抽屜類狀態
+    const classCheckInterval = setInterval(checkDrawerClass, 30);
+    
+    // 監聽抽屜的屬性變化
+    const checkDrawerAttributes = () => {
+      const drawerElement = document.querySelector(`[data-drawer-id="${drawerId}"]`);
+      if (drawerElement) {
+        const computedStyle = window.getComputedStyle(drawerElement);
+        const transform = computedStyle.transform;
+        if (transform && transform !== 'none') {
+          updatePosition();
+        }
+      }
+    };
+    
+    // 定期檢查抽屜屬性狀態
+    const attrCheckInterval = setInterval(checkDrawerAttributes, 25);
+    
+    // 智能位置更新：當抽屜打開時，立即更新位置
+    const smartUpdate = () => {
+      const currentDrawerElement = document.querySelector(`[data-drawer-id="${drawerId}"]`);
+      if (currentDrawerElement && currentDrawerElement.classList.contains('open')) {
+        // 使用 requestAnimationFrame 確保在下一幀更新位置
+        requestAnimationFrame(updatePosition);
+      }
+    };
+    
+    // 監聽抽屜的點擊事件
+    const clickDrawerElement = document.querySelector(`[data-drawer-id="${drawerId}"]`);
+    if (clickDrawerElement) {
+      clickDrawerElement.addEventListener('click', smartUpdate);
+    }
+    
+    return () => {
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition);
+      cancelAnimationFrame(animationFrame);
+      observer.disconnect();
+      clearInterval(intervalId);
+      clearInterval(stateCheckInterval);
+      clearInterval(classCheckInterval);
+      clearInterval(attrCheckInterval);
+      
+      // 移除點擊事件監聽器
+      if (clickDrawerElement) {
+        clickDrawerElement.removeEventListener('click', smartUpdate);
+      }
+    };
   }, [drawerId]);
   
   return (
@@ -64,7 +156,7 @@ const FloatingBead = ({ drawer, drawerId, onClose, onClickToTray }) => {
       className={`floating-bead-container ${isMobile ? 'mobile' : 'desktop'}`}
       data-type={drawer.type}
       style={{
-        position: isMobile ? 'fixed' : 'absolute',
+        position: 'absolute',
         top: `${position.top}px`,
         left: `${position.left}px`,
         transform: 'translateX(-50%)',
@@ -115,7 +207,7 @@ const FloatingBead = ({ drawer, drawerId, onClose, onClickToTray }) => {
         title={`點擊 ${drawer.name} 添加到串珠盤`}
       >
         <img 
-          src={drawer.image} 
+          src={`/${drawer.image}`} 
           alt={`${drawer.name}${drawer.type}`}
           style={{
             width: '100%',
@@ -369,7 +461,7 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
         height: ${bead.type === '過渡珠' ? '15px' : 
                   (bead.type === '米珠' || bead.type === '珍珠') ? '21px' : '60px'};
         border-radius: 50%;
-        background-image: url(${bead.image});
+        background-image: url(/${bead.image});
         background-size: cover;
         background-position: center;
         animation: braceletBeadAppear 0.27s ease-out ${index * 0.033}s both;
@@ -708,7 +800,7 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
               }}
             >
               <img 
-                src={bead.image} 
+                src={`/${bead.image}`} 
                 alt={bead.name}
                 style={{
                   width: (() => {
@@ -1127,7 +1219,7 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
                     title={`點擊移除 ${bead.name}`}
                   >
                     <img 
-                      src={bead.image} 
+                      src={`/${bead.image}`} 
                       alt={`${bead.name}${bead.type}`}
                       style={{
                         width: '100%',
@@ -1700,7 +1792,7 @@ const BeadCabinet = () => {
                                   }}
                                 >
                                   <img 
-                                    src={drawer.image} 
+                                    src={`/${drawer.image}`} 
                                     alt={`${drawer.name}${drawer.type}`}
                                     style={{
                                       width: '100%',
@@ -1808,7 +1900,7 @@ const BeadCabinet = () => {
                                   }}
                                 >
                                   <img 
-                                    src={drawer.image} 
+                                    src={`/${drawer.image}`} 
                                     alt={`${drawer.name}${drawer.type}`}
                                     style={{
                                       width: '100%',
@@ -1916,7 +2008,7 @@ const BeadCabinet = () => {
                                   }}
                                 >
                                   <img 
-                                    src={drawer.image} 
+                                    src={`/${drawer.image}`} 
                                     alt={`${drawer.name}${drawer.type}`}
                                     style={{
                                       width: '100%',
@@ -1979,7 +2071,7 @@ const BeadCabinet = () => {
               </div>
             </div>
 
-              {/* 小珠子櫃子 */}
+                            {/* 小珠子櫃子 */}
               <div className="cabinet-unit small-unit mb-4">
                 <div className="cabinet-frame">
                   {smallBeads.map((drawer) => (
@@ -2002,7 +2094,7 @@ const BeadCabinet = () => {
                                 onClick={(e) => closeDrawer(drawer.id, e)}
                               >
                                 ✕
-                              </button>
+                            </button>
                             </div>
                             <p><strong>類型：</strong>{drawer.type}</p>
                             <p><strong>顏色：</strong>{drawer.color}</p>
@@ -2012,42 +2104,42 @@ const BeadCabinet = () => {
                                 const col = i % 5;
                                 const left = 20 + (col * 12);
                                 const top = 60 + (row * 8);
-                                
-                                return (
-                                  <div 
-                                    key={i}
-                                    className="bead"
-                                    data-type={drawer.type}
-                                    style={{ 
-                                      left: `${left}%`,
-                                      top: `${top}%`
+                              
+                              return (
+                                <div 
+                                  key={i}
+                                  className="bead"
+                                  data-type={drawer.type}
+                                  style={{ 
+                                    left: `${left}%`,
+                                    top: `${top}%`
+                                  }}
+                                >
+                                  <img 
+                                    src={`/${drawer.image}`} 
+                                    alt={`${drawer.name}${drawer.type}`}
+                                    style={{
+                                      width: '100%',
+                                      height: '100%',
+                                      objectFit: 'contain',
+                                      borderRadius: '50%'
                                     }}
-                                  >
-                                    <img 
-                                      src={drawer.image} 
-                                      alt={`${drawer.name}${drawer.type}`}
-                                      style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        objectFit: 'contain',
-                                        borderRadius: '50%'
-                                      }}
-                                      onError={(e) => {
-                                        e.target.style.display = 'none';
-                                        const fallback = document.createElement('div');
-                                        fallback.style.cssText = `
-                                          width: 100%;
-                                          height: 100%;
-                                          background-color: ${drawer.color};
-                                          border-radius: 50%;
-                                        `;
-                                        e.target.parentNode.appendChild(fallback);
-                                      }}
-                                    />
-                                  </div>
-                                );
-                              })}
-                            </div>
+                                    onError={(e) => {
+                                      e.target.style.display = 'none';
+                                      const fallback = document.createElement('div');
+                                      fallback.style.cssText = `
+                                        width: 100%;
+                                        height: 100%;
+                                        background-color: ${drawer.color};
+                                        border-radius: 50%;
+                                      `;
+                                      e.target.parentNode.appendChild(fallback);
+                                    }}
+                                  />
+                                </div>
+                              );
+                            })}
+                          </div>
                             <div className="drawer-links">
                               <div className="row g-2">
                                 <div className="col-6">
@@ -2151,7 +2243,7 @@ const BeadCabinet = () => {
                                   }}
                                 >
                                   <img 
-                                    src={drawer.image} 
+                                    src={`/${drawer.image}`} 
                                     alt={`${drawer.name}${drawer.type}`}
                                     style={{
                                       width: '100%',
@@ -2208,7 +2300,7 @@ const BeadCabinet = () => {
               </div>
             </div>
 
-              {/* 第二個櫃子：水晶珠 */}
+                            {/* 第二個櫃子：水晶珠 */}
               <div className="cabinet-unit crystal-unit">
               <div className="cabinet-frame">
                   {crystalBeads.map((drawer) => (
@@ -2235,10 +2327,10 @@ const BeadCabinet = () => {
                           </div>
                             <p><strong>類型：</strong>{drawer.type}</p>
                             <p><strong>顏色：</strong>{drawer.color}</p>
-                          <div className="bead-pile" data-type={drawer.type}>
-                            {[...Array(25)].map((_, i) => {
-                              const row = Math.floor(i / 5);
-                              const col = i % 5;
+                            <div className="bead-pile" data-type={drawer.type}>
+                              {[...Array(25)].map((_, i) => {
+                                const row = Math.floor(i / 5);
+                                const col = i % 5;
                                 const left = 20 + (col * 12);
                                 const top = 60 + (row * 8);
                               
@@ -2253,7 +2345,7 @@ const BeadCabinet = () => {
                                   }}
                                 >
                                   <img 
-                                    src={drawer.image} 
+                                    src={`/${drawer.image}`} 
                                     alt={`${drawer.name}${drawer.type}`}
                                     style={{
                                             width: '100%',
@@ -2348,17 +2440,17 @@ const BeadCabinet = () => {
                                 const top = 60 + (row * 8);
                                     
                                     return (
-                                      <div 
-                                        key={i}
-                                        className="bead"
-                                        data-type={drawer.type}
-                                        style={{ 
-                                          left: `${left}%`,
-                                          top: `${top}%`
-                                        }}
-                                      >
+                                                                              <div 
+                                          key={i}
+                                          className="bead"
+                                          data-type={drawer.type}
+                                          style={{ 
+                                            left: `${left}%`,
+                                            top: `${top}%`
+                                          }}
+                                        >
                                         <img 
-                                          src={drawer.image} 
+                                          src={`/${drawer.image}`} 
                                           alt={`${drawer.name}${drawer.type}`}
                                           style={{
                                             width: '100%',
@@ -2459,14 +2551,14 @@ const BeadCabinet = () => {
                                         }}
                                       >
                                         <img 
-                                          src={drawer.image} 
+                                          src={`/${drawer.image}`} 
                                           alt={`${drawer.name}${drawer.type}`}
-                                          style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            objectFit: 'contain',
-                                            borderRadius: '50%'
-                                          }}
+                                                                                      style={{
+                                              width: '100%',
+                                              height: '100%',
+                                              objectFit: 'contain',
+                                              borderRadius: '50%'
+                                            }}
                                           onError={(e) => {
                                             e.target.style.display = 'none';
                                             const fallback = document.createElement('div');
