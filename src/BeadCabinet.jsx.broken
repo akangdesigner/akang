@@ -1,8 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { gsap } from 'gsap';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
-import { StatCard } from './SharedBeadComponents';
 import './BeadCabinet.css';
 
 /*
@@ -1147,8 +1146,8 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
             {/* 根據選擇的長度繪製不同長度的圓弧 */}
             <path
               d={(() => {
-                              const cx = 140;
-              const cy = 140;
+                const cx = 162;
+                const cy = 160;
                 const r = 125;
                 const startAngle = -Math.PI / 2; // 12點鐘方向開始
                 
@@ -1259,11 +1258,11 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
         </div>
       </div>
       
-      {/* 新的串珠統計按鈕 */}
-      <div className="new-stringing-stats">
-        <div className="new-stat-item">
-          <span className="new-stat-label">已串珠子:</span>
-          <span className="new-stat-value">
+      {/* 串珠統計 */}
+      <div className="stringing-stats">
+        <div className="stat-item">
+          <span className="stat-label">已串珠子:</span>
+          <span className="stat-value">
             {(() => {
               const bigBeads = selectedBeads.filter(bead => !(bead.type === '米珠' || bead.type === '珍珠' || bead.type === '過渡珠')).length;
               const smallBeads = selectedBeads.filter(bead => bead.type === '米珠' || bead.type === '珍珠' || bead.type === '過渡珠').length;
@@ -1279,9 +1278,9 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
             })()}
           </span>
         </div>
-        <div className="new-stat-item">
-          <span className="new-stat-label">串珠長度:</span>
-          <span className="new-stat-value">{selectedBeads.length * 60}px</span>
+        <div className="stat-item">
+          <span className="stat-label">串珠長度:</span>
+          <span className="stat-value">{selectedBeads.length * 60}px</span>
         </div>
       </div>
       
@@ -1330,8 +1329,8 @@ const BeadCabinet = () => {
   const [floatingBeads, setFloatingBeads] = useState({});
   const [showHintText, setShowHintText] = useState(true);
   const [selectedBeads, setSelectedBeads] = useState([]);
-
-  // 重置浮空狀態（清除錯誤的數字鍵值）
+  
+  // 重置浮空狀態（清除錯誤的數字鍵值）- 只在組件掛載時執行一次
   useEffect(() => {
     // 檢查是否有數字鍵值，如果有則清除
     const hasNumericKeys = Object.keys(floatingBeads).some(key => !isNaN(key));
@@ -1339,7 +1338,7 @@ const BeadCabinet = () => {
       console.log('檢測到數字鍵值，清除浮空狀態');
       setFloatingBeads({});
     }
-  }, []);
+  }, []); // 空依賴數組，只在組件掛載時執行一次
 
   const toggleDrawer = (drawerId) => {
     console.log('點擊抽屜:', drawerId);
@@ -1642,54 +1641,270 @@ const BeadCabinet = () => {
     alert(saveMessage);
   };
 
-  // 創建抽屜陣列 - 按類型分類
-  const glassBeads = [];      // 玻璃珠 (7個)
-  const crystalBeads = [];    // 水晶珠 (9個)
-  const woodBeads = [];       // 木珠 (3個)
-  const smallBeads = [];      // 小珠子：米珠、珍珠、過渡珠 (6個)
+  // 使用 useMemo 優化珠子分類，避免每次渲染都重新分類
+  const { glassBeads, crystalBeads, woodBeads, smallBeads } = useMemo(() => {
+    const glass = [];      // 玻璃珠 (7個)
+    const crystal = [];    // 水晶珠 (9個)
+    const wood = [];       // 木珠 (3個)
+    const small = [];      // 小珠子：米珠、珍珠、過渡珠 (6個)
 
-  // 分類珠子
-  beadColors.forEach((bead, index) => {
-    const { id, ...beadData } = bead; // 移除原始的id屬性
+    // 分類珠子
+    beadColors.forEach((bead, index) => {
+      const { id, ...beadData } = bead; // 移除原始的id屬性
+      
+      if (bead.type === '玻璃珠') {
+        glass.push({
+          id: `glass-${index}`,
+          ...beadData
+        });
+      } else if (bead.type === '水晶珠') {
+        crystal.push({
+          id: `crystal-${index}`,
+          ...beadData
+        });
+      } else if (bead.type === '木珠') {
+        wood.push({
+          id: `wood-${index}`,
+          ...beadData
+        });
+      } else if (['米珠', '珍珠', '過渡珠'].includes(bead.type)) {
+        small.push({
+          id: `small-${index}`,
+          ...beadData
+        });
+      }
+    });
+
+    return { glassBeads: glass, crystalBeads: crystal, woodBeads: wood, smallBeads: small };
+  }, []); // 空依賴數組，只在組件掛載時執行一次
+
+  // 手機版預覽串珠盤組件 - 與實際串珠盤保持一致
+  const MobileBeadTrayPreview = ({ selectedBeads }) => {
+    const [isVisible, setIsVisible] = useState(false);
     
-    if (bead.type === '玻璃珠') {
-      glassBeads.push({
-        id: `glass-${index}`,
-        ...beadData
-      });
-    } else if (bead.type === '水晶珠') {
-      crystalBeads.push({
-        id: `crystal-${index}`,
-        ...beadData
-      });
-    } else if (bead.type === '木珠') {
-      woodBeads.push({
-        id: `wood-${index}`,
-        ...beadData
-      });
-    } else if (['米珠', '珍珠', '過渡珠'].includes(bead.type)) {
-      smallBeads.push({
-        id: `small-${index}`,
-        ...beadData
-      });
-    }
-  });
+    // 檢測是否為手機介面
+    useEffect(() => {
+      const checkMobile = () => {
+        setIsVisible(window.innerWidth <= 768);
+      };
+      
+      checkMobile();
+      window.addEventListener('resize', checkMobile);
+      
+      return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+    
+    if (!isVisible) return null;
 
-  console.log('玻璃珠數量:', glassBeads.length);
-  console.log('水晶珠數量:', crystalBeads.length);
-  console.log('木珠數量:', woodBeads.length);
-  console.log('小珠子數量:', smallBeads.length);
+    // 使用與實際串珠盤相同的珠子位置計算邏輯
+    // 使用與實際串珠盤完全相同的珠子位置計算邏輯
+    const calculateBeadPosition = (index, totalBeads, beadType, selectedBeads) => {
+      if (totalBeads === 0) return { left: '50%', top: '50%' };
+      
+      // 預覽串珠盤的半徑（縮放後）
+      const radius = 50; // 120px容器的一半，縮放比例約為 50/125 = 0.4
+      
+      // 預覽串珠盤的圓心座標（120px容器的中心）
+      const centerX = 60;
+      const centerY = 60;
+      
+      // 判斷當前珠子是否為小珠子
+      const isCurrentSmall = beadType === '米珠' || beadType === '珍珠' || beadType === '過渡珠';
+      
+      // 計算珠子大小（與實際串珠盤一致）
+      const beadSize = isCurrentSmall ? 15 : 35;
+      
+      // 統一使用20px間距（縮放後約為8px）
+      const gap = 8;
+      
+      // 從12點鐘方向開始，每顆珠子緊接著前一顆
+      let currentAngle = -Math.PI / 2; // 12點鐘方向
+      
+      // 累積前面所有珠子的角度
+      for (let i = 0; i < index; i++) {
+        const prevBead = selectedBeads[i];
+        const isPrevSmall = prevBead.type === '米珠' || prevBead.type === '珍珠' || prevBead.type === '過渡珠';
+        const prevBeadSize = isPrevSmall ? 15 : 35;
+        
+        // 角度增量 = (珠子大小 + 間距) / 半徑
+        const angleIncrement = (prevBeadSize + gap) / radius;
+        currentAngle += angleIncrement;
+      }
+      
+      // 當前珠子的角度 = 累積角度 + 當前珠子的一半大小
+      const angle = currentAngle + (beadSize / 2) / radius;
+      
+      // 計算珠子在串珠線圓周上的位置
+      const x = centerX + Math.cos(angle) * radius;
+      const y = centerY + Math.sin(angle) * radius;
+      
+      return {
+        left: `${x}px`,
+        top: `${y}px`
+      };
+        // 後續珠子使用與實際串珠盤相同的間距邏輯
+        let totalOffset = 0;
+        
+        // 計算前面所有珠子的累積偏移量
+        for (let i = 0; i < index; i++) {
+          const currentBead = selectedBeads[i];
+          const nextBead = selectedBeads[i + 1];
+          
+          if (nextBead) {
+            const currentBeadSize = currentBead.type === '過渡珠' ? 15 : 
+                                   (currentBead.type === '米珠' || currentBead.type === '珍珠') ? 21 : 60;
+            const nextBeadSize = nextBead.type === '過渡珠' ? 15 : 
+                                (nextBead.type === '米珠' || nextBead.type === '珍珠') ? 21 : 60;
+            
+            // 判斷間距：前大後小35px, 前小後小20px, 前大後大50px, 前小後大40px
+            let spacing;
+            if (currentBeadSize >= 60 && nextBeadSize < 60) {
+              spacing = 35; // 前大後小
+            } else if (currentBeadSize < 60 && nextBeadSize < 60) {
+              spacing = 20; // 前小後小
+            } else if (currentBeadSize >= 60 && nextBeadSize >= 60) {
+              spacing = 50; // 前大後大
+            } else {
+              spacing = 40; // 前小後大
+            }
+            
+            totalOffset += spacing;
+          }
+        }
+        
+        // 將實際串珠盤的間距縮放到預覽尺寸（120px vs 507px）
+        const scaleFactor = 120 / 507;
+        const scaledOffset = totalOffset * scaleFactor;
+        
+        // 計算角度（每顆珠子間隔約22.5度）
+        const angle = (Math.PI / 4) + (index * Math.PI / 8);
+        const radius = 30 + scaledOffset;
+        const x = 60 + Math.cos(angle) * radius;
+        const y = 60 + Math.sin(angle) * radius;
+        
+        return { x, y };
+      }
+    };
+
+    // 計算珠子大小（與實際串珠盤一致）
+    const getBeadSize = (beadType) => {
+      if (beadType === '過渡珠') return 15;
+      if (beadType === '米珠' || beadType === '珍珠') return 21;
+      return 60;
+    };
+
+    // 將實際尺寸縮放到預覽尺寸
+    const getPreviewBeadSize = (beadType) => {
+      const actualSize = getBeadSize(beadType);
+      const scaleFactor = 120 / 507;
+      return Math.max(actualSize * scaleFactor, 8); // 最小8px確保可見性
+    };
+    
+    return (
+      <div className="mobile-bead-tray-preview">
+        <div className="preview-tray-container">
+          {/* 預覽串珠盤背景 */}
+          <div className="preview-tray-background">
+            <div className="preview-concentric-circles">
+              <div className="preview-circle preview-outer-circle"></div>
+            </div>
+            
+            {/* 預覽串珠線 - 使用與實際串珠盤相同的半圓設計 */}
+            <svg 
+              className="preview-string-connector" 
+              style={{ 
+                position: 'absolute', 
+                top: 0, 
+                left: 0, 
+                width: '100%', 
+                height: '100%',
+                pointerEvents: 'none',
+                zIndex: 5
+              }}
+            >
+              {/* 半圓串珠線，與實際串珠盤的half模式一致 */}
+              <path
+                d="M 25 60 A 35 35 0 1 1 95 60"
+                fill="none"
+                stroke="#FFFFFF"
+                strokeWidth="2"
+                opacity="0.6"
+              />
+            </svg>
+            
+            {/* 預覽珠子 - 使用與實際串珠盤相同的位置和大小邏輯 */}
+            {selectedBeads.length > 0 && (
+              <div className="preview-bead-string">
+                {selectedBeads.slice(0, 10).map((bead, index) => {
+                  const position = calculateBeadPosition(bead, index, selectedBeads.length);
+                  const beadSize = getPreviewBeadSize(bead.type);
+                  
+                  return (
+                    <div 
+                      key={`preview-${bead.id}-${index}`}
+                      className="preview-stringed-bead"
+                      style={{ 
+                        left: `${position.x}px`,
+                        top: `${position.y}px`,
+                        transform: 'translate(-50%, -50%)',
+                        width: `${beadSize}px`,
+                        height: `${beadSize}px`,
+                        position: 'absolute',
+                        zIndex: 2
+                      }}
+                    >
+                      <img 
+                        src={`/${bead.image}`} 
+                        alt={`${bead.name}預覽`}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'contain',
+                          borderRadius: '50%',
+                          outline: 'none',
+                          border: 'none'
+                        }}
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          const fallbackBead = document.createElement('div');
+                          fallbackBead.style.cssText = `
+                            width: 100%;
+                            height: 100%;
+                            background-color: ${bead.color};
+                            border-radius: 50%;
+                          `;
+                          e.target.parentNode.appendChild(fallbackBead);
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+          
+          {/* 預覽標題 */}
+          <div className="preview-tray-title">
+            <span>🌳 串珠盤</span>
+            {selectedBeads.length > 0 && (
+              <span className="preview-bead-count">
+                {selectedBeads.length}顆
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="bead-cabinet-container">
-      {/* 標題區域 */}
       <div className="cabinet-title">
-        <h1 className="h1 text-center mb-4">✨ 珠子收納櫃 ✨</h1>
-        
-        {/* 導航按鈕區域 */}
-        <div className="navigation-buttons">
+        <div className="title-header">
+          <div className="row align-items-center">
+            <div className="col-auto">
           <button
-            className="btn btn-outline-primary"
+                className="btn btn-outline-primary btn-sm"
             onClick={() => {
               console.log('返回首頁按鈕被點擊');
               window.open('http://127.0.0.1:5500/index.html', '_self');
@@ -1698,8 +1913,14 @@ const BeadCabinet = () => {
           >
             🏠 返回首頁
           </button>
+            </div>
+            <div className="col text-center">
+              <h1 className="h2 mb-0">✨ 珠子收納櫃 ✨</h1>
+            </div>
+            <div className="col-auto">
+              <div className="btn-group btn-group-sm" role="group">
           <button
-            className="btn btn-outline-info"
+                  className="btn btn-outline-info"
             onClick={() => {
               console.log('珠子指南按鈕被點擊');
               window.location.href = '/guide';
@@ -1709,15 +1930,17 @@ const BeadCabinet = () => {
             📚 珠子指南
           </button>
           <button
-            className="btn btn-outline-warning"
+                  className="btn btn-outline-warning"
             onClick={() => window.location.href = '/rating'}
             title="串珠評分"
           >
             🔮 串珠評分
           </button>
         </div>
-        
-        {showHintText && <p className="text-center text-muted mt-3">點擊抽屜查看珠子</p>}
+            </div>
+          </div>
+        </div>
+        {showHintText && <p className="text-center text-muted mt-2">點擊抽屜查看珠子</p>}
       </div>
       
       <div className="main-content">
@@ -2631,15 +2854,18 @@ const BeadCabinet = () => {
               </div>
               </div>
 
-        {/* 手機版：下方木質串珠盤區域 */}
-        <div className="d-block d-lg-none mobile-tray-section">
-          <WoodenBeadTray 
-            selectedBeads={selectedBeads}
-            setSelectedBeads={setSelectedBeads}
-            onSaveDesign={(stringWidth, stringLength) => handleSaveDesign(stringWidth, stringLength)}
-            onSaveFloatingDesign={handleSaveFloatingDesign}
-          />
-        </div>
+              {/* 手機版：下方木質串珠盤區域 */}
+      <div className="d-block d-lg-none mobile-tray-section">
+        <WoodenBeadTray 
+          selectedBeads={selectedBeads}
+          setSelectedBeads={setSelectedBeads}
+          onSaveDesign={(stringWidth, stringLength) => handleSaveDesign(stringWidth, stringLength)}
+          onSaveFloatingDesign={handleSaveFloatingDesign}
+        />
+      </div>
+
+      {/* 手機版預覽串珠盤 - 固定在右上方 */}
+      <MobileBeadTrayPreview selectedBeads={selectedBeads} />
 
         {/* 桌面版：右側木質串珠盤區域 */}
         <div className="d-none d-lg-block tray-section">
