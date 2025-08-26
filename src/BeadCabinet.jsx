@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import { StatCard } from './SharedBeadComponents';
 import './BeadCabinet.css';
 
 /*
@@ -1146,8 +1147,8 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
             {/* 根據選擇的長度繪製不同長度的圓弧 */}
             <path
               d={(() => {
-                const cx = 162;
-                const cy = 160;
+                              const cx = 140;
+              const cy = 140;
                 const r = 125;
                 const startAngle = -Math.PI / 2; // 12點鐘方向開始
                 
@@ -1258,11 +1259,11 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
         </div>
       </div>
       
-      {/* 串珠統計 */}
-      <div className="stringing-stats">
-        <div className="stat-item">
-          <span className="stat-label">已串珠子:</span>
-          <span className="stat-value">
+      {/* 新的串珠統計按鈕 */}
+      <div className="new-stringing-stats">
+        <div className="new-stat-item">
+          <span className="new-stat-label">已串珠子:</span>
+          <span className="new-stat-value">
             {(() => {
               const bigBeads = selectedBeads.filter(bead => !(bead.type === '米珠' || bead.type === '珍珠' || bead.type === '過渡珠')).length;
               const smallBeads = selectedBeads.filter(bead => bead.type === '米珠' || bead.type === '珍珠' || bead.type === '過渡珠').length;
@@ -1278,9 +1279,9 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
             })()}
           </span>
         </div>
-        <div className="stat-item">
-          <span className="stat-label">串珠長度:</span>
-          <span className="stat-value">{selectedBeads.length * 60}px</span>
+        <div className="new-stat-item">
+          <span className="new-stat-label">串珠長度:</span>
+          <span className="new-stat-value">{selectedBeads.length * 60}px</span>
         </div>
       </div>
       
@@ -1329,12 +1330,6 @@ const BeadCabinet = () => {
   const [floatingBeads, setFloatingBeads] = useState({});
   const [showHintText, setShowHintText] = useState(true);
   const [selectedBeads, setSelectedBeads] = useState([]);
-  
-  // 調試浮空狀態變化
-  useEffect(() => {
-    console.log('浮空狀態變化:', floatingBeads);
-    console.log('浮空狀態鍵值:', Object.keys(floatingBeads));
-  }, [floatingBeads]);
 
   // 重置浮空狀態（清除錯誤的數字鍵值）
   useEffect(() => {
@@ -1687,12 +1682,14 @@ const BeadCabinet = () => {
 
   return (
     <div className="bead-cabinet-container">
+      {/* 標題區域 */}
       <div className="cabinet-title">
-        <div className="title-header">
-          <div className="row align-items-center">
-            <div className="col-auto">
+        <h1 className="h1 text-center mb-4">✨ 珠子收納櫃 ✨</h1>
+        
+        {/* 導航按鈕區域 */}
+        <div className="navigation-buttons">
           <button
-                className="btn btn-outline-primary btn-sm"
+            className="btn btn-outline-primary"
             onClick={() => {
               console.log('返回首頁按鈕被點擊');
               window.open('http://127.0.0.1:5500/index.html', '_self');
@@ -1701,14 +1698,8 @@ const BeadCabinet = () => {
           >
             🏠 返回首頁
           </button>
-            </div>
-            <div className="col text-center">
-              <h1 className="h2 mb-0">✨ 珠子收納櫃 ✨</h1>
-            </div>
-            <div className="col-auto">
-              <div className="btn-group btn-group-sm" role="group">
           <button
-                  className="btn btn-outline-info"
+            className="btn btn-outline-info"
             onClick={() => {
               console.log('珠子指南按鈕被點擊');
               window.location.href = '/guide';
@@ -1718,17 +1709,15 @@ const BeadCabinet = () => {
             📚 珠子指南
           </button>
           <button
-                  className="btn btn-outline-warning"
+            className="btn btn-outline-warning"
             onClick={() => window.location.href = '/rating'}
             title="串珠評分"
           >
             🔮 串珠評分
           </button>
         </div>
-            </div>
-          </div>
-        </div>
-        {showHintText && <p className="text-center text-muted mt-2">點擊抽屜查看珠子</p>}
+        
+        {showHintText && <p className="text-center text-muted mt-3">點擊抽屜查看珠子</p>}
       </div>
       
       <div className="main-content">

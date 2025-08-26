@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { StatCard } from './SharedBeadComponents';
 import './BeadStores.css';
 
 // 店家資料 - 真實台北串珠店家
@@ -383,18 +384,21 @@ const BeadStores = () => {
 
       {/* 店家統計 */}
       <div className="store-stats">
-        <div className="stat-item">
-          <span className="stat-number">{getFilteredStores().length}</span>
-          <span className="stat-label">家店家</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-number">4.7</span>
-          <span className="stat-label">平均評分</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-number">24小時</span>
-          <span className="stat-label">線上服務</span>
-        </div>
+        <StatCard 
+          label="家店家"
+          value={getFilteredStores().length}
+          variant="number"
+        />
+        <StatCard 
+          label="平均評分"
+          value="4.7"
+          variant="number"
+        />
+        <StatCard 
+          label="線上服務"
+          value="24小時"
+          variant="number"
+        />
       </div>
 
       {/* 店家列表 */}
