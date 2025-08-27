@@ -1023,7 +1023,7 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
               onClick={() => onSaveFloatingDesign(stringWidth, stringLength)}
               title="保存設計到推薦搭配"
             >
-              💾 保存設計
+              💾 保存設計(阿康用)
             </button>
 
           </div>
@@ -1294,26 +1294,6 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
         >
           清空串珠
         </button>
-        <button 
-          className="tray-btn save-btn"
-          onClick={() => {
-            if (selectedBeads.length > 0) {
-              // 保存串珠設計到localStorage
-              const designData = {
-                beads: selectedBeads,
-                timestamp: Date.now(),
-                designName: `串珠設計_${new Date().toLocaleString()}`
-              };
-              localStorage.setItem('savedBeadDesign', JSON.stringify(designData));
-              
-              const beadNames = selectedBeads.map(bead => bead.name).join(', ');
-              alert(`已保存串珠設計：${beadNames}\n現在可以到串珠評分區查看您的設計！`);
-            }
-          }}
-          disabled={selectedBeads.length === 0}
-        >
-          保存設計
-        </button>
       </div>
     </div>
   );
@@ -1555,10 +1535,15 @@ const BeadCabinet = () => {
     // 添加新設計
     const updatedDesigns = [...existingDesigns, design];
     
-    // 保存到 localStorage
-    localStorage.setItem('beadDesigns', JSON.stringify(updatedDesigns));
+    // 保存到串珠評分區的 localStorage 鍵
+    const ratingDesign = {
+      designName: design.name,
+      timestamp: Date.now(),
+      beads: design.beads
+    };
+    localStorage.setItem('savedBeadDesign', JSON.stringify(ratingDesign));
 
-    alert(`設計已保存！\n\n設計名稱: ${design.name}\n珠子數量: ${design.beads.length} 顆\n\n您可以在珠子指南的「💡 推薦搭配」分頁中查看。`);
+    alert(`設計已保存！\n\n設計名稱: ${design.name}\n珠子數量: ${design.beads.length} 顆\n\n您可以在串珠評分區的「你的串珠設計」中查看。`);
   };
 
   // 保存浮空動畫中的串珠樣式到推薦搭配展示區
@@ -1623,8 +1608,13 @@ const BeadCabinet = () => {
     // 添加新設計
     const updatedDesigns = [...existingDesigns, design];
     
-    // 保存到 localStorage
-    localStorage.setItem('beadDesigns', JSON.stringify(updatedDesigns));
+    // 保存到串珠評分區的 localStorage 鍵
+    const ratingDesign = {
+      designName: design.name,
+      timestamp: Date.now(),
+      beads: design.beads
+    };
+    localStorage.setItem('savedBeadDesign', JSON.stringify(ratingDesign));
 
     // 構建保存訊息
     let saveMessage = `浮空動畫設計已保存！\n\n設計名稱: ${design.name}\n珠子數量: ${design.beads.length} 顆`;
@@ -1637,7 +1627,7 @@ const BeadCabinet = () => {
       saveMessage += `\n圓形手鍊: 半徑${braceletStyle.radius}px, 線寬${braceletStyle.strokeWidth}px`;
     }
     
-    saveMessage += `\n\n您可以在珠子指南的「💡 推薦搭配」分頁中查看。`;
+    saveMessage += `\n\n您可以在串珠評分區的「你的串珠設計」中查看。`;
 
     alert(saveMessage);
   };
