@@ -747,8 +747,22 @@ const BeadGuide = () => {
         )}
       </div>
 
-      <div className="guide-footer">
-        {/* 返回按鈕已移除 */}
+      {/* 底部導航欄 */}
+      <div className="bottom-navigation">
+        <div className="nav-grid">
+          <button className="nav-button" onClick={() => window.open('http://127.0.0.1:5500/index.html', '_self')}>
+            <div className="nav-icon">🏠</div>
+            <div className="nav-text">返回首頁</div>
+          </button>
+          <button className="nav-button" onClick={() => window.location.href = '/'}>
+            <div className="nav-icon">🎨</div>
+            <div className="nav-text">數位串珠</div>
+          </button>
+          <button className="nav-button" onClick={() => window.location.href = '/rating'}>
+            <div className="nav-icon">🔮</div>
+            <div className="nav-text">串珠評分</div>
+          </button>
+        </div>
       </div>
     </div>
   );

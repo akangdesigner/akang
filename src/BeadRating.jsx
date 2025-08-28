@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Button, Fade, Slide, Grow } from '@mui/material';
 import './BeadRating.css';
 
 const BeadRating = () => {
@@ -14,6 +15,8 @@ const BeadRating = () => {
     health: 0
   });
   const [savedDesign, setSavedDesign] = useState(null);
+  const [isExiting, setIsExiting] = useState(false);
+  const [isGlobalLoading, setIsGlobalLoading] = useState(true);
 
   // 通靈師的完整建議
   const psychicAdvice = `你的串珠作品展現了獨特的藝術天賦和內在智慧。這件作品不僅是一件美麗的飾品，更是你內心世界的真實寫照。從愛情運勢來看，紅色珠子的點綴象徵著熱情與勇氣，預示著美好的愛情即將到來，在接下來的三個月內，你將遇到一位與你靈魂共鳴的人。在財富方面，藍色珠子的能量與水元素相呼應，預示著流動的財富即將到來，建議你保持開放的心態，留意身邊的投資機會，但切記不要過於貪心，穩健的理財方式會為你帶來意想不到的收穫。事業發展上，串珠的對稱排列反映了你對工作的認真態度，而金色珠子的點綴則象徵著豐厚的回報，你的努力將得到認可，升職加薪的機會就在眼前。從創造力角度來看，綠色珠子的能量與成長相呼應，預示著你的事業將進入快速發展期，新的項目機會將接踵而至。在健康方面，整體能量非常和諧，你的串珠作品散發著平衡與健康的氣息，紫色珠子的能量與靈性相呼應，預示著你的身心狀態將達到最佳狀態。建議你將這份創造力運用到生活的各個方面，相信自己的直覺，勇敢追求夢想，保持規律的作息，多接觸大自然。記住，每個珠子都承載著獨特的能量，就像你人生中的每個選擇都蘊含著無限可能。`;
@@ -30,6 +33,13 @@ const BeadRating = () => {
         console.error('解析保存的設計數據失敗:', error);
       }
     }
+    
+    // 模擬全局 loading 效果
+    const timer = setTimeout(() => {
+      setIsGlobalLoading(false);
+    }, 2000); // 2秒後隱藏 loading
+    
+    return () => clearTimeout(timer);
   }, []);
 
   // 根據珠子名稱的雙面向評分系統
@@ -328,8 +338,6 @@ const BeadRating = () => {
       advice += '金色的富貴色調代表著你內在的價值與財富，這種充滿能量的顏色將為你帶來豐盛的財運和事業成功。';
     }
     
-    // 移除重複的個別珠子顏色分析，避免跳針
-    
     // 分析珠子類型和數量，融入整體描述
     const glassBeads = beads.filter(bead => bead.type === '玻璃珠');
     const riceBeads = beads.filter(bead => bead.type === '米珠');
@@ -440,7 +448,11 @@ const BeadRating = () => {
 
   // 返回主頁
   const goHome = () => {
-    window.open('http://127.0.0.1:5500/index.html', '_self');
+    setIsExiting(true);
+    // 延遲跳轉，讓動畫有時間播放
+    setTimeout(() => {
+      window.open('http://127.0.0.1:5500/index.html', '_self');
+    }, 800); // 800ms 後跳轉，配合動畫時長
   };
 
   // 計算安全的評分點位置，確保在格線內
@@ -488,277 +500,321 @@ const BeadRating = () => {
     return points;
   };
 
-
   return (
-    <div className="bead-rating-container bead-rating-page">
-      {/* 返回按鈕 */}
-      <div className="rating-header">
-        <button className="back-btn" onClick={goHome}>
-          🏠 返回主頁
-        </button>
-        <h1>⭐ 串珠評分區 ⭐</h1>
-      </div>
-
-      <div className="rating-content">
-        {/* 左側：通靈師和對話框 */}
-        <div className="left-panel">
-          {/* 左上：對話框 */}
-          <div className="dialogue-box">
-            {!isAnalyzing && !showResult && (
-              <div className="welcome-message">
-                <p>歡迎來到神秘占卜殿堂，讓我來解讀你的串珠設計...</p>
-                {savedDesign ? (
-                  <p>我看到你精心設計的串珠作品，讓我為你揭示其中的奧秘。</p>
-                ) : (
-                  <p>請先在珠子收納櫃創建並保存您的串珠設計，我將為你揭示其中的奧秘。</p>
-                )}
-              </div>
-            )}
-
-            {isAnalyzing && (
-              <div className="analyzing-message">
-                <div className="crystal-animation">🔮</div>
-                <p>我正在解讀你的串珠作品...</p>
-                <p>水晶球正在揭示命運的奧秘...</p>
-              </div>
-            )}
-
-            {showResult && (
-              <div className="result-message">
-                <p className="advice-text">{currentMessage}</p>
-                {currentMessage.length < fullMessage.length && (
-                  <div className="typing-indicator">|</div>
-                )}
-              </div>
-            )}
-            
-            {/* 神秘通靈師頭像 - 放在對話框右下角 */}
-            <div className="psychic-avatar-in-dialogue">
+    <>
+      {/* 全局 Loading 動畫 */}
+      {isGlobalLoading && (
+        <div className="global-loading-overlay">
+          <div className="loading-content">
+            <div className="psychic-loading-avatar">
               <img 
                 src="/psychic-medium.jpeg" 
                 alt="神秘通靈師" 
-                className="psychic-image-full"
+                className="psychic-loading-image"
               />
-              <div className="psychic-title-small">星象大師:小乖</div>
+            </div>
+            <div className="loading-text">
+              <p>🔮 正在連接神秘能量...</p>
+              <p>✨ 請稍候，通靈師正在準備...</p>
             </div>
           </div>
-
-          {/* 移除原本的通靈師區域 */}
         </div>
+      )}
+      
+      <Fade in={!isExiting && !isGlobalLoading} timeout={800}>
+        <div className="bead-rating-container bead-rating-page">
+          {/* 頁面標題 */}
+          <div className="rating-header">
+            <h1>⭐ 串珠評分區 ⭐</h1>
+          </div>
 
-        {/* 右側：作品上傳和雷達圖 */}
-        <div className="right-panel">
-          {/* 串珠設計展示 */}
-          <div className="bead-design-section">
-            <h3>📿 你的串珠設計</h3>
-            {savedDesign ? (
-              <div className="design-display">
-                <div className="design-info">
-                  <h4>{savedDesign.designName}</h4>
-                  <p>包含 {(() => {
-                    // 計算實際珠子數量，小珠子一顆算 0.5 顆
-                    const bigBeads = savedDesign.beads.filter(bead => 
-                      !(bead.type === '米珠' || bead.type === '珍珠' || bead.type === '過渡珠')
-                    ).length;
-                    const smallBeads = savedDesign.beads.filter(bead => 
-                      bead.type === '米珠' || bead.type === '珍珠' || bead.type === '過渡珠'
-                    ).length;
-                    const actualTotal = bigBeads + (smallBeads * 0.5);
-                    return `${actualTotal.toFixed(1)} 顆珠子`;
-                  })()}</p>
-                  <p>創建時間: {new Date(savedDesign.timestamp).toLocaleString()}</p>
-                </div>
+          <div className="rating-content">
+            {/* 左側：通靈師和對話框 */}
+            <div className="left-panel">
+              {/* 左上：對話框 */}
+              <div className="dialogue-box">
+                {!isAnalyzing && !showResult && (
+                  <div className="welcome-message">
+                    <p>歡迎來到神秘占卜殿堂，讓我來解讀你的串珠設計...</p>
+                    {savedDesign ? (
+                      <p>我看到你精心設計的串珠作品，讓我為你揭示其中的奧秘。</p>
+                    ) : (
+                      <p>請先在珠子收納櫃創建並保存您的串珠設計，我將為你揭示其中的奧秘。</p>
+                    )}
+                  </div>
+                )}
+
+                {isAnalyzing && (
+                  <div className="analyzing-message">
+                    <div className="crystal-animation">🔮</div>
+                    <p>我正在解讀你的串珠作品...</p>
+                    <p>水晶球正在揭示命運的奧秘...</p>
+                  </div>
+                )}
+
+                {showResult && (
+                  <div className="result-message">
+                    <p className="advice-text">{currentMessage}</p>
+                    {currentMessage.length < fullMessage.length && (
+                      <div className="typing-indicator">|</div>
+                    )}
+                  </div>
+                )}
                 
-                {/* 串珠設計視覺化 - 圓形排列 */}
-                <div className="bead-design-visualization">
-                  <div className="bead-circle-container">
-                    {/* 根據珠子數量自動調整串珠線圓半徑 */}
-                    {(() => {
-                      const beadCount = savedDesign.beads.length;
-                      let radius = 80; // 預設半徑
-                      let stringType = 'half'; // 預設半圓
+                {/* 神秘通靈師頭像 - 放在對話框右下角 */}
+                <div className="psychic-avatar-in-dialogue">
+                  <img 
+                    src="/psychic-medium.jpeg" 
+                    alt="神秘通靈師" 
+                    className="psychic-image-full"
+                  />
+                  <div className="psychic-title-small">星象大師:小乖</div>
+                </div>
+              </div>
+            </div>
+
+            {/* 右側：作品上傳和雷達圖 */}
+            <div className="right-panel">
+              {/* 串珠設計展示 */}
+              <div className="bead-design-section">
+                <h3>📿 你的串珠設計</h3>
+                {savedDesign ? (
+                  <div className="design-display">
+                    <div className="design-info">
+                      <h4>{savedDesign.designName}</h4>
+                      <p>包含 {(() => {
+                        // 計算實際珠子數量，小珠子一顆算 0.5 顆
+                        const bigBeads = savedDesign.beads.filter(bead => 
+                          !(bead.type === '米珠' || bead.type === '珍珠' || bead.type === '過渡珠')
+                        ).length;
+                        const smallBeads = savedDesign.beads.filter(bead => 
+                          bead.type === '米珠' || bead.type === '珍珠' || bead.type === '過渡珠'
+                        ).length;
+                        const actualTotal = bigBeads + (smallBeads * 0.5);
+                        return `${actualTotal.toFixed(1)} 顆珠子`;
+                      })()}</p>
+                      <p>創建時間: {new Date(savedDesign.timestamp).toLocaleString()}</p>
+                    </div>
+                    
+                    {/* 串珠設計視覺化 - 圓形排列 */}
+                    <div className="bead-design-visualization">
+                      <div className="bead-circle-container">
+                        {/* 根據珠子數量自動調整串珠線圓半徑 */}
+                        {(() => {
+                          const beadCount = savedDesign.beads.length;
+                          let radius = 80; // 預設半徑
+                          let stringType = 'half'; // 預設半圓
+                          
+                          // 根據珠子數量調整半徑和線類型
+                          if (beadCount <= 12) {
+                            radius = 80; // 13顆以下用標準半徑
+                            stringType = 'half';
+                          } else if (beadCount <= 15) {
+                            radius = 100; // 13-15顆用較大半徑，4/3圓
+                            stringType = 'four-thirds';
+                          } else {
+                            radius = 120; // 16顆以上用最大半徑，全圓
+                            stringType = 'full';
+                          }
+                          
+                          return (
+                            <>
+                              {/* 根據線類型顯示不同比例的軌道線 */}
+                              <div 
+                                className={`bead-string bead-string-${stringType}`}
+                                style={{
+                                  width: `${radius * 2}px`,
+                                  height: `${radius * 2}px`,
+                                  left: '50%',
+                                  top: '50%',
+                                  transform: 'translate(-50%, -50%)'
+                                }}
+                              ></div>
+                              
+                              {/* 從圓心到珠子的半徑線 */}
+                              {savedDesign.beads.map((bead, index) => {
+                                const totalBeads = savedDesign.beads.length;
+                                const angle = (index / totalBeads) * 2 * Math.PI - Math.PI / 2;
+                                const centerX = 150;
+                                const centerY = 150;
+                                
+                                const x = centerX + radius * Math.cos(angle);
+                                const y = centerY + radius * Math.sin(angle);
+                                
+                                return (
+                                  <div 
+                                    key={index}
+                                    className={`design-bead-circle ${(bead.type === '米珠' || bead.type === '珍珠' || bead.type === '過渡珠') ? 'small-bead' : ''}`}
+                                    style={{ 
+                                      left: `${x}px`,
+                                      top: `${y}px`,
+                                      animationDelay: `${index * 0.1}s`,
+                                      zIndex: index + 10
+                                    }}
+                                    title={`${bead.name} - ${bead.type}`}
+                                  >
+                                    <img 
+                                      src={`/${bead.image}`}
+                                      alt={bead.name}
+                                      className="design-bead-image"
+                                    />
+                                  </div>
+                                );
+                              })}
+                            </>
+                          );
+                        })()}
+                      </div>
+                    </div>
+                    
+                    <div className="design-controls">
+                      <Button 
+                        variant="contained" 
+                        size="large"
+                        onClick={startAnalysis}
+                        disabled={isAnalyzing}
+                        className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                        startIcon={<span>🔮</span>}
+                      >
+                        {isAnalyzing ? '分析中...' : '開始分析'}
+                      </Button>
+                      <Button 
+                        variant="outlined" 
+                        size="large"
+                        onClick={clearSavedDesign}
+                        className="border-red-400 text-red-400 hover:bg-red-400/10 ml-3 px-8 py-3 text-lg"
+                        startIcon={<span>🗑️</span>}
+                      >
+                        清除設計
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="no-design-message">
+                    <div className="no-design-icon">🎨</div>
+                    <h4>還沒有串珠設計</h4>
+                    <p>請先到珠子收納櫃創建並保存您的串珠設計</p>
+                    <Button 
+                      variant="outlined" 
+                      size="medium"
+                      onClick={goToBeadCabinet}
+                      className="border-blue-400 text-blue-400 hover:bg-blue-400/10"
+                      startIcon={<span>🏠</span>}
+                    >
+                      前往珠子收納櫃
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+              {/* 雷達圖 */}
+              <div className="radar-chart-section">
+                <h3>🌟 能量評分圖</h3>
+                
+                <div className="radar-chart">
+                  {/* SVG雷達圖 */}
+                  <svg 
+                    className="radar-svg" 
+                    viewBox="0 0 350 350" 
+                    width="350" 
+                    height="350"
+                  >
+                    {/* 背景網格 - 三個同心六邊形 */}
+                    <polygon 
+                      points="175,75 275,125 275,225 175,275 75,225 75,125" 
+                      fill="none" 
+                      stroke="rgba(255,255,255,0.3)" 
+                      strokeWidth="1"
+                    />
+                    <polygon 
+                      points="175,105 245,145 245,205 175,245 105,205 105,145" 
+                      fill="none" 
+                      stroke="rgba(255,255,255,0.3)" 
+                      strokeWidth="1"
+                    />
+                    <polygon 
+                      points="175,135 215,165 215,185 175,215 135,185 135,165" 
+                      fill="none" 
+                      stroke="rgba(255,255,255,0.3)" 
+                      strokeWidth="1"
+                    />
+                    
+                    {/* 軸線 - 從中心到六個頂點 */}
+                    <line x1="175" y1="175" x2="175" y2="75" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
+                    <line x1="175" y1="175" x2="275" y2="125" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
+                    <line x1="175" y1="175" x2="275" y2="225" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
+                    <line x1="175" y1="175" x2="175" y2="275" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
+                    <line x1="175" y1="175" x2="75" y2="225" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
+                    <line x1="175" y1="175" x2="75" y2="125" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
+                    
+                    {/* AI評分結果填充區域 - 真正的六邊形 */}
+                    {showResult && (() => {
+                      const scorePoints = getHexagonScorePoints(scores);
+                      const pointsString = scorePoints.map(point => `${point.x},${point.y}`).join(' ');
                       
-                      // 根據珠子數量調整半徑和線類型
-                      if (beadCount <= 12) {
-                        radius = 80; // 13顆以下用標準半徑
-                        stringType = 'half';
-                      } else if (beadCount <= 15) {
-                        radius = 100; // 13-15顆用較大半徑，4/3圓
-                        stringType = 'four-thirds';
-                      } else {
-                        radius = 120; // 16顆以上用最大半徑，全圓
-                        stringType = 'full';
-                      }
+                      return (
+                        <polygon 
+                          key={`fill-${JSON.stringify(scores)}`}
+                          points={pointsString}
+                          fill="rgba(138, 43, 226, 0.6)" 
+                          stroke="rgba(138, 43, 226, 0.8)" 
+                          strokeWidth="2"
+                        />
+                      );
+                    })()}
+                    
+                    {/* 評分點 */}
+                    {showResult && (() => {
+                      const scorePoints = getHexagonScorePoints(scores);
                       
                       return (
                         <>
-                          {/* 根據線類型顯示不同比例的軌道線 */}
-                          <div 
-                            className={`bead-string bead-string-${stringType}`}
-                            style={{
-                              width: `${radius * 2}px`,
-                              height: `${radius * 2}px`,
-                              left: '50%',
-                              top: '50%',
-                              transform: 'translate(-50%, -50%)'
-                            }}
-                          ></div>
-                          
-                          {/* 從圓心到珠子的半徑線 */}
-                          {savedDesign.beads.map((bead, index) => {
-                            const totalBeads = savedDesign.beads.length;
-                            const angle = (index / totalBeads) * 2 * Math.PI - Math.PI / 2;
-                            const centerX = 150;
-                            const centerY = 150;
-                            
-                            const x = centerX + radius * Math.cos(angle);
-                            const y = centerY + radius * Math.sin(angle);
-                            
-                            return (
-                              <div 
-                                key={index}
-                                className={`design-bead-circle ${(bead.type === '米珠' || bead.type === '珍珠' || bead.type === '過渡珠') ? 'small-bead' : ''}`}
-                                style={{ 
-                                  left: `${x}px`,
-                                  top: `${y}px`,
-                                  animationDelay: `${index * 0.1}s`,
-                                  zIndex: index + 10
-                                }}
-                                title={`${bead.name} - ${bead.type}`}
-                              >
-                                <img 
-                                  src={`/${bead.image}`}
-                                  alt={bead.name}
-                                  className="design-bead-image"
-                                />
-                              </div>
-                            );
-                          })}
+                          {scorePoints.map((point, index) => (
+                            <circle 
+                              key={`point-${index}-${JSON.stringify(scores)}`}
+                              cx={point.x} 
+                              cy={point.y} 
+                              r="4" 
+                              fill="#ffd700" 
+                            />
+                          ))}
                         </>
                       );
                     })()}
-                  </div>
-                </div>
-                
-                <div className="design-controls">
-                  <button 
-                    className="analyze-btn" 
-                    onClick={startAnalysis}
-                    disabled={isAnalyzing}
-                  >
-                    {isAnalyzing ? '🔮 分析中...' : '🔮 開始分析'}
-                  </button>
-                  <button 
-                    className="clear-design-btn" 
-                    onClick={clearSavedDesign}
-                  >
-                    🗑️ 清除設計
-                  </button>
+                    
+                    {/* 軸線標籤 - 調整位置避免被截斷 */}
+                    <text x="175" y="60" className="axis-label" textAnchor="middle">設計感 ({scores.love})</text>
+                    <text x="290" y="130" className="axis-label" textAnchor="start">愛情 ({scores.windfall})</text>
+                    <text x="290" y="230" className="axis-label" textAnchor="start">偏財 ({scores.regularIncome})</text>
+                    <text x="175" y="300" className="axis-label" textAnchor="middle">正財 ({scores.career})</text>
+                    <text x="60" y="230" className="axis-label" textAnchor="end">事業 ({scores.regularIncome})</text>
+                    <text x="60" y="130" className="axis-label" textAnchor="end">健康 ({scores.health})</text>
+                  </svg>
                 </div>
               </div>
-            ) : (
-              <div className="no-design-message">
-                <div className="no-design-icon">🎨</div>
-                <h4>還沒有串珠設計</h4>
-                <p>請先到珠子收納櫃創建並保存您的串珠設計</p>
-                <button 
-                  className="go-to-cabinet-btn" 
-                  onClick={goToBeadCabinet}
-                >
-                  🏠 前往珠子收納櫃
-                </button>
-              </div>
-            )}
+            </div>
           </div>
 
-          {/* 雷達圖 */}
-                      <div className="radar-chart-section">
-              <h3>🌟 能量評分圖</h3>
-              
-              <div className="radar-chart">
-              {/* SVG雷達圖 */}
-              <svg 
-                className="radar-svg" 
-                viewBox="0 0 350 350" 
-                width="350" 
-                height="350"
-              >
-                {/* 背景網格 - 三個同心六邊形 */}
-                <polygon 
-                  points="175,75 275,125 275,225 175,275 75,225 75,125" 
-                  fill="none" 
-                  stroke="rgba(255,255,255,0.3)" 
-                  strokeWidth="1"
-                />
-                <polygon 
-                  points="175,105 245,145 245,205 175,245 105,205 105,145" 
-                  fill="none" 
-                  stroke="rgba(255,255,255,0.3)" 
-                  strokeWidth="1"
-                />
-                <polygon 
-                  points="175,135 215,165 215,185 175,215 135,185 135,165" 
-                  fill="none" 
-                  stroke="rgba(255,255,255,0.3)" 
-                  strokeWidth="1"
-                />
-                
-                {/* 軸線 - 從中心到六個頂點 */}
-                <line x1="175" y1="175" x2="175" y2="75" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
-                <line x1="175" y1="175" x2="275" y2="125" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
-                <line x1="175" y1="175" x2="275" y2="225" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
-                <line x1="175" y1="175" x2="175" y2="275" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
-                <line x1="175" y1="175" x2="75" y2="225" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
-                <line x1="175" y1="175" x2="75" y2="125" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
-                
-                {/* AI評分結果填充區域 - 真正的六邊形 */}
-                {showResult && (() => {
-                  const scorePoints = getHexagonScorePoints(scores);
-                  const pointsString = scorePoints.map(point => `${point.x},${point.y}`).join(' ');
-                  
-                  return (
-                    <polygon 
-                      key={`fill-${JSON.stringify(scores)}`}
-                      points={pointsString}
-                      fill="rgba(138, 43, 226, 0.6)" 
-                      stroke="rgba(138, 43, 226, 0.8)" 
-                      strokeWidth="2"
-                    />
-                  );
-                })()}
-                
-                {/* 評分點 */}
-                {showResult && (() => {
-                  const scorePoints = getHexagonScorePoints(scores);
-                  
-                  return (
-                    <>
-                      {scorePoints.map((point, index) => (
-                        <circle 
-                          key={`point-${index}-${JSON.stringify(scores)}`}
-                          cx={point.x} 
-                          cy={point.y} 
-                          r="4" 
-                          fill="#ffd700" 
-                        />
-                      ))}
-                    </>
-                  );
-                })()}
-                
-                {/* 軸線標籤 - 調整位置避免被截斷 */}
-                <text x="175" y="60" className="axis-label" textAnchor="middle">設計感 ({scores.love})</text>
-                <text x="290" y="130" className="axis-label" textAnchor="start">愛情 ({scores.windfall})</text>
-                <text x="290" y="230" className="axis-label" textAnchor="start">偏財 ({scores.regularIncome})</text>
-                <text x="175" y="300" className="axis-label" textAnchor="middle">正財 ({scores.career})</text>
-                <text x="60" y="230" className="axis-label" textAnchor="end">事業 ({scores.regularIncome})</text>
-                <text x="60" y="130" className="axis-label" textAnchor="end">健康 ({scores.health})</text>
-              </svg>
+          {/* 底部導航欄 */}
+          <div className="bottom-navigation">
+            <div className="nav-grid">
+              <button className="nav-button" onClick={goHome}>
+                <div className="nav-icon">🏠</div>
+                <div className="nav-text">返回首頁</div>
+              </button>
+              <button className="nav-button" onClick={goToBeadCabinet}>
+                <div className="nav-icon">🎨</div>
+                <div className="nav-text">數位串珠</div>
+              </button>
+              <button className="nav-button" onClick={() => window.open('http://localhost:3000/guide', '_self')}>
+                <div className="nav-icon">📚</div>
+                <div className="nav-text">珠子指南</div>
+              </button>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </Fade>
+    </>
   );
 };
 

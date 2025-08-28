@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Microsoft JhengHei', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             color: white;
             overflow-x: hidden;
@@ -23,54 +23,101 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
             text-align: center;
             margin-bottom: 50px;
             padding-top: 40px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .title {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .subtitle {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             opacity: 0.9;
             margin-bottom: 30px;
+            line-height: 1.6;
         }
 
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
+        .hero-description {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
         }
 
-        .menu-item {
+        /* 底部按鈕區域 */
+        .bottom-nav {
             background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 25px 25px 0 0;
+            padding: 30px 20px 40px;
+            margin: 0 -20px -20px -20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-title {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .nav-button {
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
-            padding: 30px;
+            padding: 20px 15px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
         }
 
-        .menu-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            background: rgba(255, 255, 255, 0.15);
+        .nav-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.2);
         }
 
-        .menu-item::before {
+        .nav-button:active {
+            transform: translateY(-2px);
+        }
+
+        .nav-button::before {
             content: '';
             position: absolute;
             top: 0;
@@ -81,33 +128,96 @@
             transition: left 0.5s;
         }
 
-        .menu-item:hover::before {
+        .nav-button:hover::before {
             left: 100%;
         }
 
-        .menu-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
+        .nav-icon {
+            font-size: 2.2rem;
             display: block;
+            margin-bottom: 5px;
         }
 
-        .menu-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .menu-description {
-            font-size: 1rem;
-            opacity: 0.8;
-            line-height: 1.5;
+        .nav-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            line-height: 1.3;
         }
 
         .footer {
             text-align: center;
-            margin-top: 60px;
+            margin-top: 30px;
             padding: 20px;
             opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .hero-description {
+                font-size: 1rem;
+            }
+            
+            .nav-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .nav-button {
+                padding: 18px 12px;
+            }
+            
+            .nav-icon {
+                font-size: 2rem;
+            }
+            
+            .nav-text {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .nav-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .nav-button {
+                padding: 20px 15px;
+                flex-direction: row;
+                justify-content: flex-start;
+                text-align: left;
+            }
+            
+            .nav-icon {
+                font-size: 1.8rem;
+                margin-bottom: 0;
+                margin-right: 15px;
+            }
+            
+            .nav-text {
+                font-size: 0.9rem;
+            }
         }
 
         /* 珠子介紹指南彈窗樣式 */
@@ -160,19 +270,6 @@
         }
 
         @media (max-width: 768px) {
-            .title {
-                font-size: 2rem;
-            }
-            
-            .menu-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .menu-item {
-                padding: 20px;
-            }
-
             .guide-modal-content {
                 width: 98%;
                 margin: 10px auto;
@@ -185,43 +282,45 @@
         <div class="header">
             <h1 class="title">✨ 靈性串珠創作 ✨</h1>
             <p class="subtitle">探索靈性世界，創作專屬於你的能量串珠</p>
+            <p class="hero-description">
+                透過精心挑選的珠子材質與色彩，創造出獨一無二的靈性飾品。<br>
+                讓每一顆珠子都承載著你的願望與能量，成為生活中的守護符。
+            </p>
         </div>
 
-        <div class="menu-grid">
-            <div class="menu-item" onclick="openBeadRatingInNewTab()">
-                <span class="menu-icon">⭐</span>
-                <h3 class="menu-title">串珠評分區</h3>
-                <p class="menu-description">作品評分、創意分享</p>
-            </div>
+        <!-- 底部導航按鈕區域 -->
+        <div class="bottom-nav">
+            <h3 class="nav-title">🎯 功能選單</h3>
+            <div class="nav-grid">
+                <div class="nav-button" onclick="openBeadRatingInNewTab()">
+                    <span class="nav-icon">⭐</span>
+                    <span class="nav-text">串珠評分區</span>
+                </div>
 
-            <div class="menu-item" onclick="window.open('http://localhost:3000', '_blank')">
-                <span class="menu-icon">💠</span>
-                <h3 class="menu-title">數位串珠創作區</h3>
-                <p class="menu-description">珠子櫃子視覺選珠介面</p>
-            </div>
+                <div class="nav-button" onclick="window.open('http://localhost:3000', '_blank')">
+                    <span class="nav-icon">💠</span>
+                    <span class="nav-text">數位串珠創作</span>
+                </div>
 
-            <div class="menu-item" onclick="openBeadGuideInNewTab()">
-                <span class="menu-icon">📚</span>
-                <h3 class="menu-title">珠子圖案庫</h3>
-                <p class="menu-description">精美圖案與設計靈感</p>
-            </div>
+                <div class="nav-button" onclick="openBeadGuideInNewTab()">
+                    <span class="nav-icon">📚</span>
+                    <span class="nav-text">珠子圖案庫</span>
+                </div>
 
-            <div class="menu-item" onclick="window.open('http://localhost:3000/tutorial', '_blank')">
-                <span class="menu-icon">🎨</span>
-                <h3 class="menu-title">珠子教學中心</h3>
-                <p class="menu-description">製作技巧與工具介紹</p>
-            </div>
+                <div class="nav-button" onclick="window.open('http://localhost:3000/tutorial', '_blank')">
+                    <span class="nav-icon">🎨</span>
+                    <span class="nav-text">珠子教學中心</span>
+                </div>
 
-            <div class="menu-item" onclick="alert('🔭 近期運勢報導 - 功能開發中')">
-                <span class="menu-icon">🔭</span>
-                <h3 class="menu-title">近期運勢報導</h3>
-                <p class="menu-description">能量分析與水晶建議</p>
-            </div>
+                <div class="nav-button" onclick="alert('🔭 近期運勢報導 - 功能開發中')">
+                    <span class="nav-icon">🔭</span>
+                    <span class="nav-text">近期運勢報導</span>
+                </div>
 
-            <div class="menu-item" onclick="openBeadStoresInNewTab()">
-                <span class="menu-icon">🏪</span>
-                <h3 class="menu-title">推薦串珠店家</h3>
-                <p class="menu-description">精選優質串珠材料與服務店家，讓您的創作之路更加順暢</p>
+                <div class="nav-button" onclick="openBeadStoresInNewTab()">
+                    <span class="nav-icon">🏪</span>
+                    <span class="nav-text">推薦串珠店家</span>
+                </div>
             </div>
         </div>
 
