@@ -13,7 +13,6 @@
 .rating-header {
   text-align: center;
   margin-bottom: 30px;
-  position: relative;
 }
 
 .rating-header h1 {
@@ -32,29 +31,7 @@
   50% { background-position: 100% 50%; }
 }
 
-/* 返回按鈕 */
-.back-btn {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  font-size: 1rem;
-  font-weight: 500;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-}
 
-.back-btn:hover {
-  transform: translateY(-50%) translateX(-5px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-}
 
 /* 主要內容區域 */
 .rating-content {
@@ -654,13 +631,7 @@
     font-size: 2rem;
   }
   
-  .back-btn {
-    position: relative;
-    left: auto;
-    top: auto;
-    transform: none;
-    margin-bottom: 20px;
-  }
+
   
   .rating-header {
     text-align: center;
@@ -708,5 +679,233 @@
   }
   50% {
     transform: translateY(-8px);
+  }
+}
+
+/* 全局 Loading 動畫樣式 */
+.global-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(10px);
+}
+
+.loading-content {
+  text-align: center;
+  color: white;
+}
+
+.psychic-loading-avatar {
+  margin-bottom: 30px;
+  animation: psychicSpin 3s linear infinite;
+}
+
+.psychic-loading-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 30px rgba(138, 43, 226, 0.6);
+  object-fit: cover;
+}
+
+.loading-text {
+  font-size: 18px;
+  font-weight: 500;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.loading-text p {
+  margin: 10px 0;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.loading-text p:nth-child(1) {
+  animation-delay: 0.3s;
+}
+
+.loading-text p:nth-child(2) {
+  animation-delay: 0.6s;
+}
+
+/* 通靈師頭像轉轉轉動畫 */
+@keyframes psychicSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(90deg) scale(1.1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1);
+  }
+  75% {
+    transform: rotate(270deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* 文字淡入動畫 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 底部導航欄樣式 */
+.bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(26, 26, 46, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 165, 0, 0.3);
+  padding: 8px 0;
+  z-index: 1000;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.nav-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.nav-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 10px 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  min-height: 50px;
+}
+
+.nav-button:hover {
+  background: rgba(255, 165, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.nav-button:active {
+  transform: translateY(0);
+}
+
+.nav-icon {
+  font-size: 1.3rem;
+  margin-bottom: 3px;
+  transition: transform 0.3s ease;
+}
+
+.nav-button:hover .nav-icon {
+  transform: scale(1.1);
+}
+
+.nav-text {
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* 響應式底部導航欄 */
+@media (max-width: 768px) {
+  .nav-grid {
+    padding: 0 15px;
+    gap: 8px;
+  }
+  
+  .nav-button {
+    padding: 8px 5px;
+    min-height: 48px;
+  }
+  
+  .nav-icon {
+    font-size: 1.2rem;
+  }
+  
+  .nav-text {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-grid {
+    padding: 0 10px;
+    gap: 6px;
+  }
+  
+  .nav-button {
+    padding: 6px 4px;
+    min-height: 45px;
+  }
+  
+  .nav-icon {
+    font-size: 1.1rem;
+  }
+  
+  .nav-text {
+    font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .nav-grid {
+    padding: 0 8px;
+    gap: 4px;
+  }
+  
+  .nav-button {
+    padding: 5px 3px;
+    min-height: 40px;
+  }
+  
+  .nav-icon {
+    font-size: 1rem;
+    margin-bottom: 2px;
+  }
+  
+  .nav-text {
+    font-size: 0.55rem;
+  }
+}
+
+/* 為底部導航欄騰出空間 */
+.bead-rating-container {
+  padding-bottom: 80px;
+}
+
+@media (max-width: 768px) {
+  .bead-rating-container {
+    padding-bottom: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bead-rating-container {
+    padding-bottom: 60px;
   }
 }

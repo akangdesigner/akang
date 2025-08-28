@@ -1674,38 +1674,9 @@ const BeadCabinet = () => {
     <div className="bead-cabinet-container">
       {/* 標題區域 */}
       <div className="cabinet-title">
-        <h1 className="h1 text-center mb-4">✨ 珠子收納櫃 ✨</h1>
+        <h1 className="h1 text-center mb-4">✨ 數位串珠創作區 ✨</h1>
         
-        {/* 導航按鈕區域 */}
-        <div className="navigation-buttons">
-          <button
-            className="btn btn-outline-primary"
-            onClick={() => {
-              console.log('返回首頁按鈕被點擊');
-              window.open('http://127.0.0.1:5500/index.html', '_self');
-            }}
-            title="返回首頁"
-          >
-            🏠 返回首頁
-          </button>
-          <button
-            className="btn btn-outline-info"
-            onClick={() => {
-              console.log('珠子指南按鈕被點擊');
-              window.location.href = '/guide';
-            }}
-            title="珠子介紹指南"
-          >
-            📚 珠子指南
-          </button>
-          <button
-            className="btn btn-outline-warning"
-            onClick={() => window.location.href = '/rating'}
-            title="串珠評分"
-          >
-            🔮 串珠評分
-          </button>
-        </div>
+
         
         {showHintText && <p className="text-center text-muted mt-3">點擊抽屜查看珠子</p>}
       </div>
@@ -2730,6 +2701,44 @@ const BeadCabinet = () => {
           />
         );
       })}
+
+      {/* 底部導航欄 */}
+      <div className="bottom-navigation">
+        <div className="nav-grid">
+          <button
+            className="nav-button"
+            onClick={() => {
+              console.log('返回首頁按鈕被點擊');
+              window.open('http://127.0.0.1:5500/index.html', '_self');
+            }}
+            title="返回首頁"
+          >
+            <div className="nav-icon">🏠</div>
+            <div className="nav-text">返回首頁</div>
+          </button>
+          
+          <button
+            className="nav-button"
+            onClick={() => {
+              console.log('珠子指南按鈕被點擊');
+              window.location.href = '/guide';
+            }}
+            title="珠子介紹指南"
+          >
+            <div className="nav-icon">📚</div>
+            <div className="nav-text">珠子指南</div>
+          </button>
+          
+          <button
+            className="nav-button"
+            onClick={() => window.location.href = '/rating'}
+            title="串珠評分"
+          >
+            <div className="nav-icon">🔮</div>
+            <div className="nav-text">串珠評分</div>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
