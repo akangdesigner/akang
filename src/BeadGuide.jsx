@@ -210,10 +210,12 @@ const MaterialCard = ({ material, data, isActive, onClick }) => {
       className={`material-card ${isActive ? 'active' : ''}`}
       onClick={onClick}
     >
-      <div className="material-icon">
-        <img src={data.icon} alt={data.name} />
+      <div className="material-header">
+        <div className="material-icon">
+          <img src={data.icon} alt={data.name} />
+        </div>
+        <h3>{data.name}</h3>
       </div>
-      <h3>{data.name}</h3>
       <p className="material-description">{data.description}</p>
       <div className="material-tags">
         <span className="price-tag">{data.price}</span>
@@ -703,6 +705,7 @@ const BeadGuide = () => {
       <div className="guide-content">
         {activeTab === 'materials' && (
           <div className="materials-section">
+            {/* 四張介紹小卡 - 2x2 四宮格排列 */}
             <div className="materials-grid">
               {Object.entries(beadMaterials).map(([key, data]) => (
                 <MaterialCard
@@ -715,7 +718,8 @@ const BeadGuide = () => {
               ))}
             </div>
             
-            <div className="material-detail-container">
+            {/* 最大張說明卡片 - 最底層 */}
+            <div className="material-detail">
               <MaterialDetail 
                 material={selectedMaterial}
                 data={beadMaterials[selectedMaterial]}
@@ -750,10 +754,10 @@ const BeadGuide = () => {
       {/* 底部導航欄 */}
       <div className="bottom-navigation">
         <div className="nav-grid">
-          <button className="nav-button" onClick={() => window.open('http://127.0.0.1:5500/index.html', '_self')}>
-            <div className="nav-icon">🏠</div>
-            <div className="nav-text">返回首頁</div>
-          </button>
+                  <button className="nav-button" onClick={() => window.location.href = '/home'}>
+          <div className="nav-icon">🏠</div>
+          <div className="nav-text">返回首頁</div>
+        </button>
           <button className="nav-button" onClick={() => window.location.href = '/'}>
             <div className="nav-icon">🎨</div>
             <div className="nav-text">數位串珠</div>

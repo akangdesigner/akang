@@ -1,0 +1,146 @@
+.homepage {
+  font-family: 'Microsoft JhengHei', Arial, sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  min-height: 100vh;
+  color: white;
+  overflow-x: hidden;
+}
+
+.homepage .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.homepage .header {
+  text-align: center;
+  margin-bottom: 50px;
+  padding-top: 40px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.homepage .title {
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  background: linear-gradient(45deg, #ff6b6b, #ffa500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.homepage .subtitle {
+  font-size: 1.4rem;
+  opacity: 0.9;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.homepage .hero-description {
+  font-size: 1.1rem;
+  opacity: 0.8;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+/* 底部按鈕區域 */
+.homepage .bottom-nav {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 25px 25px 0 0;
+  padding: 30px 20px 40px;
+  margin: 0 -20px -20px -20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.homepage .nav-title {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+  opacity: 0.9;
+}
+
+.homepage .nav-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.homepage .nav-button {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 20px 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.homepage .nav-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.homepage .nav-icon {
+  font-size: 2.5rem;
+  margin-bottom: 5px;
+}
+
+.homepage .nav-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.homepage .nav-description {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .homepage .nav-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .homepage .title {
+    font-size: 2.5rem;
+  }
+  
+  .homepage .subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .homepage .hero-description {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .homepage .nav-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .homepage .title {
+    font-size: 2rem;
+  }
+}

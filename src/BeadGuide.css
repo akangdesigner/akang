@@ -3,7 +3,7 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
   padding: 20px;
-  padding-bottom: 100px;
+  padding-bottom: 120px;
   font-family: 'Arial', sans-serif;
   color: white;
 }
@@ -18,7 +18,7 @@
 .guide-header h1 {
   font-size: 2.5rem;
   font-weight: bold;
-  background: linear-gradient(45deg, #ffa500, #ff8c00);
+  background: linear-gradient(45deg, #fbbf24, #d97706);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -43,7 +43,7 @@
 }
 
 .tab-btn {
-  background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%);
+  background: linear-gradient(135deg, #8a2be2 0%, #4b0082 100%);
   color: white;
   border: none;
   padding: 10px 20px;
@@ -52,21 +52,21 @@
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 165, 0, 0.3);
+  box-shadow: 0 3px 12px rgba(138, 43, 226, 0.25);
+  border: 1px solid rgba(138, 43, 226, 0.3);
   min-width: 120px;
   text-align: center;
 }
 
 .tab-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);
+  box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
 }
 
 .tab-btn.active {
-  background: linear-gradient(135deg, #ff8c00 0%, #ffa500 100%);
+  background: linear-gradient(135deg, #4b0082 0%, #8a2be2 100%);
   transform: translateY(-2px);
-  border-color: rgba(255, 165, 0, 0.6);
+  border-color: rgba(138, 43, 226, 0.6);
 }
 
 /* 內容區域 */
@@ -77,28 +77,39 @@
 
 /* 材質介紹區域 */
 .materials-section {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
+  display: flex;
+  flex-direction: column;
   gap: 30px;
-  align-items: start;
+  align-items: stretch;
 }
 
 .materials-grid {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
+  order: 2;
 }
 
-/* 材質卡片 */
+.material-detail {
+  order: 3;
+}
+
+/* 材質卡片 - 橫向長條 */
 .material-card {
-  background: rgb(254, 254, 254);
+  background: rgba(237, 233, 254, 0.95);
   border-radius: 15px;
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 20px 30px;
+  margin-bottom: 0;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   border: 2px solid transparent;
+  height: 180px;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  min-height: auto;
+  flex-direction: column;
 }
 
 .material-card:hover {
@@ -107,18 +118,27 @@
 }
 
 .material-card.active {
-  border-color: #667eea;
-  background: linear-gradient(135deg, #f8f9ff 0%, #e8ecff 100%);
+  border-color: #8a2be2;
+  background: linear-gradient(135deg, #f3f4f6 0%, #ede9fe 100%);
+}
+
+.material-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
 }
 
 .material-icon {
   font-size: 2rem;
-  margin-bottom: 10px;
+  margin-bottom: 0;
+  margin-right: 0;
   width: 50px !important;
   height: 50px !important;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .material-icon img {
@@ -131,13 +151,14 @@
   font-size: 1.2rem;
   font-weight: bold;
   color: #333;
-  margin-bottom: 8px;
+  margin: 0;
+  line-height: 1.2;
 }
 
 .material-description {
   color: #666;
   font-size: 0.9rem;
-  margin-bottom: 15px;
+  margin: 0 0 20px 0;
   line-height: 1.4;
 }
 
@@ -145,10 +166,11 @@
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  margin-top: auto;
 }
 
 .price-tag, .care-tag {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #8a2be2, #6a5acd);
   color: white;
   padding: 4px 8px;
   border-radius: 12px;
@@ -158,10 +180,11 @@
 
 /* 材質詳情 */
 .material-detail {
-  background: white;
+  background: rgba(243, 244, 246, 0.95);
   border-radius: 15px;
   padding: 30px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
 }
 
 .detail-header {
@@ -248,13 +271,23 @@
 /* 顏色特性區域 */
 .colors-section {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 25px;
+  max-width: 100%;
+  margin-bottom: 30px;
+  justify-items: center;
 }
 
-/* 紫色系右移，黃色系不動 */
-.colors-section .color-card:nth-child(4) {
-  margin-left: 200px;
+/* 桌面版紫色系右移，黃色系不動 */
+@media (min-width: 769px) {
+  .colors-section .color-card:nth-child(4) {
+    margin-left: 200px;
+  }
+  
+  .colors-section .color-card {
+    width: 100%;
+    max-width: 500px;
+  }
 }
 
 /* 顏色卡片 */
@@ -265,6 +298,8 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   border: 3px solid;
   transition: all 0.3s ease;
+  min-height: 350px;
+  overflow: visible;
 }
 
 .color-card:hover {
@@ -315,6 +350,8 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: 100%;
+  padding-bottom: 20px;
 }
 
 .color-content h4 {
@@ -333,7 +370,9 @@
 .occasion-tags, .combination-tags, .bead-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 10px;
 }
 
 .occasion-tag {
@@ -345,7 +384,7 @@
 }
 
 .combination-tag {
-  background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+  background: linear-gradient(135deg, #a78bfa, #c084fc);
   color: white;
   padding: 6px 10px;
   border-radius: 15px;
@@ -353,7 +392,7 @@
 }
 
 .bead-tag {
-  background: linear-gradient(135deg, #FFE66D, #FFD93D);
+  background: linear-gradient(135deg, #fbbf24, #d97706);
   color: #333;
   padding: 6px 10px;
   border-radius: 15px;
@@ -370,7 +409,7 @@
 }
 
 .back-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8a2be2 0%, #4b0082 100%);
   color: white;
   border: none;
   padding: 12px 24px;
@@ -379,7 +418,7 @@
   border-radius: 25px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(138, 43, 226, 0.2);
 }
 
 .back-btn:hover {
@@ -402,7 +441,7 @@
 .recommendations-header h2 {
   font-size: 2.2rem;
   font-weight: bold;
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: linear-gradient(45deg, #8a2be2, #4b0082);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -418,7 +457,7 @@
 
 /* 推薦搭配預留空間 */
 .recommendations-container {
-  background: white;
+  background: rgba(243, 244, 246, 0.95);
   border-radius: 20px;
   padding: 40px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -436,7 +475,7 @@
   color: #333;
   margin-bottom: 30px;
   text-align: center;
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: linear-gradient(45deg, #8a2be2, #4b0082);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -805,7 +844,7 @@
 
 /* 推薦搭配按鈕 */
 .recommendation-btn {
-  background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+  background: linear-gradient(135deg, #a78bfa, #c084fc);
   color: white;
   border: none;
   padding: 8px 16px;
@@ -814,7 +853,7 @@
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(167, 139, 250, 0.2);
   position: absolute;
   right: 0;
   top: 50%;
@@ -849,7 +888,7 @@
   background: #f8f9fa;
   border-radius: 12px;
   padding: 15px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #8a2be2;
 }
 
 .recommendation-card h5 {
@@ -866,7 +905,7 @@
 }
 
 .length-tag, .width-tag {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #8a2be2, #6a5acd);
   color: white;
   padding: 4px 8px;
   border-radius: 12px;
@@ -894,7 +933,7 @@
 }
 
 .recommended-bead-tag {
-  background: linear-gradient(135deg, #FFE66D, #FFD93D);
+  background: linear-gradient(135deg, #fbbf24, #d97706);
   color: #333;
   padding: 4px 8px;
   border-radius: 10px;
@@ -913,6 +952,21 @@
   
   .colors-section {
     grid-template-columns: 1fr;
+    gap: 20px;
+    justify-items: center;
+    margin-bottom: 25px;
+  }
+  
+  /* 手機版取消紫色系右移 */
+  .colors-section .color-card:nth-child(4) {
+    margin-left: 0;
+  }
+  
+  /* 手機版顏色卡片寬度優化 */
+  .color-card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 10px;
   }
   
   .guide-header h1 {
@@ -931,8 +985,15 @@
     min-width: 100px;
   }
   
+  .materials-grid {
+    order: 2;
+    gap: 15px;
+  }
+  
   .material-detail {
+    order: 3;
     padding: 20px;
+    margin-bottom: 25px;
   }
   
   .detail-header {
@@ -1101,6 +1162,7 @@
 @media (max-width: 768px) {
   .bead-guide-container {
     padding: 15px;
+    padding-bottom: 110px;
   }
   
   /* 修復容器寬度限制 */
@@ -1115,16 +1177,18 @@
   }
   
   .materials-section {
-    grid-template-columns: 1fr;
     gap: 20px;
   }
   
   .materials-grid {
     order: 2;
+    gap: 15px;
   }
   
   .material-detail {
-    order: 1;
+    order: 3;
+    padding: 15px;
+    border-radius: 12px;
   }
   
   .guide-header {
@@ -1151,14 +1215,8 @@
     padding: 8px 16px;
     font-size: 0.8rem;
     min-width: 100px;
-  }
-  
-  .tab-btn {
-    padding: 12px 20px;
-    font-size: 0.9rem;
     border-radius: 15px;
     min-height: 44px;
-    width: 100%;
     justify-content: center;
   }
   
@@ -1169,29 +1227,43 @@
     margin-bottom: 20px;
   }
   
-  .material-card,
+  .material-card {
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 0;
+    height: 160px;
+    min-height: auto;
+  }
+  
   .color-card {
     padding: 15px;
     border-radius: 12px;
-    margin-bottom: 20px;
+    margin-bottom: 0;
+    height: 120px;
+    min-height: 500px;
   }
   
-  .material-card h3,
+  .material-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+  
+  .material-card p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  
   .color-card h3 {
     font-size: 1.2rem;
     margin-bottom: 8px;
   }
   
-  .material-card p,
   .color-card p {
     font-size: 0.85rem;
     line-height: 1.4;
   }
   
-  .material-detail {
-    padding: 15px;
-    border-radius: 12px;
-  }
+
   
   .detail-header {
     flex-direction: column;
@@ -1294,6 +1366,7 @@
 @media (max-width: 480px) {
   .bead-guide-container {
     padding: 10px;
+    padding-bottom: 105px;
   }
   
   /* 小螢幕容器寬度修復 */
@@ -1307,6 +1380,11 @@
   
   .materials-section {
     gap: 15px;
+  }
+  
+  .materials-grid {
+    order: 2;
+    gap: 12px;
   }
   
   .guide-header {
@@ -1331,34 +1409,46 @@
     padding: 6px 12px;
     font-size: 0.75rem;
     min-width: 80px;
-  }
-  
-  .tab-btn {
-    padding: 10px 16px;
-    font-size: 0.85rem;
     border-radius: 12px;
   }
   
-  .material-card,
+  .material-card {
+    padding: 12px 18px;
+    border-radius: 10px;
+    margin-bottom: 0;
+    height: 150px;
+    min-height: auto;
+  }
+  
   .color-card {
     padding: 12px;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 0;
+    height: 110px;
+    min-height: 450px;
   }
   
-  .material-card h3,
+  .material-card h3 {
+    font-size: 1.1rem;
+  }
+  
+  .material-card p {
+    font-size: 0.8rem;
+  }
+  
   .color-card h3 {
     font-size: 1.1rem;
   }
   
-  .material-card p,
   .color-card p {
     font-size: 0.8rem;
   }
   
   .material-detail {
+    order: 3;
     padding: 12px;
     border-radius: 10px;
+    margin-bottom: 20px;
   }
   
   .detail-header h2 {
@@ -1464,7 +1554,10 @@
   }
   
   /* 手機字體大小優化 */
-  .material-card p,
+  .material-card p {
+    line-height: 1.4;
+  }
+  
   .color-card p {
     line-height: 1.4;
   }
@@ -1475,7 +1568,27 @@
     gap: 12px;
   }
   
-  .material-card,
+  /* 小螢幕版取消紫色系右移 */
+  .colors-section .color-card:nth-child(4) {
+    margin-left: 0;
+  }
+  
+  /* 小螢幕版顏色卡片對齊優化 */
+  .colors-section {
+    justify-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .color-card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 8px;
+  }
+  
+  .material-card {
+    margin-bottom: 15px;
+  }
+  
   .color-card {
     margin-bottom: 20px;
   }
@@ -1490,7 +1603,10 @@
   }
   
   /* 減少動畫複雜度以提升手機效能 */
-  .material-card::before,
+  .material-card::before {
+    opacity: 0.5;
+  }
+  
   .color-card::before {
     opacity: 0.5;
   }
