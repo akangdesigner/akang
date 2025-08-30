@@ -2709,7 +2709,7 @@ const BeadCabinet = () => {
             className="nav-button"
             onClick={() => {
               console.log('返回首頁按鈕被點擊');
-              window.open('http://127.0.0.1:5500/index.html', '_self');
+              window.location.href = '/home';
             }}
             title="返回首頁"
           >

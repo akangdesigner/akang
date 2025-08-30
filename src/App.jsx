@@ -4,6 +4,7 @@ import BeadGuide from './BeadGuide';
 import BeadRating from './BeadRating';
 import BeadStores from './BeadStores';
 import DebugFloatingBeads from './DebugFloatingBeads';
+import HomePage from './HomePage';
 import './App.css';
 
 function App() {
@@ -24,6 +25,10 @@ function App() {
   
   if (path === '/stores') {
     return <BeadStores />;
+  }
+  
+  if (path === '/home') {
+    return <HomePage />;
   }
   
   return (

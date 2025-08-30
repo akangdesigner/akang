@@ -412,23 +412,73 @@
   flex-wrap: wrap;
 }
 
-.clear-design-btn {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-  color: white;
+/* 設計按鈕基礎樣式 */
+.design-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
   border: none;
-  padding: 15px 20px;
+  border-radius: 25px;
   font-size: 1rem;
-  font-weight: bold;
-  border-radius: 15px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  min-width: 140px;
+  justify-content: center;
 }
 
-.clear-design-btn:hover {
+.design-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
+
+.design-button:active {
+  transform: translateY(0);
+}
+
+.design-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 主要按鈕樣式 */
+.primary-button {
+  background: linear-gradient(135deg, #8a2be2 0%, #4b0082 100%);
+  color: white;
+}
+
+.primary-button:hover:not(:disabled) {
+  box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
+}
+
+/* 次要按鈕樣式 - 灰紫色 */
+.secondary-button {
+  background: #887eca;
+  color: white;
+}
+
+.secondary-button:hover:not(:disabled) {
+  background: #5a4acd;
+  box-shadow: 0 6px 20px rgba(106, 90, 205, 0.4);
+}
+
+
+
+/* 按鈕圖標和文字 */
+.button-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.button-text {
+  line-height: 1;
+  white-space: nowrap;
+}
+
+
 
 /* 無設計時的提示 */
 .no-design-message {

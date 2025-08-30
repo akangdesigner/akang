@@ -266,20 +266,55 @@ const BeadRating = () => {
     
     // 分析珠子顏色搭配，融入整體描述
     const beadNames = beads.map(bead => bead.name);
-    const hasPink = beadNames.some(name => name.includes('粉色') || name.includes('黃粉色'));
-    const hasPurple = beadNames.some(name => name.includes('紫色') || name.includes('淡紫') || name.includes('深紫'));
-    const hasYellow = beadNames.some(name => name.includes('黃色') || name.includes('金棕') || name.includes('黃粉'));
-    const hasGreen = beadNames.some(name => name.includes('薄荷綠') || name.includes('淺綠') || name.includes('深綠'));
-    const hasBlue = beadNames.some(name => name.includes('淺藍') || name.includes('天藍') || name.includes('深藍') || name.includes('靛藍') || name.includes('靛色'));
-    const hasRed = beadNames.some(name => name.includes('紅色') || name.includes('酒紅') || name.includes('紅棕'));
-    const hasOrange = beadNames.some(name => name.includes('橘色'));
-    const hasBrown = beadNames.some(name => name.includes('棕色') || name.includes('金棕') || name.includes('深棕') || name.includes('淺棕'));
-    const hasWhite = beadNames.some(name => name.includes('白色') || name.includes('珍珠'));
-    const hasBlack = beadNames.some(name => name.includes('黑色'));
-    const hasSilver = beadNames.some(name => name.includes('銀色'));
-    const hasGold = beadNames.some(name => name.includes('金色'));
+    
+    // 更精確的顏色檢測，避免誤判
+    const hasPink = beadNames.some(name => 
+      name.includes('粉色') && !name.includes('黃粉') && !name.includes('金棕')
+    );
+    const hasPurple = beadNames.some(name => 
+      name.includes('紫色') || name.includes('淡紫') || name.includes('深紫')
+    );
+    const hasYellow = beadNames.some(name => 
+      name.includes('黃色') || (name.includes('金棕') && !name.includes('紅棕'))
+    );
+    const hasGreen = beadNames.some(name => 
+      name.includes('薄荷綠') || name.includes('淺綠') || name.includes('深綠')
+    );
+    const hasBlue = beadNames.some(name => 
+      name.includes('淺藍') || name.includes('天藍') || name.includes('深藍') || name.includes('靛藍') || name.includes('靛色')
+    );
+    const hasRed = beadNames.some(name => 
+      name.includes('紅色') || name.includes('酒紅') || name.includes('紅棕')
+    );
+    const hasOrange = beadNames.some(name => 
+      name.includes('橘色')
+    );
+    const hasBrown = beadNames.some(name => 
+      (name.includes('棕色') || name.includes('深棕') || name.includes('淺棕')) && !name.includes('金棕') && !name.includes('紅棕')
+    );
+    const hasWhite = beadNames.some(name => 
+      name.includes('白色') && !name.includes('珍珠')
+    );
+    const hasBlack = beadNames.some(name => 
+      name.includes('黑色')
+    );
+    const hasSilver = beadNames.some(name => 
+      name.includes('銀色')
+    );
+    const hasGold = beadNames.some(name => 
+      name.includes('金色') && !name.includes('金棕')
+    );
+    
+    // 調試：顯示檢測到的顏色（開發時使用）
+    console.log('珠子名稱:', beadNames);
+    console.log('檢測到的顏色:', {
+      hasPink, hasPurple, hasYellow, hasGreen, hasBlue, 
+      hasRed, hasOrange, hasBrown, hasWhite, hasBlack, hasSilver, hasGold
+    });
     
     // 根據珠子搭配給出專業點評，融入整體描述
+    // 只分析實際存在的顏色組合，避免虛假描述
+    
     if (hasPink && hasPurple) {
       advice += '你巧妙地運用了粉色與紫色的搭配，這種組合既浪漫又神秘，預示著你將在愛情和靈性方面都有重大突破。';
     } else if (hasPink) {
@@ -310,6 +345,7 @@ const BeadRating = () => {
       advice += '橘色的溫暖色調代表著你內在的創造力與熱情，這種充滿活力的顏色將為你帶來人際魅力和事業機會。';
     }
     
+    // 只分析實際存在的顏色，避免虛假描述
     if (hasGreen) {
       advice += '綠色的自然色調代表著你內在的成長與生命力，這種充滿生機的顏色將為你帶來健康運勢和事業發展。';
     }
@@ -338,38 +374,7 @@ const BeadRating = () => {
       advice += '金色的富貴色調代表著你內在的價值與財富，這種充滿能量的顏色將為你帶來豐盛的財運和事業成功。';
     }
     
-    // 分析珠子類型和數量，融入整體描述
-    const glassBeads = beads.filter(bead => bead.type === '玻璃珠');
-    const riceBeads = beads.filter(bead => bead.type === '米珠');
-    const crystalBeads = beads.filter(bead => bead.type === '水晶珠');
-    const woodBeads = beads.filter(bead => bead.type === '木珠');
-    const pearlBeads = beads.filter(bead => bead.type === '珍珠');
-    const transitionBeads = beads.filter(bead => bead.type === '過渡珠');
-    
-    // 根據珠子類型給出特質分析，融入整體描述
-    if (glassBeads.length > 0) {
-      advice += '玻璃珠的透明質感代表著你內心的純淨與透明，這種材質象徵著清澈的思維和真誠的品格。';
-    }
-    
-    if (riceBeads.length > 0) {
-      advice += '米珠的溫潤質感代表著你內心的溫暖與包容，這種材質象徵著謙遜的美德和自然的智慧。';
-    }
-    
-    if (crystalBeads.length > 0) {
-      advice += '水晶珠的璀璨光澤代表著你內心的光芒與靈性，這種材質象徵著高貴的氣質和靈性的覺醒。';
-    }
-    
-    if (woodBeads.length > 0) {
-      advice += '木珠的自然紋理代表著你內心的堅韌與成長，這種材質象徵著生命的活力和大地的智慧。';
-    }
-    
-    if (pearlBeads.length > 0) {
-      advice += '珍珠的溫潤光澤代表著你內心的優雅與成熟，這種材質象徵著歲月的沉澱和內在的美麗。';
-    }
-    
-    if (transitionBeads.length > 0) {
-      advice += '過渡珠的連接作用代表著你內心的協調與平衡，這種材質象徵著人際關係的和諧和生活的智慧。';
-    }
+         // 刪除珠子材質相關建議，只保留分數超過5分的面向建議
     
     // 根據珠子數量給出建議，融入整體描述
     const beadCount = beads.length;
@@ -383,8 +388,133 @@ const BeadRating = () => {
       advice += '你的設計精簡優雅，這展現了你對品質的追求，精緻的設計往往比複雜的堆砌更有價值。';
     }
     
-    // 總結建議，形成完整的結尾
-    advice += '記住，每個珠子都承載著獨特的能量，就像你人生中的每個選擇都蘊含著無限可能。相信自己的直覺，勇敢追求夢想，保持規律的作息，多接觸大自然。';
+                                                     // 根據實際評分和珠子組合給出多樣化的總結建議
+       
+        advice += '我預測：';
+        
+        // 只給分數超過5分的面向提供運勢預測建議
+       
+       // 愛情運勢預測
+       if (scores.love > 5) {
+         if (scores.love >= 8) {
+           advice += '你的愛情運勢非常旺盛！在接下來的三個月內，你很可能會遇到一位與你靈魂共鳴的人，這段感情將充滿浪漫與激情。';
+         } else if (scores.love >= 6) {
+           advice += '你的愛情運勢正在上升期，單身的朋友可能在近期遇到心儀對象，已有伴侶的感情會更加穩定甜蜜。';
+         }
+       }
+       
+       // 偏財運勢預測
+       if (scores.windfall > 5) {
+         if (scores.windfall >= 8) {
+           advice += '偏財運勢極佳！你最近很可能會有一筆意外之財，可能是投資獲利、中獎或收到禮物，建議保持理性，不要過於貪心。';
+         } else if (scores.windfall >= 6) {
+           advice += '偏財運勢不錯，近期可能有額外收入機會，建議留意身邊的投資機會，但切記穩健理財。';
+         }
+       }
+       
+       // 正財運勢預測
+       if (scores.regularIncome > 5) {
+         if (scores.regularIncome >= 8) {
+           advice += '正財運勢非常穩定！你的工作收入將大幅增長，升職加薪的機會就在眼前，你的努力將得到豐厚的回報。';
+         } else if (scores.regularIncome >= 6) {
+           advice += '正財運勢穩定，繼續保持當前的理財方式，穩健的投資會帶來可觀的收益。';
+         }
+       }
+       
+       // 事業運勢預測
+       if (scores.career > 5) {
+         if (scores.career >= 8) {
+           advice += '事業運勢一片光明！你將在職場上大放異彩，升職加薪的機會就在眼前，新的發展機會將接踵而至。';
+         } else if (scores.career >= 6) {
+           advice += '事業運勢穩步上升，你的專業能力和創造力正在被認可，新的發展機會即將到來。';
+         }
+       }
+       
+       // 健康運勢預測
+       if (scores.health > 5) {
+         if (scores.health >= 8) {
+           advice += '健康運勢非常和諧！你的身心狀態將達到最佳，整體能量非常平衡，建議保持當前的健康習慣。';
+         } else if (scores.health >= 6) {
+           advice += '健康運勢良好，建議保持規律的作息，適度的運動會帶來更好的狀態。';
+         }
+       }
+      
+             // 多樣化的總結建議 - 根據珠子組合和評分情況
+       const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
+       const averageScore = totalScore / Object.keys(scores).length;
+       const maxScore = Math.max(...Object.values(scores));
+       const minScore = Math.min(...Object.values(scores));
+       const scoreRange = maxScore - minScore;
+       
+       // 根據珠子顏色組合選擇不同的總結風格
+       const hasWarmColors = beadNames.some(name => name.includes('紅色') || name.includes('橘色') || name.includes('黃色') || name.includes('粉色'));
+       const hasCoolColors = beadNames.some(name => name.includes('藍色') || name.includes('綠色') || name.includes('紫色'));
+       const hasNeutralColors = beadNames.some(name => name.includes('白色') || name.includes('黑色') || name.includes('棕色') || name.includes('米色'));
+      
+      // 根據評分分布選擇總結風格
+      if (scoreRange <= 2 && averageScore >= 7) {
+        // 均衡高分型
+        if (hasWarmColors && hasCoolColors) {
+          advice += '你的設計展現了完美的平衡美學，暖色與冷色的和諧搭配象徵著你內在的智慧與熱情的完美融合。這種平衡將為你帶來全方位的運勢提升，你的人生將如同你的設計一樣，充滿和諧與美好。';
+        } else if (hasWarmColors) {
+          advice += '你的設計充滿溫暖的能量，這種熱情將感染身邊的每一個人，為你帶來豐富的人際關係和美好的生活體驗。你的熱情將成為你成功的最大動力。';
+        } else if (hasCoolColors) {
+          advice += '你的設計展現了深邃的智慧，冷色調的運用體現了你內在的冷靜與理性，這種特質將幫助你在人生的關鍵時刻做出最明智的選擇。';
+        } else {
+          advice += '你的設計簡約而優雅，中性色調的運用展現了你內在的穩重與成熟，這種特質將為你帶來穩定的發展和持久的成功。';
+        }
+      } else if (maxScore >= 8 && scoreRange > 3) {
+        // 突出優勢型
+        if (hasWarmColors) {
+          advice += '你的設計突出了你最強的優勢領域，暖色調的運用增強了你的個人魅力。專注發展你的強項，你將在擅長的領域創造非凡的成就。';
+        } else if (hasCoolColors) {
+          advice += '你的設計展現了你在特定領域的卓越能力，冷色調的運用增強了你的專業形象。繼續深耕你的專長，你將成為該領域的專家。';
+        } else {
+          advice += '你的設計突出了你的核心優勢，這種專注將幫助你在關鍵領域取得突破性進展。相信自己的判斷，你將創造屬於自己的傳奇。';
+        }
+      } else if (averageScore >= 6 && scoreRange <= 3) {
+        // 穩定發展型
+        if (hasWarmColors && hasCoolColors) {
+          advice += '你的設計展現了穩定的發展潛力，暖色與冷色的平衡搭配象徵著你穩健的成長步伐。保持這種平衡，你將在人生的各個方面都取得穩定的進步。';
+        } else if (hasWarmColors) {
+          advice += '你的設計充滿積極向上的能量，這種樂觀的態度將幫助你克服困難，在穩定的基礎上不斷提升自己。';
+        } else if (hasCoolColors) {
+          advice += '你的設計展現了穩定的智慧，冷色調的運用體現了你務實的態度。繼續保持這種穩健的風格，你將在穩定的基礎上實現突破。';
+        } else {
+          advice += '你的設計展現了穩定的品質，中性色調的運用體現了你踏實的性格。這種穩定性將為你帶來可靠的發展基礎。';
+        }
+      } else if (averageScore < 5) {
+        // 潛力發展型
+        if (hasWarmColors) {
+          advice += '你的設計雖然簡單，但充滿了溫暖的潛力，暖色調的運用展現了你內在的熱情。每個人都從基礎開始，你的熱情將幫助你快速成長。';
+        } else if (hasCoolColors) {
+          advice += '你的設計展現了學習的潛力，冷色調的運用體現了你對知識的渴望。保持學習的熱情，你將在串珠藝術的道路上越走越遠。';
+        } else {
+          advice += '你的設計雖然基礎，但展現了無限的發展可能。每個大師都從學徒開始，保持謙遜的學習態度，你將創造屬於自己的精彩。';
+        }
+      }
+      
+             // 根據珠子數量選擇不同的鼓勵語
+       if (beadCount >= 15) {
+         advice += '你對完美的追求令人敬佩，這種專注力將幫助你在人生的各個領域都達到卓越的水準。';
+       } else if (beadCount >= 10) {
+         advice += '你的設計豐富多彩，這種多樣性展現了你對生活的熱愛，這種積極的態度將為你帶來豐富的人生體驗。';
+       } else if (beadCount >= 6) {
+         advice += '你的設計簡潔有力，這種簡約美學展現了你對本質的深刻理解，有時候，少即是多。';
+       } else {
+         advice += '你的設計精簡優雅，這種精緻展現了你對品質的追求，精緻往往比複雜更有價值。';
+       }
+      
+      // 最終總結 - 根據整體風格選擇
+      if (hasWarmColors && hasCoolColors) {
+        advice += '記住，每個珠子都承載著獨特的能量，就像你人生中的每個選擇都蘊含著無限可能。你的設計展現了平衡與和諧的美學，相信這種平衡將為你帶來圓滿的人生。';
+      } else if (hasWarmColors) {
+        advice += '記住，每個珠子都承載著獨特的能量，就像你人生中的每個選擇都蘊含著無限可能。你的設計充滿熱情與活力，讓這份熱情點燃你的人生夢想。';
+      } else if (hasCoolColors) {
+        advice += '記住，每個珠子都承載著獨特的能量，就像你人生中的每個選擇都蘊含著無限可能。你的設計展現了智慧與理性，讓這份智慧指引你的人生方向。';
+      } else {
+        advice += '記住，每個珠子都承載著獨特的能量，就像你人生中的每個選擇都蘊含著無限可能。你的設計展現了穩重與成熟，讓這份穩重成為你成功的基石。';
+      }
     
     return advice;
   };
@@ -451,7 +581,7 @@ const BeadRating = () => {
     setIsExiting(true);
     // 延遲跳轉，讓動畫有時間播放
     setTimeout(() => {
-      window.open('http://127.0.0.1:5500/index.html', '_self');
+      window.location.href = '/home';
     }, 800); // 800ms 後跳轉，配合動畫時長
   };
 
@@ -471,7 +601,7 @@ const BeadRating = () => {
 
   // 計算六邊形評分區域的頂點位置
   const getHexagonScorePoints = (scores) => {
-    // 六邊形的六個頂點，從頂部順時針排列
+    // 六邊形的六個頂點，從頂部順時針排列，與軸線標籤完全匹配
     const centerX = 175;
     const centerY = 175;
     
@@ -482,16 +612,16 @@ const BeadRating = () => {
       { x: centerX, y: centerY - (scores.love / 10) * 100 },
       
       // 右上：愛情 (右上方向，30度角)
-      { x: centerX + (scores.windfall / 10) * 86.6, y: centerY - (scores.windfall / 10) * 50 },
+      { x: centerX + (scores.love / 10) * 86.6, y: centerY - (scores.love / 10) * 50 },
       
       // 右下：偏財 (右下方向，30度角)
-      { x: centerX + (scores.regularIncome / 10) * 86.6, y: centerY + (scores.regularIncome / 10) * 50 },
+      { x: centerX + (scores.windfall / 10) * 86.6, y: centerY + (scores.windfall / 10) * 50 },
       
       // 底部：正財 (y軸正方向)
-      { x: centerX, y: centerY + (scores.career / 10) * 100 },
+      { x: centerX, y: centerY + (scores.regularIncome / 10) * 100 },
       
       // 左下：事業 (左下方向，30度角)
-      { x: centerX - (scores.regularIncome / 10) * 86.6, y: centerY + (scores.regularIncome / 10) * 50 },
+      { x: centerX - (scores.career / 10) * 86.6, y: centerY + (scores.career / 10) * 50 },
       
       // 左上：健康 (左上方向，30度角)
       { x: centerX - (scores.health / 10) * 86.6, y: centerY - (scores.health / 10) * 50 }
@@ -667,27 +797,23 @@ const BeadRating = () => {
                       </div>
                     </div>
                     
-                    <div className="design-controls">
-                      <Button 
-                        variant="contained" 
-                        size="large"
-                        onClick={startAnalysis}
-                        disabled={isAnalyzing}
-                        className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                        startIcon={<span>🔮</span>}
-                      >
-                        {isAnalyzing ? '分析中...' : '開始分析'}
-                      </Button>
-                      <Button 
-                        variant="outlined" 
-                        size="large"
-                        onClick={clearSavedDesign}
-                        className="border-red-400 text-red-400 hover:bg-red-400/10 ml-3 px-8 py-3 text-lg"
-                        startIcon={<span>🗑️</span>}
-                      >
-                        清除設計
-                      </Button>
-                    </div>
+                                         <div className="design-controls">
+                       <button 
+                         onClick={startAnalysis}
+                         disabled={isAnalyzing}
+                         className="design-button primary-button"
+                       >
+                         <div className="button-icon">🔮</div>
+                         <div className="button-text">{isAnalyzing ? '分析中...' : '開始分析'}</div>
+                       </button>
+                       <button 
+                         onClick={clearSavedDesign}
+                         className="design-button secondary-button"
+                       >
+                         <div className="button-icon">🗑️</div>
+                         <div className="button-text">清除設計</div>
+                       </button>
+                     </div>
                   </div>
                 ) : (
                   <div className="no-design-message">
@@ -782,13 +908,13 @@ const BeadRating = () => {
                       );
                     })()}
                     
-                    {/* 軸線標籤 - 調整位置避免被截斷 */}
-                    <text x="175" y="60" className="axis-label" textAnchor="middle">設計感 ({scores.love})</text>
-                    <text x="290" y="130" className="axis-label" textAnchor="start">愛情 ({scores.windfall})</text>
-                    <text x="290" y="230" className="axis-label" textAnchor="start">偏財 ({scores.regularIncome})</text>
-                    <text x="175" y="300" className="axis-label" textAnchor="middle">正財 ({scores.career})</text>
-                    <text x="60" y="230" className="axis-label" textAnchor="end">事業 ({scores.regularIncome})</text>
-                    <text x="60" y="130" className="axis-label" textAnchor="end">健康 ({scores.health})</text>
+                                         {/* 軸線標籤 - 修正評分變數對應關係，與頂點位置完全匹配 */}
+                     <text x="175" y="60" className="axis-label" textAnchor="middle">設計感 ({scores.love})</text>
+                     <text x="290" y="130" className="axis-label" textAnchor="start">愛情 ({scores.love})</text>
+                     <text x="290" y="230" className="axis-label" textAnchor="start">偏財 ({scores.windfall})</text>
+                     <text x="175" y="300" className="axis-label" textAnchor="middle">正財 ({scores.regularIncome})</text>
+                     <text x="60" y="230" className="axis-label" textAnchor="end">事業 ({scores.career})</text>
+                     <text x="60" y="130" className="axis-label" textAnchor="end">健康 ({scores.health})</text>
                   </svg>
                 </div>
               </div>
@@ -806,7 +932,7 @@ const BeadRating = () => {
                 <div className="nav-icon">🎨</div>
                 <div className="nav-text">數位串珠</div>
               </button>
-              <button className="nav-button" onClick={() => window.open('http://localhost:3000/guide', '_self')}>
+              <button className="nav-button" onClick={() => window.location.href = '/guide'}>
                 <div className="nav-icon">📚</div>
                 <div className="nav-text">珠子指南</div>
               </button>
