@@ -457,10 +457,12 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
         left: ${x}px;
         top: ${y}px;
         transform: translate(-50%, -50%);
-        width: ${bead.type === '過渡珠' ? '15px' : 
-                 (bead.type === '米珠' || bead.type === '珍珠') ? '21px' : '60px'};
-        height: ${bead.type === '過渡珠' ? '15px' : 
-                  (bead.type === '米珠' || bead.type === '珍珠') ? '21px' : '60px'};
+        width: ${bead.type === '過渡珠' ? '18px' : /* 從 15px 增加到 18px */
+                 (bead.type === '米珠' || bead.type === '珍珠') ? '25px' : /* 從 21px 增加到 25px */
+                 '60px'};
+        height: ${bead.type === '過渡珠' ? '18px' : /* 從 15px 增加到 18px */
+                  (bead.type === '米珠' || bead.type === '珍珠') ? '25px' : /* 從 21px 增加到 25px */
+                  '60px'};
         border-radius: 50%;
         background-image: url(/${bead.image});
         background-size: cover;
@@ -566,8 +568,9 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
           } else {
             // 處理第二顆及後續珠子 - 終點 = 前一顆珠子的終點座標減掉前一顆珠子的大小
             const prevBead = selectedBeads[beadIndex - 1];
-            const prevBeadSize = prevBead.type === '過渡珠' ? 21 : 
-                                (prevBead.type === '米珠' || prevBead.type === '珍珠') ? 21 : 60;
+            const prevBeadSize = prevBead.type === '過渡珠' ? 25 : /* 從 21 增加到 25 */
+                                (prevBead.type === '米珠' || prevBead.type === '珍珠') ? 25 : /* 從 21 增加到 25 */
+                                60;
             
             // 使用與第一顆珠子相同的基準距離
             let baseLineEndDistance;
@@ -589,10 +592,12 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
               const nextBead = selectedBeads[i + 1];
               
               if (nextBead) {
-                const beadSize = bead.type === '過渡珠' ? 15 : 
-                                (bead.type === '米珠' || bead.type === '珍珠') ? 21 : 60;
-                const nextBeadSize = nextBead.type === '過渡珠' ? 15 : 
-                                    (nextBead.type === '米珠' || nextBead.type === '珍珠') ? 21 : 60;
+                const beadSize = bead.type === '過渡珠' ? 18 : /* 從 15 增加到 18 */
+                                (bead.type === '米珠' || bead.type === '珍珠') ? 25 : /* 從 21 增加到 25 */
+                                60;
+                const nextBeadSize = nextBead.type === '過渡珠' ? 18 : /* 從 15 增加到 18 */
+                                    (nextBead.type === '米珠' || bead.type === '珍珠') ? 25 : /* 從 21 增加到 25 */
+                                    60;
                 
                 // 判斷間距：前大後小-35px, 前小後小-20px, 前大後大-50px, 前小後大-40px
                 let spacing;
@@ -663,7 +668,7 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
     const isCurrentSmall = beadType === '米珠' || beadType === '珍珠' || beadType === '過渡珠';
     
     // 計算珠子大小
-    const beadSize = isCurrentSmall ? 15 : 35;
+    const beadSize = isCurrentSmall ? 18 : 40; /* 小珠子從 15 增加到 18，大珠子從 35 增加到 40 */
     
     // 統一使用20px間距
     // 從12點鐘方向開始，每顆珠子緊接著前一顆
@@ -673,7 +678,7 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
     for (let i = 0; i < index; i++) {
       const prevBead = selectedBeads[i];
       const isPrevSmall = prevBead.type === '米珠' || prevBead.type === '珍珠' || prevBead.type === '過渡珠';
-      const prevBeadSize = isPrevSmall ? 15 : 35;
+      const prevBeadSize = isPrevSmall ? 18 : 40; /* 小珠子從 15 增加到 18，大珠子從 35 增加到 40 */
       
       // 統一使用20px間距
       const prevGap = 5;
@@ -805,14 +810,14 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
                 alt={bead.name}
                 style={{
                   width: (() => {
-                    if (bead.type === '過渡珠') return '15px';
-                    if (bead.type === '米珠' || bead.type === '珍珠') return '21px';
+                    if (bead.type === '過渡珠') return '18px'; /* 從 15px 增加到 18px */
+                    if (bead.type === '米珠' || bead.type === '珍珠') return '25px'; /* 從 21px 增加到 25px */
                     if (bead.type === '米珠') return '40px';
                     return '60px';
                   })(),
                   height: (() => {
-                    if (bead.type === '過渡珠') return '15px';
-                    if (bead.type === '米珠' || bead.type === '珍珠') return '21px';
+                    if (bead.type === '過渡珠') return '18px'; /* 從 15px 增加到 18px */
+                    if (bead.type === '米珠' || bead.type === '珍珠') return '25px'; /* 從 21px 增加到 25px */
                     if (bead.type === '米珠') return '60px';
                     return '60px';
                   })(),
@@ -879,10 +884,12 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
                     const nextBead = selectedBeads[i + 1];
                     
                     if (nextBead) {
-                      const beadSize = bead.type === '過渡珠' ? 15 : 
-                                      (bead.type === '米珠' || bead.type === '珍珠') ? 21 : 60;
-                      const nextBeadSize = nextBead.type === '過渡珠' ? 15 : 
-                                          (nextBead.type === '米珠' || nextBead.type === '珍珠') ? 21 : 60;
+                      const beadSize = bead.type === '過渡珠' ? 18 : /* 從 15 增加到 18 */
+                                      (bead.type === '米珠' || bead.type === '珍珠') ? 25 : /* 從 21 增加到 25 */
+                                      60;
+                      const nextBeadSize = nextBead.type === '過渡珠' ? 18 : /* 從 15 增加到 18 */
+                                          (nextBead.type === '米珠' || nextBead.type === '珍珠') ? 25 : /* 從 21 增加到 25 */
+                                          60;
                       
                       // 判斷間距：前大後小-35px, 前小後小-20px, 前大後大-50px, 前小後大-40px
                       let spacing;
@@ -966,14 +973,14 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
                 alt={floatingBeads[0].name}
                 style={{
                   width: (() => {
-                    if (floatingBeads[0].type === '過渡珠') return '15px';
-                    if (floatingBeads[0].type === '米珠' || floatingBeads[0].type === '珍珠') return '21px';
+                    if (floatingBeads[0].type === '過渡珠') return '18px'; /* 從 15px 增加到 18px */
+                    if (floatingBeads[0].type === '米珠' || floatingBeads[0].type === '珍珠') return '25px'; /* 從 21px 增加到 25px */
                     if (floatingBeads[0].type === '米珠') return '40px';
                     return '60px';
                   })(),
                   height: (() => {
-                    if (floatingBeads[0].type === '過渡珠') return '15px';
-                    if (floatingBeads[0].type === '米珠' || floatingBeads[0].type === '珍珠') return '21px';
+                    if (floatingBeads[0].type === '過渡珠') return '18px'; /* 從 15px 增加到 18px */
+                    if (floatingBeads[0].type === '米珠' || floatingBeads[0].type === '珍珠') return '25px'; /* 從 21px 增加到 25px */
                     if (floatingBeads[0].type === '米珠') return '60px';
                     return '60px';
                   })(),
@@ -989,14 +996,14 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
                   const fallbackBead = document.createElement('div');
                   fallbackBead.style.cssText = `
                     width: ${(() => {
-                      if (floatingBeads[0].type === '過渡珠') return '15px';
-                      if (floatingBeads[0].type === '米珠' || floatingBeads[0].type === '珍珠') return '21px';
+                      if (floatingBeads[0].type === '過渡珠') return '18px'; /* 從 15px 增加到 18px */
+                      if (floatingBeads[0].type === '米珠' || floatingBeads[0].type === '珍珠') return '25px'; /* 從 21px 增加到 25px */
                       if (floatingBeads[0].type === '米珠') return '40px';
                       return '60px';
                     })()};
                     height: ${(() => {
-                      if (floatingBeads[0].type === '過渡珠') return '15px';
-                      if (floatingBeads[0].type === '米珠' || floatingBeads[0].type === '珍珠') return '21px';
+                      if (floatingBeads[0].type === '過渡珠') return '18px'; /* 從 15px 增加到 18px */
+                      if (floatingBeads[0].type === '米珠' || floatingBeads[0].type === '珍珠') return '25px'; /* 從 21px 增加到 25px */
                       if (floatingBeads[0].type === '米珠') return '60px';
                       return '60px';
                     })()};
@@ -1207,11 +1214,11 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
                       left: position.left,
                       top: position.top,
                       transform: 'translate(-50%, -50%)',
-                      width: (bead.type === '過渡珠') ? '15px' : 
-                             (bead.type === '米珠' || bead.type === '珍珠') ? '21px' : 
+                      width: (bead.type === '過渡珠') ? '18px' : /* 從 15px 增加到 18px */
+                             (bead.type === '米珠' || bead.type === '珍珠') ? '25px' : /* 從 21px 增加到 25px */
                              (bead.type === '米珠' ? '40px' : '60px'),
-                      height: (bead.type === '過渡珠') ? '15px' : 
-                              (bead.type === '米珠' || bead.type === '珍珠') ? '21px' : 
+                      height: (bead.type === '過渡珠') ? '18px' : /* 從 15px 增加到 18px */
+                              (bead.type === '米珠' || bead.type === '珍珠') ? '25px' : /* 從 21px 增加到 25px */
                               (bead.type === '米珠' ? '60px' : '60px'),
                       position: 'absolute',
                       zIndex: 2

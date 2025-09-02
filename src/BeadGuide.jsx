@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './BeadGuide.css';
 
+
 // 珠子材質數據
 const beadMaterials = {
   glass: {
@@ -439,9 +440,9 @@ const SavedDesigns = () => {
                baseSize = 0.9; // 全圓：珠子最小
              }
              
-             const beadSize = bead.type === '過渡珠' ? Math.round(5 * baseSize) : 
-                            (bead.type === '米珠' || bead.type === '珍珠') ? Math.round(7 * baseSize) : 
-                            Math.round(20 * baseSize);
+             const beadSize = bead.type === '過渡珠' ? Math.round(6 * baseSize) : /* 從 5 增加到 6 */
+                            (bead.type === '米珠' || bead.type === '珍珠') ? Math.round(8 * baseSize) : /* 從 7 增加到 8 */
+                            Math.round(22 * baseSize); /* 從 20 增加到 22 */
             
             return (
               <g key={index}>
@@ -467,6 +468,8 @@ const SavedDesigns = () => {
     // 所有手串都使用圓形樣式
     return renderCircularBracelet(design);
   };
+
+
 
   if (savedDesigns.length === 0) {
     return (
@@ -581,6 +584,9 @@ const SavedDesigns = () => {
                     {/* 所有手串都使用圓形樣式 */}
                     {renderCircularBracelet(design)}
                   </div>
+                  
+
+                  
                   <div className="design-date">
                     創建於: {new Date(design.createdAt).toLocaleDateString('zh-TW')}
                   </div>

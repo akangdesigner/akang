@@ -1,0 +1,527 @@
+/* 分享結果圖生成組件樣式 */
+.share-result-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  backdrop-filter: blur(5px);
+}
+
+.share-result-modal {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  border-radius: 20px;
+  padding: 0;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(138, 43, 226, 0.3);
+}
+
+.modal-header {
+  background: linear-gradient(90deg, #8a2be2, #4b0082);
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header h2 {
+  color: white;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.modal-content {
+  padding: 30px;
+  max-height: calc(90vh - 100px);
+  overflow-y: auto;
+}
+
+/* 預覽區域 */
+.preview-section {
+  margin-bottom: 30px;
+}
+
+.preview-section h3 {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.result-preview {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 分享結果卡片 */
+.share-result-card {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 20px;
+  padding: 30px;
+  width: 400px;
+  min-height: 600px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(138, 43, 226, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.share-result-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #8a2be2, #4b0082, #ffd700);
+}
+
+/* 卡片標題 */
+.card-header {
+  text-align: center;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-title {
+  color: #ffd700;
+  font-size: 1.4rem;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.card-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* 手串預覽區域 */
+.card-bracelet-section {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.card-bracelet-section h3 {
+  color: white;
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+}
+
+.bracelet-container-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.bracelet-preview {
+  position: relative;
+  width: 160px;
+  height: 160px;
+}
+
+.bracelet-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.bracelet-string {
+  position: absolute;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+}
+
+.bracelet-string-half {
+  border-top: 2px solid rgba(255, 255, 255, 0.3);
+  border-left: 2px solid rgba(255, 255, 255, 0.3);
+  border-right: 2px solid rgba(255, 255, 255, 0.3);
+  border-bottom: none;
+  border-radius: 50%;
+}
+
+.bracelet-string-four-thirds {
+  border-top: 2px solid rgba(255, 255, 255, 0.3);
+  border-left: 2px solid rgba(255, 255, 255, 0.3);
+  border-right: 2px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+}
+
+.bracelet-string-full {
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+}
+
+.bracelet-bead {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+
+.bracelet-bead.small-bead {
+  width: 25px; /* 從 20px 增加到 25px */
+  height: 25px; /* 從 20px 增加到 25px */
+}
+
+.bracelet-bead .bead-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.design-info {
+  margin-top: 15px;
+}
+
+.design-name {
+  color: #ffd700;
+  font-weight: 600;
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+}
+
+.design-details {
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* 雷達圖區域 */
+.card-radar-section {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.card-radar-section h3 {
+  color: white;
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+}
+
+.radar-chart-preview {
+  display: flex;
+  justify-content: center;
+}
+
+.radar-svg {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.radar-svg .axis-label {
+  fill: rgba(255, 255, 255, 0.8);
+  font-size: 10px;
+  font-weight: 500;
+}
+
+/* 評分總結區域 */
+.card-advice-section {
+  margin-bottom: 25px;
+}
+
+.card-advice-section h3 {
+  color: white;
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.advice-content {
+  background: rgba(138, 43, 226, 0.1);
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid rgba(138, 43, 226, 0.3);
+}
+
+.advice-text {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  text-align: justify;
+}
+
+/* 底部標籤 */
+.card-footer {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-text {
+  color: #ffd700;
+  margin: 0 0 5px 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.footer-date {
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+/* 背景選擇器 */
+.background-selector {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.background-selector h3 {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+}
+
+.background-options {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.bg-option {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+}
+
+.bg-option:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.bg-option.selected {
+  background: rgba(138, 43, 226, 0.3);
+  border-color: #8a2be2;
+  box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+}
+
+.bg-preview {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.transparent-bg {
+  background: rgba(139, 69, 19, 0.1);
+  border: 2px solid #8B4513;
+}
+
+.wooden-bg {
+  background-image: url('/wooden-tray.png');
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(139, 69, 19, 0.1);
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-option span {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* 操作按鈕區域 */
+.action-section {
+  text-align: center;
+}
+
+.action-btn {
+  background: linear-gradient(135deg, #8a2be2, #4b0082);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+  min-width: 150px;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+}
+
+.action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.generate-btn {
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  color: #1a1a2e;
+  font-size: 1.1rem;
+  padding: 18px 35px;
+}
+
+.generate-btn:hover {
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+}
+
+.download-btn {
+  background: linear-gradient(135deg, #00d4aa, #0099cc);
+}
+
+.share-btn {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+}
+
+.copy-btn {
+  background: linear-gradient(135deg, #a8e6cf, #7fcdcd);
+  color: #1a1a2e;
+}
+
+.generated-actions {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .share-result-modal {
+    max-width: 95vw;
+    margin: 20px;
+  }
+  
+  .modal-content {
+    padding: 20px;
+  }
+  
+  .share-result-card {
+    width: 100%;
+    min-width: 300px;
+    padding: 20px;
+  }
+  
+  .action-btn {
+    min-width: 120px;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    margin: 5px;
+  }
+  
+  .generated-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .generated-actions .action-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .background-options {
+    gap: 15px;
+  }
+  
+  .bg-option {
+    min-width: 100px;
+    padding: 12px;
+  }
+  
+  .bg-preview {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-header {
+    padding: 15px 20px;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .share-result-card {
+    padding: 15px;
+  }
+  
+  .card-title {
+    font-size: 1.2rem;
+  }
+  
+  .bracelet-preview {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .bracelet-bead {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .bracelet-bead.small-bead {
+    width: 22px; /* 從 18px 增加到 22px */
+    height: 22px; /* 從 18px 增加到 22px */
+  }
+}
