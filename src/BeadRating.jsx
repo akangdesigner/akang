@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button, Fade, Slide, Grow } from '@mui/material';
 import './BeadRating.css';
+import ShareResultImage from './ShareResultImage';
 
 const BeadRating = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -17,6 +18,11 @@ const BeadRating = () => {
   const [savedDesign, setSavedDesign] = useState(null);
   const [isExiting, setIsExiting] = useState(false);
   const [isGlobalLoading, setIsGlobalLoading] = useState(true);
+  
+  // 分享功能狀態
+  const [showShareMenu, setShowShareMenu] = useState(false);
+  const [shareMessage, setShareMessage] = useState('');
+  const [showShareResultImage, setShowShareResultImage] = useState(false);
 
   // 通靈師的完整建議
   const psychicAdvice = `你的串珠作品展現了獨特的藝術天賦和內在智慧。這件作品不僅是一件美麗的飾品，更是你內心世界的真實寫照。從愛情運勢來看，紅色珠子的點綴象徵著熱情與勇氣，預示著美好的愛情即將到來，在接下來的三個月內，你將遇到一位與你靈魂共鳴的人。在財富方面，藍色珠子的能量與水元素相呼應，預示著流動的財富即將到來，建議你保持開放的心態，留意身邊的投資機會，但切記不要過於貪心，穩健的理財方式會為你帶來意想不到的收穫。事業發展上，串珠的對稱排列反映了你對工作的認真態度，而金色珠子的點綴則象徵著豐厚的回報，你的努力將得到認可，升職加薪的機會就在眼前。從創造力角度來看，綠色珠子的能量與成長相呼應，預示著你的事業將進入快速發展期，新的項目機會將接踵而至。在健康方面，整體能量非常和諧，你的串珠作品散發著平衡與健康的氣息，紫色珠子的能量與靈性相呼應，預示著你的身心狀態將達到最佳狀態。建議你將這份創造力運用到生活的各個方面，相信自己的直覺，勇敢追求夢想，保持規律的作息，多接觸大自然。記住，每個珠子都承載著獨特的能量，就像你人生中的每個選擇都蘊含著無限可能。`;
@@ -97,6 +103,10 @@ const BeadRating = () => {
         primary: { category: 'windfall', name: '淡紫米珠', score: 1, description: '智慧與財運' },
         secondary: { category: 'career', name: '淡紫米珠', score: 1, description: '事業智慧' }
       },
+      '淡紫色': { 
+        primary: { category: 'windfall', name: '淡紫色米珠', score: 1, description: '智慧與財運' },
+        secondary: { category: 'career', name: '淡紫色米珠', score: 1, description: '事業智慧' }
+      },
       '金棕': { 
         primary: { category: 'regularIncome', name: '金棕米珠', score: 1, description: '平靜與穩定' },
         secondary: { category: 'health', name: '金棕米珠', score: 1, description: '情緒穩定' }
@@ -121,15 +131,15 @@ const BeadRating = () => {
   const analyzeBeadDesign = (design) => {
     const { beads } = design;
     let scores = {
-      love: 4,        // 基礎分1分 + 設計感額外獎勵3分 = 4分
-      windfall: 1,    // 基礎分1分
-      regularIncome: 1, // 基礎分1分
-      career: 1,      // 基礎分1分
-      health: 1       // 基礎分1分
+      love: 6,        // 基礎分3分 + 設計感額外獎勵3分 = 6分
+      windfall: 3,    // 基礎分3分
+      regularIncome: 3, // 基礎分3分
+      career: 3,      // 基礎分3分
+      health: 3       // 基礎分3分
     };
 
     console.log('開始分析珠子設計，總共', beads.length, '顆珠子');
-    console.log('初始評分（基礎分1分 + 設計感額外獎勵3分）:', scores);
+    console.log('初始評分（基礎分3分 + 設計感額外獎勵3分）:', scores);
 
     // 分析每顆珠子的能量屬性 - 根據珠子名稱評分
     beads.forEach((bead, index) => {
@@ -146,31 +156,31 @@ const BeadRating = () => {
         secondary: beadInfo.secondary 
       });
       
-      // 主要面向評分 - 加1分
+      // 主要面向評分 - 加0.5分
       switch (beadInfo.primary.category) {
         case 'love':
-          scores.love = Math.min(10, scores.love + 1);
-          console.log('愛情加上主要面向分數: +1, 總分:', scores.love);
+          scores.love = Math.min(10, scores.love + 0.5);
+          console.log('愛情加上主要面向分數: +0.5, 總分:', scores.love);
           break;
           
         case 'windfall':
-          scores.windfall = Math.min(10, scores.windfall + 1);
-          console.log('偏財加上主要面向分數: +1, 總分:', scores.windfall);
+          scores.windfall = Math.min(10, scores.windfall + 0.5);
+          console.log('偏財加上主要面向分數: +0.5, 總分:', scores.windfall);
           break;
           
         case 'regularIncome':
-          scores.regularIncome = Math.min(10, scores.regularIncome + 1);
-          console.log('正財加上主要面向分數: +1, 總分:', scores.regularIncome);
+          scores.regularIncome = Math.min(10, scores.regularIncome + 0.5);
+          console.log('正財加上主要面向分數: +0.5, 總分:', scores.regularIncome);
           break;
           
         case 'career':
-          scores.career = Math.min(10, scores.career + 1);
-          console.log('事業加上主要面向分數: +1, 總分:', scores.career);
+          scores.career = Math.min(10, scores.career + 0.5);
+          console.log('事業加上主要面向分數: +0.5, 總分:', scores.career);
           break;
           
         case 'health':
-          scores.health = Math.min(10, scores.health + 1);
-          console.log('健康加上主要面向分數: +1, 總分:', scores.health);
+          scores.health = Math.min(10, scores.health + 0.5);
+          console.log('健康加上主要面向分數: +0.5, 總分:', scores.health);
           break;
           
         default:
@@ -178,31 +188,31 @@ const BeadRating = () => {
           break;
       }
       
-      // 第二面向評分 - 加1分
+      // 第二面向評分 - 加0.5分
       switch (beadInfo.secondary.category) {
         case 'love':
-          scores.love = Math.min(10, scores.love + 1);
-          console.log('愛情加上第二面向分數: +1, 總分:', scores.love);
+          scores.love = Math.min(10, scores.love + 0.5);
+          console.log('愛情加上第二面向分數: +0.5, 總分:', scores.love);
           break;
           
         case 'windfall':
-          scores.windfall = Math.min(10, scores.windfall + 1);
-          console.log('偏財加上第二面向分數: +1, 總分:', scores.windfall);
+          scores.windfall = Math.min(10, scores.windfall + 0.5);
+          console.log('偏財加上第二面向分數: +0.5, 總分:', scores.windfall);
           break;
           
         case 'regularIncome':
-          scores.regularIncome = Math.min(10, scores.regularIncome + 1);
-          console.log('正財加上第二面向分數: +1, 總分:', scores.regularIncome);
+          scores.regularIncome = Math.min(10, scores.regularIncome + 0.5);
+          console.log('正財加上第二面向分數: +0.5, 總分:', scores.regularIncome);
           break;
           
         case 'career':
-          scores.career = Math.min(10, scores.career + 1);
-          console.log('事業加上第二面向分數: +1, 總分:', scores.career);
+          scores.career = Math.min(10, scores.career + 0.5);
+          console.log('事業加上第二面向分數: +0.5, 總分:', scores.career);
           break;
           
         case 'health':
-          scores.health = Math.min(10, scores.health + 1);
-          console.log('健康加上第二面向分數: +1, 總分:', scores.health);
+          scores.health = Math.min(10, scores.health + 0.5);
+          console.log('健康加上第二面向分數: +0.5, 總分:', scores.health);
           break;
           
         default:
@@ -210,7 +220,7 @@ const BeadRating = () => {
           break;
       }
       
-      console.log(`珠子${index + 1}評分完成 - 主要:+1, 第二:+1`);
+      console.log(`珠子${index + 1}評分完成 - 主要:+0.5, 第二:+0.5`);
       console.log('當前累計評分:', scores);
     });
     
@@ -585,6 +595,112 @@ const BeadRating = () => {
     }, 800); // 800ms 後跳轉，配合動畫時長
   };
 
+
+
+  const copyLink = async () => {
+    try {
+      const designData = {
+        name: savedDesign?.designName || '串珠設計',
+        beads: savedDesign?.beads || [],
+        timestamp: savedDesign?.timestamp || new Date().toISOString(),
+        scores: scores
+      };
+      
+      const shareUrl = `${window.location.origin}${window.location.pathname}?design=${encodeURIComponent(JSON.stringify(designData))}`;
+      
+      await navigator.clipboard.writeText(shareUrl);
+      setShareMessage('連結已複製到剪貼簿！');
+      setTimeout(() => setShareMessage(''), 3000);
+    } catch (error) {
+      console.error('複製失敗:', error);
+      setShareMessage('複製失敗，請手動複製');
+      setTimeout(() => setShareMessage(''), 3000);
+    }
+  };
+
+  const shareToSocial = (platform) => {
+    try {
+      const designData = {
+        name: savedDesign?.designName || '串珠設計',
+        beads: savedDesign?.beads || [],
+        timestamp: savedDesign?.timestamp || new Date().toISOString(),
+        scores: scores
+      };
+      
+      const shareUrl = `${window.location.origin}${window.location.pathname}?design=${encodeURIComponent(JSON.stringify(designData))}`;
+      const shareText = `看看我的串珠設計「${savedDesign?.designName || '串珠設計'}」的評分結果！🔮✨`;
+      
+      let shareLink = '';
+      
+      switch (platform) {
+        case 'facebook':
+          shareLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`;
+          break;
+        case 'twitter':
+          shareLink = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
+          break;
+        case 'line':
+          shareLink = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
+          break;
+        case 'instagram':
+          setShareMessage('Instagram 不支援直接分享連結，請手動截圖分享');
+          setTimeout(() => setShareMessage(''), 5000);
+          return;
+        default:
+          return;
+      }
+      
+      // 嘗試使用 Web Share API（如果支援）
+      if (navigator.share && platform !== 'instagram') {
+        navigator.share({
+          title: `串珠設計「${savedDesign?.designName || '串珠設計'}」評分結果`,
+          text: shareText,
+          url: shareUrl
+        }).catch((error) => {
+          console.log('Web Share API 失敗，使用彈出視窗:', error);
+          openShareWindow(shareLink);
+        });
+      } else {
+        // 備用方案：彈出視窗
+        openShareWindow(shareLink);
+      }
+    } catch (error) {
+      console.error('分享失敗:', error);
+      setShareMessage('分享失敗，請稍後再試');
+      setTimeout(() => setShareMessage(''), 3000);
+    }
+  };
+
+  // 開啟分享視窗的輔助函數
+  const openShareWindow = (shareLink) => {
+    try {
+      const popup = window.open(shareLink, '_blank', 'width=600,height=400,scrollbars=yes,resizable=yes');
+      
+      if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+        // 彈出視窗被阻擋，提供備用方案
+        setShareMessage('彈出視窗被阻擋，已複製連結到剪貼簿');
+        
+        // 複製連結到剪貼簿作為備用
+        navigator.clipboard.writeText(shareLink).then(() => {
+          console.log('連結已複製到剪貼簿');
+        }).catch(() => {
+          // 如果剪貼簿 API 失敗，顯示連結讓用戶手動複製
+          setShareMessage(`彈出視窗被阻擋，請手動複製連結：${shareLink}`);
+        });
+        
+        setTimeout(() => setShareMessage(''), 5000);
+      } else {
+        // 彈出視窗成功開啟
+        setShareMessage('分享視窗已開啟');
+        setTimeout(() => setShareMessage(''), 2000);
+      }
+    } catch (error) {
+      console.error('開啟分享視窗失敗:', error);
+      setShareMessage('無法開啟分享視窗，請手動複製連結');
+      setTimeout(() => setShareMessage(''), 3000);
+    }
+  };
+
   // 計算安全的評分點位置，確保在格線內
   const getSafeScorePosition = (score, baseX, baseY) => {
     // 評分範圍：6-8分，對應到網格的不同層級
@@ -813,7 +929,79 @@ const BeadRating = () => {
                          <div className="button-icon">🗑️</div>
                          <div className="button-text">清除設計</div>
                        </button>
+                       
+                       {/* 分享設計按鈕 */}
+                       <div className="share-button-container">
+                         <button 
+                           onClick={() => setShowShareMenu(!showShareMenu)}
+                           className="design-button share-button"
+                         >
+                           <div className="button-icon">📤</div>
+                           <div className="button-text">分享設計</div>
+                         </button>
+                         
+                         {showShareMenu && (
+                           <div className="share-menu">
+                             <button 
+                               className="share-option"
+                               onClick={() => setShowShareResultImage(true)}
+                               title="生成分享結果圖"
+                             >
+                               🎨 生成分享圖
+                             </button>
+                             
+                             <button 
+                               className="share-option"
+                               onClick={copyLink}
+                               title="複製連結"
+                             >
+                               🔗 複製連結
+                             </button>
+                             
+                             <div className="social-share-buttons">
+                               <button 
+                                 className="social-share-btn facebook"
+                                 onClick={() => shareToSocial('facebook')}
+                                 title="分享到 Facebook"
+                               >
+                                 📘 Facebook
+                               </button>
+                               
+                               <button 
+                                 className="social-share-btn twitter"
+                                 onClick={() => shareToSocial('twitter')}
+                                 title="分享到 Twitter"
+                               >
+                                 🐦 Twitter
+                               </button>
+                               
+                               <button 
+                                 className="social-share-btn line"
+                                 onClick={() => shareToSocial('line')}
+                                 title="分享到 Line"
+                               >
+                                 💬 Line
+                               </button>
+                               
+                               <button 
+                                 className="social-share-btn instagram"
+                                 onClick={() => shareToSocial('instagram')}
+                                 title="分享到 Instagram"
+                               >
+                                 📷 Instagram
+                               </button>
+                             </div>
+                           </div>
+                         )}
+                       </div>
                      </div>
+                     
+                     {/* 分享訊息顯示區域 */}
+                     {shareMessage && (
+                       <div className="share-message">
+                         {shareMessage}
+                       </div>
+                     )}
                   </div>
                 ) : (
                   <div className="no-design-message">
@@ -940,6 +1128,16 @@ const BeadRating = () => {
           </div>
         </div>
       </Fade>
+      
+      {/* 分享結果圖生成組件 */}
+      {showShareResultImage && (
+        <ShareResultImage
+          design={savedDesign}
+          scores={scores}
+          advice={currentMessage || fullMessage || "這是一個充滿神秘能量的串珠設計，展現了獨特的個人風格和創意。每個珠子的選擇都蘊含著深層的意義，為您帶來獨特的能量和運勢。"}
+          onClose={() => setShowShareResultImage(false)}
+        />
+      )}
     </>
   );
 };

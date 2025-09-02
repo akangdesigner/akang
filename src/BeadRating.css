@@ -48,6 +48,7 @@
   flex-direction: column;
   gap: 30px;
   position: relative;
+  z-index: 10; /* 確保左側面板在較高的層級 */
 }
 
 /* 左上：對話框 */
@@ -195,6 +196,7 @@
   flex-direction: column;
   gap: 30px;
   margin-top: 100px; /* 添加上邊距，與左側對話框保持間隔 */
+  z-index: 1; /* 確保右側面板在較低的層級 */
 }
 
 /* 串珠設計展示區域 */
@@ -204,6 +206,7 @@
   padding: 30px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 10; /* 確保串珠設計區域在較高的層級 */
 }
 
 .bead-design-section h3 {
@@ -322,8 +325,8 @@
 /* 圓形排列的珠子 */
 .design-bead-circle {
   position: absolute;
-  width: 50px;
-  height: 50px;
+  width: 60px; /* 從 50px 增加到 60px */
+  height: 60px; /* 從 50px 增加到 60px */
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -337,8 +340,8 @@
 
 /* 小珠子樣式 - 米珠、珍珠、過渡珠 */
 .design-bead-circle.small-bead {
-  width: 20px; /* 小珠子縮小到 20px */
-  height: 20px; /* 小珠子縮小到 20px */
+  width: 25px; /* 小珠子從 20px 增加到 25px */
+  height: 25px; /* 小珠子從 20px 增加到 25px */
 }
 
 .design-bead-circle.small-bead:hover {
@@ -554,6 +557,7 @@
   padding: 30px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 1; /* 確保雷達圖區域在較低的層級 */
 }
 
 .radar-chart-section h3 {
@@ -957,5 +961,240 @@
 @media (max-width: 480px) {
   .bead-rating-container {
     padding-bottom: 60px;
+  }
+}
+
+/* 分享按鈕容器 */
+.share-button-container {
+  position: relative;
+}
+
+/* 分享按鈕樣式 */
+.share-controls {
+  margin-top: 15px;
+  position: relative;
+}
+
+.share-message {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  text-align: center;
+  margin-bottom: 10px;
+  animation: fadeInOut 3s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; transform: translateY(-10px); }
+  10%, 90% { opacity: 1; transform: translateY(0); }
+}
+
+.share-button {
+  background: linear-gradient(135deg, #8a2be2, #4b0082) !important;
+  color: white !important;
+  border: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.share-button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4) !important;
+}
+
+.share-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  padding: 15px;
+  margin-top: 8px;
+  z-index: 10001;
+  border: 1px solid rgba(138, 43, 226, 0.1);
+  animation: slideDown 0.3s ease-out;
+  min-width: 200px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.share-option {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.share-option:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.social-share-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.social-share-btn {
+  background: white;
+  border: 1px solid #e0e0e0;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.social-share-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.social-share-btn.facebook {
+  color: #1877f2;
+  border-color: #1877f2;
+}
+
+.social-share-btn.facebook:hover {
+  background: #1877f2;
+  color: white;
+}
+
+.social-share-btn.twitter {
+  color: #1da1f2;
+  border-color: #1da1f2;
+}
+
+.social-share-btn.twitter:hover {
+  background: #1da1f2;
+  color: white;
+}
+
+.social-share-btn.line {
+  color: #00b900;
+  border-color: #00b900;
+}
+
+.social-share-btn.line:hover {
+  background: #00b900;
+  color: white;
+}
+
+.social-share-btn.instagram {
+  color: #e4405f;
+  border-color: #e4405f;
+}
+
+.social-share-btn.instagram:hover {
+  background: #e4405f;
+  color: white;
+}
+
+/* 手機版分享按鈕響應式設計 */
+@media (max-width: 768px) {
+  .share-controls {
+    margin-top: 12px;
+  }
+  
+  .share-message {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+  
+  .share-menu {
+    padding: 12px;
+    border-radius: 10px;
+    margin-top: 6px;
+  }
+  
+  .share-option {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    border-radius: 12px;
+    margin-bottom: 6px;
+  }
+  
+  .social-share-buttons {
+    gap: 6px;
+    margin-top: 8px;
+    padding-top: 8px;
+  }
+  
+  .social-share-btn {
+    padding: 5px 8px;
+    font-size: 0.7rem;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .share-controls {
+    margin-top: 10px;
+  }
+  
+  .share-message {
+    padding: 5px 8px;
+    font-size: 0.75rem;
+    border-radius: 5px;
+    margin-bottom: 6px;
+  }
+  
+  .share-menu {
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 5px;
+  }
+  
+  .share-option {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    border-radius: 10px;
+    margin-bottom: 5px;
+  }
+  
+  .social-share-buttons {
+    gap: 5px;
+    margin-top: 6px;
+    padding-top: 6px;
+  }
+  
+  .social-share-btn {
+    padding: 4px 6px;
+    font-size: 0.65rem;
+    border-radius: 6px;
   }
 }

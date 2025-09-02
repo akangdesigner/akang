@@ -19,13 +19,13 @@ const calculateBeadPositions = (beads, scale = 1) => {
   
   beads.forEach((bead, index) => {
     const isCurrentSmall = bead.type === '米珠' || bead.type === '珍珠' || bead.type === '過渡珠';
-    const beadSize = (isCurrentSmall ? 15 : 35) * scale;
+    const beadSize = (isCurrentSmall ? 18 : 40) * scale; /* 小珠子從 15 增加到 18，大珠子從 35 增加到 40 */
     
     // 計算當前珠子的角度
     if (index > 0) {
       const prevBead = beads[index - 1];
       const isPrevSmall = prevBead.type === '米珠' || prevBead.type === '珍珠' || prevBead.type === '過渡珠';
-      const prevBeadSize = (isPrevSmall ? 15 : 35) * scale;
+      const prevBeadSize = (isPrevSmall ? 18 : 40) * scale; /* 小珠子從 15 增加到 18，大珠子從 35 增加到 40 */
       
       // 統一使用20px間距（縮放後）
       const gap = 20 * scale;
