@@ -239,6 +239,122 @@
   margin: 5px 0;
   color: #ccc;
   font-size: 0.9rem;
+  text-align: center;
+  padding-left: 20px;
+}
+
+/* 設計名稱編輯樣式 */
+.design-name-section {
+  margin-bottom: 15px;
+}
+
+.display-name-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.design-name-display {
+  color: #ffd700;
+  font-size: 1.2rem;
+  margin: 0;
+  text-align: center;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 220, 78, 0.597);
+  text-underline-offset: 5px;
+}
+
+.design-name-display:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.02);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* 編輯按鈕樣式已移除，改為標題懸停提示 */
+
+.edit-name-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.edit-name-input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  color: #ffd700;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 8px 12px;
+  flex: 1;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.edit-name-input:focus {
+  border-color: #ffd700;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+}
+
+.edit-name-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.edit-name-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.save-name-btn,
+.cancel-name-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 6px 8px;
+  transition: all 0.3s ease;
+  min-width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.save-name-btn {
+  background: rgba(34, 197, 94, 0.3);
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.save-name-btn:hover {
+  background: rgba(34, 197, 94, 0.5);
+  transform: scale(1.05);
+}
+
+.cancel-name-btn {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.cancel-name-btn:hover {
+  background: rgba(239, 68, 68, 0.5);
+  transform: scale(1.05);
 }
 
 /* 串珠設計視覺化 */
@@ -680,12 +796,12 @@
   }
 }
 
+
+
 @media (max-width: 768px) {
   .rating-header h1 {
     font-size: 2rem;
   }
-  
-
   
   .rating-header {
     text-align: center;
@@ -706,6 +822,13 @@
   .psychic-hands {
     font-size: 1.2rem;
   }
+  
+  /* 手機版設計標題效果整合 */
+  .design-name-display:active {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(0.98);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
 }
 
 @media (max-width: 480px) {
@@ -724,6 +847,8 @@
   .radar-svg {
     max-width: 250px;
   }
+  
+
 }
 
 /* 簡單的珠子跳動動畫 */

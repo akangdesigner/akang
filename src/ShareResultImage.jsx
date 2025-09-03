@@ -10,27 +10,56 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
 
   // 組件掛載時自動生成分享圖
   useEffect(() => {
-    if (design && !generatedImage) {
+    if (design) {
       generateShareImage();
     }
-  }, [design, generatedImage]);
+  }, [design]);
 
-  // 當背景選擇改變時重新生成圖片
+  // 背景選擇變更時重新生成分享圖
   useEffect(() => {
-    if (design && generatedImage) {
+    if (design && selectedBackground) {
       generateShareImage();
     }
   }, [selectedBackground]);
 
-  // 生成分享結果圖 - 直接截取串珠評分區的實際圓形手串
+  // 生成分享結果圖 - 簡化版本
   const generateShareImage = async () => {
     setIsGenerating(true);
     
     // 添加調試信息
     console.log('開始生成分享圖...');
     console.log('設計數據:', design);
-    console.log('評分數據:', scores);
-    console.log('建議文字:', advice);
+    
+    // 設置總超時，避免無限等待
+    const timeoutId = setTimeout(() => {
+      console.warn('分享圖生成超時，使用備用方案');
+      setIsGenerating(false);
+      // 創建一個簡單的備用圖片
+      const canvas = document.createElement('canvas');
+      canvas.width = 400;
+      canvas.height = 400;
+      const ctx = canvas.getContext('2d');
+      
+      // 繪製簡單的背景
+      ctx.fillStyle = '#1a1a2e';
+      ctx.fillRect(0, 0, 400, 400);
+      
+      // 繪製標題
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = '24px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('串珠設計分享', 200, 50);
+      
+      // 繪製簡單的圓形
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(200, 200, 100, 0, 2 * Math.PI);
+      ctx.stroke();
+      
+      const imageDataUrl = canvas.toDataURL('image/png', 1.0);
+      setGeneratedImage(imageDataUrl);
+    }, 5000); // 5秒超時
     
     try {
       // 創建一個臨時的 DOM 元素來包含實際的串珠設計內容
@@ -41,43 +70,45 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
       tempContainer.style.width = '800px';
       tempContainer.style.height = '1200px';
       tempContainer.style.backgroundColor = '#1a1a2e';
-      tempContainer.style.padding = '40px';
+      tempContainer.style.padding = '40px 40px 10px 40px';
               tempContainer.style.fontFamily = 'Arial, sans-serif';
       tempContainer.style.color = 'white';
       tempContainer.style.overflow = 'hidden';
       
-      // 添加標題
-      const title = document.createElement('h1');
-      title.textContent = '✨ 串珠設計分享 ✨';
-      title.style.textAlign = 'center';
-      title.style.fontSize = '32px';
-      title.style.marginBottom = '20px';
-      title.style.background = 'linear-gradient(45deg, #fbbf24, #d97706)';
-      title.style.webkitBackgroundClip = 'text';
-      title.style.webkitTextFillColor = 'transparent';
-      title.style.backgroundClip = 'text';
-      tempContainer.appendChild(title);
+      // 創建設計信息區域 - 只顯示設計名稱和日期
+      const designInfoSection = document.createElement('div');
+      designInfoSection.style.marginBottom = '40px';
+      designInfoSection.style.textAlign = 'center';
+      designInfoSection.style.padding = '20px';
+      designInfoSection.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+      designInfoSection.style.borderRadius = '15px';
+      designInfoSection.style.border = '1px solid rgba(255, 255, 255, 0.1)';
       
-      // 添加副標題
-      const subtitle = document.createElement('p');
-      subtitle.textContent = '神秘占卜結果';
-      subtitle.style.textAlign = 'center';
-      subtitle.style.fontSize = '18px';
-      subtitle.style.marginBottom = '40px';
-      subtitle.style.color = 'rgba(255, 255, 255, 0.8)';
-      tempContainer.appendChild(subtitle);
+      // 設計名稱
+      const designName = document.createElement('h2');
+      designName.textContent = design?.designName || '串珠設計';
+      designName.style.fontSize = '28px';
+      designName.style.marginBottom = '10px';
+      designName.style.marginTop = '0';
+      designName.style.color = '#fbbf24';
+      designName.style.fontWeight = 'bold';
+      designInfoSection.appendChild(designName);
+      
+      // 設計日期
+      const designDate = document.createElement('p');
+      const date = design?.timestamp ? new Date(design.timestamp) : new Date();
+      designDate.textContent = `設計日期: ${date.toLocaleDateString('zh-TW')}`;
+      designDate.style.fontSize = '16px';
+      designDate.style.margin = '0';
+      designDate.style.color = 'rgba(255, 255, 255, 0.8)';
+      designInfoSection.appendChild(designDate);
+      
+      tempContainer.appendChild(designInfoSection);
       
       // 創建手串預覽區域
       const braceletSection = document.createElement('div');
       braceletSection.style.marginBottom = '40px';
       braceletSection.style.textAlign = 'center';
-      
-      const braceletTitle = document.createElement('h3');
-      braceletTitle.textContent = '📿 你的串珠設計';
-      braceletTitle.style.fontSize = '24px';
-      braceletTitle.style.marginBottom = '20px';
-      braceletTitle.style.color = '#fbbf24';
-      braceletSection.appendChild(braceletTitle);
       
       // 創建圓形手串預覽 - 使用與串珠評分區完全相同的邏輯
       if (design?.beads) {
@@ -94,13 +125,15 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         if (selectedBackground === 'wooden') {
           // 木製托盤背景
           braceletContainer.style.backgroundImage = 'url(/wooden-tray.png)';
-          braceletContainer.style.backgroundSize = 'cover';
+          braceletContainer.style.backgroundSize = '140%'; // 從 cover 改為 120%，讓托盤更大
           braceletContainer.style.backgroundPosition = 'center';
           braceletContainer.style.backgroundColor = 'rgba(139, 69, 19, 0.1)';
-        } else if (selectedBackground === 'gradient') {
-          // 漸層背景
-          braceletContainer.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-          braceletContainer.style.backgroundColor = 'transparent';
+        } else if (selectedBackground === 'aura') {
+          // 靈氣背景 - 使用黑色絨布圖片
+          braceletContainer.style.backgroundImage = 'url(/blackpaper.jpeg)';
+          braceletContainer.style.backgroundSize = '150%'; // 放大黑色絨布圖片
+          braceletContainer.style.backgroundPosition = 'center';
+          braceletContainer.style.backgroundColor = '#0a0a0a';
         } else {
           // 透明背景（預設）
           braceletContainer.style.backgroundColor = 'rgba(139, 69, 19, 0.1)';
@@ -154,16 +187,35 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
               baseSize = 0.9; // 全圓：珠子最小
             }
             
-            // 大幅增加分享圖中珠子的大小，讓它們非常明顯
-            const beadSize = bead.type === '過渡珠' ? Math.round(20 * baseSize) :
-                            (bead.type === '米珠' || bead.type === '珍珠') ? Math.round(28 * baseSize) :
-                            Math.round(50 * baseSize);
+            // 調整分享圖中珠子的大小，小型珠子要更小
+            const beadSize = bead.type === '過渡珠' ? Math.round(10 * baseSize) :
+                            (bead.type === '米珠' || bead.type === '珍珠') ? Math.round(15 * baseSize) :
+                            Math.round(40 * baseSize);
             
             // 創建珠子圖片元素並繪製到 Canvas
             const image = new Image();
+            // 修復圖片路徑，確保正確載入
             const imagePath = bead.image.startsWith('/') ? bead.image : `/${bead.image}`;
             
+            // 設置超時機制，避免無限等待
+            const timeout = setTimeout(() => {
+              console.warn(`珠子圖片載入超時: ${imagePath}`);
+              // 繪製一個替代的圓形珠子
+              ctx.save();
+              ctx.fillStyle = bead.type === '過渡珠' ? '#C0C0C0' : 
+                            (bead.type === '米珠' || bead.type === '珍珠') ? '#FFD700' : '#8B4513';
+              ctx.beginPath();
+              ctx.arc(beadX, beadY, beadSize, 0, 2 * Math.PI);
+              ctx.fill();
+              ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+              ctx.lineWidth = 2;
+              ctx.stroke();
+              ctx.restore();
+              resolve();
+            }, 3000); // 3秒超時
+            
             image.onload = () => {
+              clearTimeout(timeout);
               // 繪製珠子圖片
               ctx.save();
               
@@ -187,16 +239,33 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
             };
             
             image.onerror = () => {
+              clearTimeout(timeout);
               console.warn(`珠子圖片載入失敗: ${imagePath}`);
+              // 繪製一個替代的圓形珠子
+              ctx.save();
+              ctx.fillStyle = bead.type === '過渡珠' ? '#C0C0C0' : 
+                            (bead.type === '米珠' || bead.type === '珍珠') ? '#FFD700' : '#8B4513';
+              ctx.beginPath();
+              ctx.arc(beadX, beadY, beadSize, 0, 2 * Math.PI);
+              ctx.fill();
+              ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+              ctx.lineWidth = 2;
+              ctx.stroke();
+              ctx.restore();
               resolve(); // 即使失敗也要 resolve，避免阻塞
             };
             
+            // 設置跨域屬性
+            image.crossOrigin = 'anonymous';
             image.src = imagePath;
           });
         });
         
-        // 等待所有珠子繪製完成
-        await Promise.all(beadPromises);
+        // 等待所有珠子繪製完成，設置總超時
+        await Promise.race([
+          Promise.all(beadPromises),
+          new Promise((resolve) => setTimeout(resolve, 10000)) // 10秒總超時
+        ]);
         
         // 添加調試信息
         console.log(`已繪製 ${design.beads.length} 顆珠子到 Canvas`);
@@ -205,70 +274,66 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         braceletContainer.appendChild(canvas);
         braceletSection.appendChild(braceletContainer);
         
-        // 添加設計信息
-        const designInfo = document.createElement('div');
-        designInfo.style.marginTop = '20px';
-        designInfo.style.textAlign = 'center';
-        
-        const designName = document.createElement('p');
-        designName.textContent = design.designName || '串珠設計';
-        designName.style.fontSize = '20px';
-        designName.style.fontWeight = 'bold';
-        designName.style.marginBottom = '10px';
-        designName.style.color = '#fbbf24';
-        designInfo.appendChild(designName);
-        
-        const designDetails = document.createElement('p');
-        designDetails.textContent = `包含 ${design.beads.length} 顆珠子 • 創建於 ${new Date(design.timestamp || Date.now()).toLocaleDateString()}`;
-        designDetails.style.fontSize = '16px';
-        designDetails.style.color = 'rgba(255, 255, 255, 0.8)';
-        designInfo.appendChild(designDetails);
-        
-        braceletSection.appendChild(designInfo);
+        // 移除設計名稱和時間信息
       }
       
       tempContainer.appendChild(braceletSection);
       
-      // 創建雷達圖區域
-      if (scores) {
-        const radarSection = document.createElement('div');
-        radarSection.style.marginBottom = '40px';
-        radarSection.style.textAlign = 'center';
+              // 創建雷達圖和文字區域的整體布局
+        if (scores) {
+          const mainSection = document.createElement('div');
+          mainSection.style.display = 'flex';
+          mainSection.style.gap = '20px';
+          mainSection.style.marginBottom = '0px';
+          mainSection.style.alignItems = 'flex-end';
         
+        // 左側雷達圖區域
+        const radarSection = document.createElement('div');
+        radarSection.style.flex = '1';
+        radarSection.style.textAlign = 'left';
+        
+        // 雷達圖標題
         const radarTitle = document.createElement('h3');
         radarTitle.textContent = '🌟 能量評分圖';
         radarTitle.style.fontSize = '24px';
-        radarTitle.style.marginBottom = '20px';
+        radarTitle.style.marginBottom = '5px';
+        radarTitle.style.marginTop = '0';
+        radarTitle.style.marginLeft = '70px';
         radarTitle.style.color = '#fbbf24';
+        radarTitle.style.textAlign = 'left';
         radarSection.appendChild(radarTitle);
         
         // 創建 SVG 雷達圖
         const radarSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         radarSvg.setAttribute('width', '400');
         radarSvg.setAttribute('height', '400');
-        radarSvg.setAttribute('viewBox', '0 0 400 400');
-        radarSvg.style.margin = '0 auto';
+        radarSvg.setAttribute('viewBox', '0 0 600 600');
+        radarSvg.style.margin = '0';
+        radarSvg.style.display = 'block';
+        radarSvg.style.marginTop = '0';
+        radarSvg.style.marginLeft = '-20';
+        radarSvg.style.marginRight = 'auto';
         
-        const centerX = 200;
-        const centerY = 200;
+        const centerX = 300;
+        const centerY = 300;
         
         // 繪製背景網格
         const grid1 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-        grid1.setAttribute('points', '200,100 300,150 300,250 200,300 100,250 100,150');
+        grid1.setAttribute('points', '300,150 450,225 450,375 300,450 150,375 150,225');
         grid1.setAttribute('fill', 'none');
         grid1.setAttribute('stroke', 'rgba(255,255,255,0.3)');
         grid1.setAttribute('stroke-width', '1');
         radarSvg.appendChild(grid1);
         
         const grid2 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-        grid2.setAttribute('points', '200,130 270,170 270,230 200,270 130,230 130,170');
+        grid2.setAttribute('points', '300,195 405,255 405,345 300,405 195,345 195,255');
         grid2.setAttribute('fill', 'none');
         grid2.setAttribute('stroke', 'rgba(255,255,255,0.3)');
         grid2.setAttribute('stroke-width', '1');
         radarSvg.appendChild(grid2);
         
         const grid3 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-        grid3.setAttribute('points', '200,160 240,190 240,210 200,240 160,210 160,190');
+        grid3.setAttribute('points', '300,240 360,285 360,315 300,360 240,315 240,285');
         grid3.setAttribute('fill', 'none');
         grid3.setAttribute('stroke', 'rgba(255,255,255,0.3)');
         grid3.setAttribute('stroke-width', '1');
@@ -276,12 +341,12 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         
         // 繪製軸線
         const axes = [
-          { x1: centerX, y1: centerY, x2: centerX, y2: 100 },
-          { x1: centerX, y1: centerY, x2: 300, y2: 150 },
-          { x1: centerX, y1: centerY, x2: 300, y2: 250 },
-          { x1: centerX, y1: centerY, x2: centerX, y2: 300 },
-          { x1: centerX, y1: centerY, x2: 100, y2: 250 },
-          { x1: centerX, y1: centerY, x2: 100, y2: 150 }
+          { x1: centerX, y1: centerY, x2: centerX, y2: 150 },
+          { x1: centerX, y1: centerY, x2: 450, y2: 225 },
+          { x1: centerX, y1: centerY, x2: 450, y2: 375 },
+          { x1: centerX, y1: centerY, x2: centerX, y2: 450 },
+          { x1: centerX, y1: centerY, x2: 150, y2: 375 },
+          { x1: centerX, y1: centerY, x2: 150, y2: 225 }
         ];
         
         axes.forEach(axis => {
@@ -298,12 +363,12 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         // 計算評分點位置
         const getScorePoints = () => {
           return [
-            { x: centerX, y: centerY - (scores.love / 10) * 100 },
-            { x: centerX + (scores.love / 10) * 86.6, y: centerY - (scores.love / 10) * 50 },
-            { x: centerX + (scores.windfall / 10) * 86.6, y: centerY + (scores.windfall / 10) * 50 },
-            { x: centerX, y: centerY + (scores.regularIncome / 10) * 100 },
-            { x: centerX - (scores.career / 10) * 86.6, y: centerY + (scores.career / 10) * 50 },
-            { x: centerX - (scores.health / 10) * 86.6, y: centerY + (scores.health / 10) * 50 }
+            { x: centerX, y: centerY - (scores.love / 10) * 150 }, // 上方：愛情
+            { x: centerX + (scores.windfall / 10) * 129.9, y: centerY - (scores.windfall / 10) * 75 }, // 右上：偏財
+            { x: centerX + (scores.regularIncome / 10) * 129.9, y: centerY + (scores.regularIncome / 10) * 75 }, // 右下：正財
+            { x: centerX, y: centerY + (scores.career / 10) * 150 }, // 下方：事業
+            { x: centerX - (scores.health / 10) * 129.9, y: centerY + (scores.health / 10) * 75 }, // 左下：健康
+            { x: centerX - (scores.love / 10) * 129.9, y: centerY - (scores.love / 10) * 75 } // 左上：設計感（使用love分數）
           ];
         };
         
@@ -330,12 +395,12 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         
         // 添加軸線標籤
         const labels = [
-          { x: centerX, y: 80, text: `設計感 (${scores.love})`, anchor: 'middle' },
-          { x: 310, y: 150, text: `愛情 (${scores.love})`, anchor: 'start' },
-          { x: 310, y: 250, text: `偏財 (${scores.windfall})`, anchor: 'start' },
-          { x: centerX, y: 320, text: `正財 (${scores.regularIncome})`, anchor: 'middle' },
-          { x: 90, y: 250, text: `事業 (${scores.career})`, anchor: 'end' },
-          { x: 90, y: 150, text: `健康 (${scores.health})`, anchor: 'end' }
+          { x: centerX, y: 120, text: `愛情 (${scores.love})`, anchor: 'middle' }, // 上方：愛情
+          { x: 465, y: 225, text: `偏財 (${scores.windfall})`, anchor: 'start' }, // 右上：偏財
+          { x: 465, y: 375, text: `正財 (${scores.regularIncome})`, anchor: 'start' }, // 右下：正財
+          { x: centerX, y: 480, text: `事業 (${scores.career})`, anchor: 'middle' }, // 下方：事業
+          { x: 135, y: 375, text: `健康 (${scores.health})`, anchor: 'end' }, // 左下：健康
+          { x: 135, y: 225, text: `設計感 (${scores.love})`, anchor: 'end' } // 左上：設計感
         ];
         
         labels.forEach(label => {
@@ -344,69 +409,366 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
           text.setAttribute('y', label.y);
           text.setAttribute('text-anchor', label.anchor);
           text.setAttribute('fill', 'white');
-          text.setAttribute('font-size', '12px');
+          text.setAttribute('font-size', '20px');
           text.setAttribute('font-weight', 'bold');
           text.textContent = label.text;
           radarSvg.appendChild(text);
         });
         
         radarSection.appendChild(radarSvg);
-        tempContainer.appendChild(radarSection);
+        mainSection.appendChild(radarSection);
+        
+        // 右側文字區域
+        const textSection = document.createElement('div');
+        textSection.style.flex = '1';
+        textSection.style.display = 'flex';
+        textSection.style.flexDirection = 'column';
+        textSection.style.justifyContent = 'flex-end';
+        
+        // 創建灰字文字框
+        const commentContent = document.createElement('div');
+        commentContent.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+        commentContent.style.padding = '20px';
+        commentContent.style.borderRadius = '15px';
+        commentContent.style.border = '2px solid rgba(255, 255, 255, 0.3)';
+        commentContent.style.minHeight = '400px';
+        commentContent.style.margin = '0';
+        
+        // 生成通靈師建議，直接使用 BeadRating.jsx 的完整建議並進行篩選
+        const generateShortComment = () => {
+          if (!design?.beads || !scores) {
+            return '通靈師建議：請先完成串珠設計並進行評分分析。';
+          }
+
+          // 直接使用 BeadRating.jsx 中的完整建議生成邏輯
+          const fullAdvice = generatePersonalizedAdvice(design, scores);
+          
+          // 從完整建議中篩選出最精華的部分作為短評
+          return extractShortAdvice(fullAdvice, scores);
+        };
+
+        // 從完整建議中提取精華短評
+        const extractShortAdvice = (fullAdvice, scores) => {
+          let shortAdvice = '通靈師建議：';
+          
+          // 找出評分最高的面向
+          const sortedScores = Object.entries(scores)
+            .sort(([,a], [,b]) => b - a)
+            .filter(([, score]) => score > 5);
+          
+          if (sortedScores.length === 0) {
+            return shortAdvice + '你的串珠設計展現了獨特的藝術天賦和內在智慧，每個珠子的選擇都蘊含著深層的意義。';
+          }
+
+          // 提取顏色相關建議（從完整建議中找顏色描述）
+          const colorAdvice = extractColorAdvice(fullAdvice);
+          if (colorAdvice) {
+            shortAdvice += colorAdvice;
+          }
+
+          // 提取最高分面向的預測建議
+          const topCategory = sortedScores[0][0];
+          const topScore = sortedScores[0][1];
+          const predictionAdvice = extractPredictionAdvice(fullAdvice, topCategory, topScore);
+          if (predictionAdvice) {
+            shortAdvice += ' ' + predictionAdvice;
+          }
+
+          // 添加總結語句
+          shortAdvice += ' 記住，每個珠子都承載著獨特的能量，就像你人生中的每個選擇都蘊含著無限可能。';
+          
+          return shortAdvice;
+        };
+
+        // 從完整建議中提取顏色相關建議
+        const extractColorAdvice = (fullAdvice) => {
+          // 尋找顏色相關的描述
+          const colorPatterns = [
+            /粉色的溫暖色調代表著你內心的柔軟與愛心[^。]*。/,
+            /紫色的神秘色調象徵著你內在的智慧與靈性[^。]*。/,
+            /黃色的明亮色調代表著你內在的樂觀與智慧[^。]*。/,
+            /綠色的自然色調代表著你內在的成長與生命力[^。]*。/,
+            /藍色的寧靜色調代表著你內在的智慧與溝通能力[^。]*。/,
+            /紅色的熱情色調代表著你內在的活力與勇氣[^。]*。/,
+            /橘色的溫暖色調代表著你內在的創造力與熱情[^。]*。/,
+            /棕色的穩重色調代表著你內在的踏實與可靠[^。]*。/,
+            /白色的純淨色調代表著你內在的純潔與智慧[^。]*。/,
+            /黑色的神秘色調代表著你內在的深度與力量[^。]*。/,
+            /銀色的優雅色調代表著你內在的智慧與直覺[^。]*。/,
+            /金色的富貴色調代表著你內在的價值與財富[^。]*。/,
+            /你巧妙地運用了粉色與紫色的搭配[^。]*。/,
+            /黃色與綠色的組合充滿活力[^。]*。/,
+            /紅色與藍色的搭配極具張力[^。]*。/,
+            /橘色與藍色的搭配充滿創意[^。]*。/
+          ];
+
+          for (const pattern of colorPatterns) {
+            const match = fullAdvice.match(pattern);
+            if (match) {
+              return match[0];
+            }
+          }
+          
+          return null;
+        };
+
+        // 從完整建議中提取預測建議
+        const extractPredictionAdvice = (fullAdvice, category, score) => {
+          const categoryNames = {
+            love: '愛情運勢',
+            windfall: '偏財運勢',
+            regularIncome: '正財運勢', 
+            career: '事業運勢',
+            health: '健康運勢'
+          };
+
+          const categoryName = categoryNames[category];
+          
+          // 尋找該面向的預測建議
+          const predictionPatterns = [
+            new RegExp(`你的${categoryName}非常旺盛[^。]*。`),
+            new RegExp(`你的${categoryName}正在上升期[^。]*。`),
+            new RegExp(`${categoryName}極佳[^。]*。`),
+            new RegExp(`${categoryName}不錯[^。]*。`),
+            new RegExp(`${categoryName}非常穩定[^。]*。`),
+            new RegExp(`${categoryName}穩定[^。]*。`),
+            new RegExp(`${categoryName}良好[^。]*。`)
+          ];
+
+          for (const pattern of predictionPatterns) {
+            const match = fullAdvice.match(pattern);
+            if (match) {
+              return match[0];
+            }
+          }
+          
+          return null;
+        };
+
+        // 複製 BeadRating.jsx 中的完整建議生成邏輯
+        const generatePersonalizedAdvice = (design, scores) => {
+          const { beads } = design;
+          let advice = '你的串珠作品展現了獨特的藝術天賦和內在智慧。';
+          
+          // 根據評分給出整體分析
+          if (scores.love >= 8) {
+            advice += '從設計感來看，你的作品充滿了愛的氣息，創意靈感將源源不斷。';
+          } else if (scores.love >= 6) {
+            advice += '你的設計感穩步上升，愛情能量正在積累，建議保持開放的心態。';
+          } else if (scores.love >= 4) {
+            advice += '你的設計感有良好的基礎，建議多嘗試不同的色彩搭配。';
+          }
+          
+          if (scores.windfall >= 8) {
+            advice += '偏財運勢非常旺盛，意外財富機會即將到來，建議留意投資機會，但切記保持理性。';
+          } else if (scores.windfall >= 6) {
+            advice += '偏財運勢正在發展中，你的創意和直覺將為你帶來額外的收入來源。';
+          } else if (scores.windfall >= 4) {
+            advice += '偏財運勢穩定，建議保持當前的理財方式，穩健的投資會帶來可觀的收益。';
+          }
+          
+          if (scores.regularIncome >= 8) {
+            advice += '正財運勢極佳，穩定收入將大幅增長，你的努力將得到豐厚的回報。';
+          } else if (scores.regularIncome >= 6) {
+            advice += '正財運勢穩定，繼續保持當前的理財方式，穩健的投資會帶來可觀的收益。';
+          } else if (scores.regularIncome >= 4) {
+            advice += '正財運勢良好，建議保持耐心，穩定的收入會逐步增長。';
+          }
+          
+          if (scores.career >= 8) {
+            advice += '事業運勢一片光明，你將在職場上大放異彩，升職加薪的機會就在眼前。';
+          } else if (scores.career >= 6) {
+            advice += '事業運勢穩步上升，你的專業能力和創造力正在被認可，新的發展機會即將到來。';
+          } else if (scores.career >= 4) {
+            advice += '事業運勢穩定，建議繼續提升專業技能，機會會留給有準備的人。';
+          }
+          
+          if (scores.health >= 8) {
+            advice += '健康運勢非常和諧，你的身心狀態將達到最佳，整體能量非常平衡。';
+          } else if (scores.health >= 6) {
+            advice += '健康運勢良好，建議保持規律的作息，多接觸大自然，身心會更加健康。';
+          } else if (scores.health >= 4) {
+            advice += '健康運勢穩定，建議注意身心平衡，適度的運動會帶來更好的狀態。';
+          }
+          
+          // 分析珠子顏色搭配，融入整體描述
+          const beadNames = beads.map(bead => bead.name);
+          
+          // 更精確的顏色檢測，避免誤判
+          const hasPink = beadNames.some(name => 
+            name.includes('粉色') && !name.includes('黃粉') && !name.includes('金棕')
+          );
+          const hasPurple = beadNames.some(name => 
+            name.includes('紫色') || name.includes('淡紫') || name.includes('深紫')
+          );
+          const hasYellow = beadNames.some(name => 
+            name.includes('黃色') || (name.includes('金棕') && !name.includes('紅棕'))
+          );
+          const hasGreen = beadNames.some(name => 
+            name.includes('薄荷綠') || name.includes('淺綠') || name.includes('深綠')
+          );
+          const hasBlue = beadNames.some(name => 
+            name.includes('淺藍') || name.includes('天藍') || name.includes('深藍') || name.includes('靛藍') || name.includes('靛色')
+          );
+          const hasRed = beadNames.some(name => 
+            name.includes('紅色') || name.includes('酒紅') || name.includes('紅棕')
+          );
+          const hasOrange = beadNames.some(name => 
+            name.includes('橘色')
+          );
+          const hasBrown = beadNames.some(name => 
+            (name.includes('棕色') || name.includes('深棕') || name.includes('淺棕')) && !name.includes('金棕') && !name.includes('紅棕')
+          );
+          const hasWhite = beadNames.some(name => 
+            name.includes('白色') && !name.includes('珍珠')
+          );
+          const hasBlack = beadNames.some(name => 
+            name.includes('黑色')
+          );
+          const hasSilver = beadNames.some(name => 
+            name.includes('銀色')
+          );
+          const hasGold = beadNames.some(name => 
+            name.includes('金色') && !name.includes('金棕')
+          );
+          
+          // 根據珠子搭配給出專業點評，融入整體描述
+          if (hasPink && hasPurple) {
+            advice += '你巧妙地運用了粉色與紫色的搭配，這種組合既浪漫又神秘，預示著你將在愛情和靈性方面都有重大突破。';
+          } else if (hasPink) {
+            advice += '粉色的溫暖色調代表著你內心的柔軟與愛心，這種顏色將為你帶來和諧的人際關係和美好的愛情運勢。';
+          }
+          
+          if (hasPurple && hasGreen) {
+            advice += '紫色與綠色的搭配智慧與自然並存，這預示著你將在事業發展中展現出獨特的創造力和溝通天賦。';
+          } else if (hasPurple) {
+            advice += '紫色的神秘色調象徵著你內在的智慧與靈性，這種高貴的顏色將為你帶來精神層面的提升和直覺的增強。';
+          }
+          
+          if (hasYellow && hasGreen) {
+            advice += '黃色與綠色的組合充滿活力，這代表著財富與成長的完美結合，你的投資眼光和事業發展將相輔相成。';
+          } else if (hasYellow) {
+            advice += '黃色的明亮色調代表著你內在的樂觀與智慧，這種充滿陽光的顏色將為你帶來財富運勢和思維的清晰。';
+          }
+          
+          if (hasRed && hasBlue) {
+            advice += '紅色與藍色的搭配極具張力，熱情與冷靜的對比展現了你內心的強大力量，這種組合將為你帶來勇氣和智慧。';
+          } else if (hasRed) {
+            advice += '紅色的熱情色調代表著你內在的活力與勇氣，這種充滿力量的顏色將為你帶來事業上的突破和保護。';
+          }
+          
+          if (hasOrange && hasBlue) {
+            advice += '橘色與藍色的搭配充滿創意，這代表著熱情與智慧的完美平衡，你的創意靈感將源源不斷。';
+          } else if (hasOrange) {
+            advice += '橘色的溫暖色調代表著你內在的創造力與熱情，這種充滿活力的顏色將為你帶來人際魅力和事業機會。';
+          }
+          
+          // 只分析實際存在的顏色，避免虛假描述
+          if (hasGreen) {
+            advice += '綠色的自然色調代表著你內在的成長與生命力，這種充滿生機的顏色將為你帶來健康運勢和事業發展。';
+          }
+          
+          if (hasBlue) {
+            advice += '藍色的寧靜色調代表著你內在的智慧與溝通能力，這種充滿智慧的顏色將為你帶來清晰的思維和良好的人際關係。';
+          }
+          
+          if (hasBrown) {
+            advice += '棕色的穩重色調代表著你內在的踏實與可靠，這種充滿大地氣息的顏色將為你帶來穩定的財運和事業基礎。';
+          }
+          
+          if (hasWhite) {
+            advice += '白色的純淨色調代表著你內在的純潔與智慧，這種充滿光明的顏色將為你帶來心靈的淨化和內在的平衡。';
+          }
+          
+          if (hasBlack) {
+            advice += '黑色的神秘色調代表著你內在的深度與力量，這種充滿魅力的顏色將為你帶來保護和內在的堅定。';
+          }
+          
+          if (hasSilver) {
+            advice += '銀色的優雅色調代表著你內在的智慧與直覺，這種充滿靈性的顏色將為你帶來精神層面的提升和洞察力。';
+          }
+          
+          if (hasGold) {
+            advice += '金色的富貴色調代表著你內在的價值與財富，這種充滿能量的顏色將為你帶來豐盛的財運和事業成功。';
+          }
+          
+          // 根據珠子數量給出建議，融入整體描述
+          const beadCount = beads.length;
+          if (beadCount >= 15) {
+            advice += '你的設計非常複雜精緻，這展現了你對完美的追求和耐心，建議你將這份專注力運用到生活的各個方面。';
+          } else if (beadCount >= 8) {
+            advice += '你的設計豐富多彩，這體現了你對生活的熱愛和對美的追求，這種積極的態度將為你帶來好運。';
+          } else if (beadCount >= 5) {
+            advice += '你的設計簡潔有力，這體現了你對本質的深刻理解，有時候，少即是多，你的簡約美學將為你帶來獨特的魅力。';
+          } else {
+            advice += '你的設計精簡優雅，這展現了你對品質的追求，精緻的設計往往比複雜的堆砌更有價值。';
+          }
+          
+          advice += '我預測：';
+          
+          // 只給分數超過5分的面向提供運勢預測建議
+          // 愛情運勢預測
+          if (scores.love > 5) {
+            if (scores.love >= 8) {
+              advice += '你的愛情運勢非常旺盛！在接下來的三個月內，你很可能會遇到一位與你靈魂共鳴的人，這段感情將充滿浪漫與激情。';
+            } else if (scores.love >= 6) {
+              advice += '你的愛情運勢正在上升期，單身的朋友可能在近期遇到心儀對象，已有伴侶的感情會更加穩定甜蜜。';
+            }
+          }
+          
+          // 偏財運勢預測
+          if (scores.windfall > 5) {
+            if (scores.windfall >= 8) {
+              advice += '偏財運勢極佳！你最近很可能會有一筆意外之財，可能是投資獲利、中獎或收到禮物，建議保持理性，不要過於貪心。';
+            } else if (scores.windfall >= 6) {
+              advice += '偏財運勢不錯，近期可能有額外收入機會，建議留意身邊的投資機會，但切記穩健理財。';
+            }
+          }
+          
+          // 正財運勢預測
+          if (scores.regularIncome > 5) {
+            if (scores.regularIncome >= 8) {
+              advice += '正財運勢非常穩定！你的工作收入將大幅增長，升職加薪的機會就在眼前，你的努力將得到豐厚的回報。';
+            } else if (scores.regularIncome >= 6) {
+              advice += '正財運勢穩定，繼續保持當前的理財方式，穩健的投資會帶來可觀的收益。';
+            }
+          }
+          
+          // 事業運勢預測
+          if (scores.career > 5) {
+            if (scores.career >= 8) {
+              advice += '事業運勢一片光明！你將在職場上大放異彩，升職加薪的機會就在眼前，新的發展機會將接踵而至。';
+            } else if (scores.career >= 6) {
+              advice += '事業運勢穩步上升，你的專業能力和創造力正在被認可，新的發展機會即將到來。';
+            }
+          }
+          
+          // 健康運勢預測
+          if (scores.health > 5) {
+            if (scores.health >= 8) {
+              advice += '健康運勢非常和諧！你的身心狀態將達到最佳，整體能量非常平衡，建議保持當前的健康習慣。';
+            } else if (scores.health >= 6) {
+              advice += '健康運勢良好，建議保持規律的作息，適度的運動會帶來更好的狀態。';
+            }
+          }
+          
+          return advice;
+        };
+        
+        const commentText = document.createElement('p');
+        commentText.textContent = generateShortComment();
+        commentText.style.fontSize = '25px';
+        commentText.style.lineHeight = '1.5';
+        commentText.style.color = 'rgba(255, 255, 255, 0.9)';
+        commentText.style.margin = '0';
+        commentText.style.textAlign = 'justify';
+        commentContent.appendChild(commentText);
+        
+        textSection.appendChild(commentContent);
+        mainSection.appendChild(textSection);
+        
+        tempContainer.appendChild(mainSection);
       }
-      
-      // 創建評分總結區域
-      if (advice) {
-        const adviceSection = document.createElement('div');
-        adviceSection.style.marginBottom = '40px';
-        adviceSection.style.textAlign = 'center';
-        
-        const adviceTitle = document.createElement('h3');
-        adviceTitle.textContent = '🔮 神秘占卜結果';
-        adviceTitle.style.fontSize = '24px';
-        adviceTitle.style.marginBottom = '20px';
-        adviceTitle.style.color = '#fbbf24';
-        adviceSection.appendChild(adviceTitle);
-        
-        const adviceContent = document.createElement('div');
-        adviceContent.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-        adviceContent.style.padding = '20px';
-        adviceContent.style.borderRadius = '15px';
-        adviceContent.style.border = '1px solid rgba(255, 255, 255, 0.2)';
-        
-        const adviceText = document.createElement('p');
-        adviceText.textContent = advice;
-        adviceText.style.fontSize = '16px';
-        adviceText.style.lineHeight = '1.6';
-        adviceText.style.color = 'rgba(255, 255, 255, 0.9)';
-        adviceText.style.margin = '0';
-        adviceContent.appendChild(adviceText);
-        
-        adviceSection.appendChild(adviceContent);
-        tempContainer.appendChild(adviceSection);
-      }
-      
-      // 添加底部標籤
-      const footer = document.createElement('div');
-      footer.style.textAlign = 'center';
-      footer.style.marginTop = '40px';
-      footer.style.paddingTop = '20px';
-      footer.style.borderTop = '1px solid rgba(255, 255, 255, 0.2)';
-      
-      const footerText = document.createElement('p');
-      footerText.textContent = '💎 由神秘串珠占卜系統生成 💎';
-      footerText.style.fontSize = '18px';
-      footerText.style.color = '#fbbf24';
-      footerText.style.marginBottom = '10px';
-      footerText.style.fontWeight = 'bold';
-      footer.appendChild(footerText);
-      
-      const footerDate = document.createElement('p');
-      footerDate.textContent = new Date().toLocaleDateString();
-      footerDate.style.fontSize = '16px';
-      footerDate.style.color = 'rgba(255, 255, 255, 0.7)';
-      footer.appendChild(footerDate);
-      
-      tempContainer.appendChild(footer);
       
       // 將臨時容器添加到頁面
       document.body.appendChild(tempContainer);
@@ -428,9 +790,38 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
       // 清理臨時容器
       document.body.removeChild(tempContainer);
       
+      // 清除超時
+      clearTimeout(timeoutId);
+      
     } catch (error) {
       console.error('生成分享圖片失敗:', error);
-      alert('生成分享圖片失敗，請重試');
+      clearTimeout(timeoutId);
+      
+      // 使用備用方案
+      const canvas = document.createElement('canvas');
+      canvas.width = 400;
+      canvas.height = 400;
+      const ctx = canvas.getContext('2d');
+      
+      // 繪製簡單的背景
+      ctx.fillStyle = '#1a1a2e';
+      ctx.fillRect(0, 0, 400, 400);
+      
+      // 繪製標題
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = '24px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('串珠設計分享', 200, 50);
+      
+      // 繪製簡單的圓形
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(200, 200, 100, 0, 2 * Math.PI);
+      ctx.stroke();
+      
+      const imageDataUrl = canvas.toDataURL('image/png', 1.0);
+      setGeneratedImage(imageDataUrl);
     } finally {
       setIsGenerating(false);
     }
@@ -574,43 +965,24 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
           {/* 生成中狀態 */}
           {isGenerating && (
             <div className="generating-section">
-              <h3>🔄 正在生成分享圖...</h3>
-              <p>請稍候，系統正在為您生成精美的分享圖</p>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
+                <img 
+                  src="/psychic-medium.jpeg" 
+                  alt="通靈師" 
+                  style={{ 
+                    width: '40px', 
+                    height: '40px', 
+                    borderRadius: '50%',
+                    animation: 'spin 2s linear infinite'
+                  }}
+                />
+                <h3 style={{ color: 'white', margin: 0 }}>Loading...</h3>
+              </div>
             </div>
           )}
           
-          {/* 背景選擇器 */}
-          <div className="background-selector">
-            <h3>🎨 選擇圓形背景</h3>
-            <div className="background-options">
-              <button 
-                className={`bg-option ${selectedBackground === 'transparent' ? 'selected' : ''}`}
-                onClick={() => setSelectedBackground('transparent')}
-              >
-                <div className="bg-preview transparent-bg"></div>
-                <span>透明背景</span>
-              </button>
-              
-              <button 
-                className={`bg-option ${selectedBackground === 'wooden' ? 'selected' : ''}`}
-                onClick={() => setSelectedBackground('wooden')}
-              >
-                <div className="bg-preview wooden-bg"></div>
-                <span>木製托盤</span>
-              </button>
-              
-              <button 
-                className={`bg-option ${selectedBackground === 'gradient' ? 'selected' : ''}`}
-                onClick={() => setSelectedBackground('gradient')}
-              >
-                <div className="bg-preview gradient-bg"></div>
-                <span>漸層背景</span>
-              </button>
-            </div>
-          </div>
-          
-          {/* 生成的圖片和操作按鈕 */}
-          {generatedImage && (
+          {/* 生成完成後顯示完整的分享圖 */}
+          {!isGenerating && generatedImage && (
             <>
               {/* 生成的圖片預覽 */}
               <div className="preview-section">
@@ -638,19 +1010,35 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
                   💾 下載圖片
                 </button>
                 
-                <button 
-                  className="action-btn share-btn"
-                  onClick={shareToSocial}
-                >
-                  📤 分享到社群
-                </button>
-                
-                <button 
-                  className="action-btn copy-btn"
-                  onClick={copyLink}
-                >
-                  🔗 複製連結
-                </button>
+                {/* 背景選擇按鈕 */}
+                <div className="background-selection">
+                  <h4>🎨 選擇背景</h4>
+                  <div className="background-buttons">
+                    <button 
+                      className={`background-btn ${selectedBackground === 'transparent' ? 'active' : ''}`}
+                      onClick={() => setSelectedBackground('transparent')}
+                    >
+                      <div className="background-preview transparent"></div>
+                      <span>一般背景</span>
+                    </button>
+                    
+                    <button 
+                      className={`background-btn ${selectedBackground === 'wooden' ? 'active' : ''}`}
+                      onClick={() => setSelectedBackground('wooden')}
+                    >
+                      <div className="background-preview wooden"></div>
+                      <span>木紋背景</span>
+                    </button>
+                    
+                    <button 
+                      className={`background-btn ${selectedBackground === 'aura' ? 'active' : ''}`}
+                      onClick={() => setSelectedBackground('aura')}
+                    >
+                      <div className="background-preview aura"></div>
+                      <span>絨布背景</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </>
           )}

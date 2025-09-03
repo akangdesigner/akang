@@ -252,13 +252,13 @@ const ModernBeadRatingApp = () => {
                     </Typography>
                     
                     <Box className="bg-white/5 rounded-lg p-4 border border-white/10 mb-4">
-                      <Typography variant="h6" className="text-yellow-400 mb-2 font-bold">
+                      <Typography variant="h6" className="text-yellow-400 mb-2 font-bold text-center">
                         {mockBeadDesign.designName}
                       </Typography>
-                      <Typography variant="body2" className="text-gray-300 mb-1">
+                      <Typography variant="body2" className="text-gray-300 mb-1 text-center">
                         包含 {mockBeadDesign.beads.length} 顆珠子
                       </Typography>
-                      <Typography variant="body2" className="text-gray-300 text-sm">
+                      <Typography variant="body2" className="text-gray-300 text-sm text-center">
                         創建時間: {new Date(mockBeadDesign.timestamp).toLocaleString()}
                       </Typography>
                     </Box>

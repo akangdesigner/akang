@@ -23,6 +23,10 @@ const BeadRating = () => {
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [shareMessage, setShareMessage] = useState('');
   const [showShareResultImage, setShowShareResultImage] = useState(false);
+  
+  // 設計名稱編輯功能狀態
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editingName, setEditingName] = useState('');
 
   // 通靈師的完整建議
   const psychicAdvice = `你的串珠作品展現了獨特的藝術天賦和內在智慧。這件作品不僅是一件美麗的飾品，更是你內心世界的真實寫照。從愛情運勢來看，紅色珠子的點綴象徵著熱情與勇氣，預示著美好的愛情即將到來，在接下來的三個月內，你將遇到一位與你靈魂共鳴的人。在財富方面，藍色珠子的能量與水元素相呼應，預示著流動的財富即將到來，建議你保持開放的心態，留意身邊的投資機會，但切記不要過於貪心，穩健的理財方式會為你帶來意想不到的收穫。事業發展上，串珠的對稱排列反映了你對工作的認真態度，而金色珠子的點綴則象徵著豐厚的回報，你的努力將得到認可，升職加薪的機會就在眼前。從創造力角度來看，綠色珠子的能量與成長相呼應，預示著你的事業將進入快速發展期，新的項目機會將接踵而至。在健康方面，整體能量非常和諧，你的串珠作品散發著平衡與健康的氣息，紫色珠子的能量與靈性相呼應，預示著你的身心狀態將達到最佳狀態。建議你將這份創造力運用到生活的各個方面，相信自己的直覺，勇敢追求夢想，保持規律的作息，多接觸大自然。記住，每個珠子都承載著獨特的能量，就像你人生中的每個選擇都蘊含著無限可能。`;
@@ -131,7 +135,7 @@ const BeadRating = () => {
   const analyzeBeadDesign = (design) => {
     const { beads } = design;
     let scores = {
-      love: 6,        // 基礎分3分 + 設計感額外獎勵3分 = 6分
+      love: 3,        // 基礎分3分
       windfall: 3,    // 基礎分3分
       regularIncome: 3, // 基礎分3分
       career: 3,      // 基礎分3分
@@ -139,7 +143,7 @@ const BeadRating = () => {
     };
 
     console.log('開始分析珠子設計，總共', beads.length, '顆珠子');
-    console.log('初始評分（基礎分3分 + 設計感額外獎勵3分）:', scores);
+    console.log('初始評分（基礎分3分）:', scores);
 
     // 分析每顆珠子的能量屬性 - 根據珠子名稱評分
     beads.forEach((bead, index) => {
@@ -581,6 +585,101 @@ const BeadRating = () => {
     setFullMessage('');
   };
 
+  // 開始編輯設計名稱
+  const startEditingName = () => {
+    setIsEditingName(true);
+    setEditingName(savedDesign?.designName || '');
+  };
+
+  // 取消編輯設計名稱
+  const cancelEditingName = () => {
+    setIsEditingName(false);
+    setEditingName('');
+  };
+
+  // 保存設計名稱
+  const saveDesignName = () => {
+    const newName = editingName.trim();
+    if (!newName) {
+      alert('設計名稱不能為空！');
+      return;
+    }
+    
+    if (newName === savedDesign?.designName) {
+      // 名稱沒有改變，直接取消編輯
+      cancelEditingName();
+      return;
+    }
+    
+    // 更新設計名稱
+    const updatedDesign = {
+      ...savedDesign,
+      designName: newName
+    };
+    
+    // 保存到 localStorage
+    localStorage.setItem('savedBeadDesign', JSON.stringify(updatedDesign));
+    setSavedDesign(updatedDesign);
+    
+    // 取消編輯狀態
+    cancelEditingName();
+    
+    // 顯示成功提示
+    const successMessage = document.createElement('div');
+    successMessage.textContent = '✅ 設計名稱已更新！';
+    successMessage.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(34, 197, 94, 0.9);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 10000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      animation: slideInRight 0.3s ease-out;
+    `;
+    
+    // 添加動畫樣式
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideInRight {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(successMessage);
+    
+    // 3秒後移除提示
+    setTimeout(() => {
+      if (document.body.contains(successMessage)) {
+        document.body.removeChild(successMessage);
+      }
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
+    }, 3000);
+  };
+
+  // 處理鍵盤事件
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      saveDesignName();
+    } else if (e.key === 'Escape') {
+      cancelEditingName();
+    }
+  };
+
   // 前往珠子收納櫃創建新設計
   const goToBeadCabinet = () => {
     window.location.href = '/';
@@ -827,7 +926,50 @@ const BeadRating = () => {
                 {savedDesign ? (
                   <div className="design-display">
                     <div className="design-info">
-                      <h4>{savedDesign.designName}</h4>
+                      {/* 設計名稱 - 可編輯 */}
+                      <div className="design-name-section">
+                        {isEditingName ? (
+                          <div className="edit-name-container">
+                            <input
+                              type="text"
+                              value={editingName}
+                              onChange={(e) => setEditingName(e.target.value)}
+                              onKeyDown={handleKeyPress}
+                              onBlur={saveDesignName}
+                              className="edit-name-input"
+                              placeholder="輸入設計名稱"
+                              maxLength="30"
+                              autoFocus
+                            />
+                            <div className="edit-name-buttons">
+                              <button 
+                                className="save-name-btn"
+                                onClick={saveDesignName}
+                                title="保存"
+                              >
+                                ✓
+                              </button>
+                              <button 
+                                className="cancel-name-btn"
+                                onClick={cancelEditingName}
+                                title="取消"
+                              >
+                                ✕
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="display-name-container">
+                            <h4 
+                              className="design-name-display"
+                              onClick={startEditingName}
+                            >
+                              {savedDesign.designName}
+                            </h4>
+                          </div>
+                        )}
+                      </div>
+                      
                       <p>包含 {(() => {
                         // 計算實際珠子數量，小珠子一顆算 0.5 顆
                         const bigBeads = savedDesign.beads.filter(bead => 
