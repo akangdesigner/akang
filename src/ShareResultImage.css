@@ -361,10 +361,26 @@
 }
 
 .wooden-bg {
-  background-image: url('/wooden-tray.png');
+  background: linear-gradient(145deg, #DEB887, #F5DEB3);
   background-size: cover;
   background-position: center;
-  background-color: rgba(139, 69, 19, 0.1);
+  border: 2px solid #8B4513;
+  position: relative;
+}
+
+.wooden-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(90deg, transparent 0%, rgba(139,69,19,0.1) 50%, transparent 100%),
+    linear-gradient(0deg, transparent 0%, rgba(139,69,19,0.05) 50%, transparent 100%);
+  background-size: 20px 20px, 10px 10px;
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 .gradient-bg {
@@ -375,6 +391,16 @@
   color: white;
   font-size: 0.9rem;
   font-weight: 500;
+}
+
+/* 通靈師頭像旋轉動畫 */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* 操作按鈕區域 */
@@ -444,6 +470,99 @@
   gap: 10px;
 }
 
+/* 背景選擇區域 */
+.background-selection {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.background-selection h4 {
+  color: white;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.background-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.background-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 100px;
+}
+
+.background-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.background-btn.active {
+  background: rgba(138, 43, 226, 0.3);
+  border-color: #8a2be2;
+  box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+}
+
+.background-preview {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-bottom: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.background-preview.transparent {
+  background: rgba(139, 69, 19, 0.1);
+  border: 2px solid #8B4513;
+}
+
+.background-preview.wooden {
+  background: linear-gradient(145deg, #DEB887, #F5DEB3);
+  border: 2px solid #8B4513;
+  position: relative;
+}
+
+.background-preview.wooden::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(90deg, transparent 0%, rgba(139,69,19,0.1) 50%, transparent 100%),
+    linear-gradient(0deg, transparent 0%, rgba(139,69,19,0.05) 50%, transparent 100%);
+  background-size: 15px 15px, 8px 8px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.background-preview.aura {
+  background: radial-gradient(circle at 20% 20%, #2a2a2a 0%, #1a1a1a 40%, #0d0d0d 80%, #080808 100%);
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8);
+}
+
+.background-btn span {
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
+}
+
 /* 響應式設計 */
 @media (max-width: 768px) {
   .share-result-modal {
@@ -490,6 +609,24 @@
   .bg-preview {
     width: 50px;
     height: 50px;
+  }
+  
+  .background-buttons {
+    gap: 10px;
+  }
+  
+  .background-btn {
+    min-width: 80px;
+    padding: 10px;
+  }
+  
+  .background-preview {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .background-btn span {
+    font-size: 0.7rem;
   }
 }
 
