@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StatCard } from './SharedBeadComponents';
 import './BeadStores.css';
+import IconComponent from './IconComponent';
 
 // 店家資料 - 真實台北串珠店家
 const storeData = {
@@ -167,7 +168,7 @@ const StoreCard = ({ store, type }) => {
     for (let i = 1; i <= 5; i++) {
       stars.push(
         <span key={i} className={`star ${i <= rating ? 'filled' : ''}`}>
-          ⭐
+          <IconComponent name="star-rating" size={16} />
         </span>
       );
     }
@@ -220,7 +221,9 @@ const StoreCard = ({ store, type }) => {
           <span>{store.hours}</span>
         </div>
         <div className="info-item">
-          <span className="icon">💰</span>
+          <span className="icon">
+            <IconComponent name="wealth" size={16} />
+          </span>
           <span>{store.price}</span>
         </div>
         <div className="info-item">
@@ -262,7 +265,7 @@ const StoreCard = ({ store, type }) => {
           className={`action-btn secondary ${isLiked ? 'liked' : ''}`}
           onClick={handleLike}
         >
-          {isLiked ? '❤️' : '🤍'} {isLiked ? '已收藏' : '收藏'}
+          <IconComponent name={isLiked ? "love" : "sparkle"} size={16} /> {isLiked ? '已收藏' : '收藏'}
         </button>
         {store.phone && (
           <button className="action-btn secondary" onClick={handleContact}>
@@ -342,7 +345,7 @@ const BeadStores = () => {
 
   const sections = [
     { id: 'all', name: '全部店家', icon: '🏪' },
-    { id: 'special', name: '特殊配件賣場', icon: '💎' },
+    { id: 'special', name: '特殊配件賣場', icon: 'crystal-pendant' },
     { id: 'online', name: '線上珠子賣場', icon: '🛒' },
     { id: 'offline', name: '線下珠子賣場', icon: '🏬' }
   ];
@@ -409,7 +412,7 @@ const BeadStores = () => {
             <div className="store-section">
               <SectionHeader
                 title="💎 特殊配件賣場"
-                icon="💎"
+                icon="crystal-pendant"
                 description="稀有水晶、特殊過渡珠、進口配件等高端材料"
               />
               <div className="stores-grid">
@@ -468,11 +471,15 @@ const BeadStores = () => {
               <span>品質保證：所有店家都經過實地考察與品質認證</span>
             </div>
             <div className="reason-item">
-              <span className="reason-icon">💰</span>
+              <span className="reason-icon">
+                <IconComponent name="wealth" size={16} />
+              </span>
               <span>價格透明：清楚標示價格範圍，避免隱藏費用</span>
             </div>
             <div className="reason-item">
-              <span className="reason-icon">⭐</span>
+              <span className="reason-icon">
+                <IconComponent name="star-rating" size={16} />
+              </span>
               <span>服務評價：真實顧客評價，確保推薦品質</span>
             </div>
             <div className="reason-item">
@@ -490,7 +497,7 @@ const BeadStores = () => {
           onClick={scrollToTop}
           aria-label="回到頂部"
         >
-          ⬆️
+          <IconComponent name="sparkle" size={16} />
         </button>
       )}
     </div>

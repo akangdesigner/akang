@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button, Fade, Slide, Grow } from '@mui/material';
 import './BeadRating.css';
 import ShareResultImage from './ShareResultImage';
+import IconComponent from './IconComponent';
 
 const BeadRating = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -727,7 +728,7 @@ const BeadRating = () => {
       };
       
       const shareUrl = `${window.location.origin}${window.location.pathname}?design=${encodeURIComponent(JSON.stringify(designData))}`;
-      const shareText = `看看我的串珠設計「${savedDesign?.designName || '串珠設計'}」的評分結果！🔮✨`;
+      const shareText = `看看我的串珠設計「${savedDesign?.designName || '串珠設計'}」的評分結果！`;
       
       let shareLink = '';
       
@@ -859,8 +860,8 @@ const BeadRating = () => {
               />
             </div>
             <div className="loading-text">
-              <p>🔮 正在連接神秘能量...</p>
-              <p>✨ 請稍候，通靈師正在準備...</p>
+              <p><IconComponent name="crystal-ball" size={16} /> 正在連接神秘能量...</p>
+              <p><IconComponent name="sparkle" size={16} /> 請稍候，通靈師正在準備...</p>
             </div>
           </div>
         </div>
@@ -870,7 +871,7 @@ const BeadRating = () => {
         <div className="bead-rating-container bead-rating-page">
           {/* 頁面標題 */}
           <div className="rating-header">
-            <h1>⭐ 串珠評分區 ⭐</h1>
+            <h1><IconComponent name="star-rating" size={32} /> 串珠評分區 <IconComponent name="star-rating" size={32} /></h1>
           </div>
 
           <div className="rating-content">
@@ -891,7 +892,9 @@ const BeadRating = () => {
 
                 {isAnalyzing && (
                   <div className="analyzing-message">
-                    <div className="crystal-animation">🔮</div>
+                    <div className="crystal-animation">
+                      <IconComponent name="crystal-ball" size={32} />
+                    </div>
                     <p>我正在解讀你的串珠作品...</p>
                     <p>水晶球正在揭示命運的奧秘...</p>
                   </div>
@@ -1061,14 +1064,18 @@ const BeadRating = () => {
                          disabled={isAnalyzing}
                          className="design-button primary-button"
                        >
-                         <div className="button-icon">🔮</div>
+                         <div className="button-icon">
+                           <IconComponent name="crystal-ball" size={20} />
+                         </div>
                          <div className="button-text">{isAnalyzing ? '分析中...' : '開始分析'}</div>
                        </button>
                        <button 
                          onClick={clearSavedDesign}
                          className="design-button secondary-button"
                        >
-                         <div className="button-icon">🗑️</div>
+                         <div className="button-icon">
+                           <IconComponent name="sparkle" size={20} />
+                         </div>
                          <div className="button-text">清除設計</div>
                        </button>
                        
@@ -1089,7 +1096,7 @@ const BeadRating = () => {
                                onClick={() => setShowShareResultImage(true)}
                                title="生成分享結果圖"
                              >
-                               🎨 生成分享圖
+                               <IconComponent name="art-palette" size={16} /> 生成分享圖
                              </button>
                              
                              <button 
@@ -1147,7 +1154,9 @@ const BeadRating = () => {
                   </div>
                 ) : (
                   <div className="no-design-message">
-                    <div className="no-design-icon">🎨</div>
+                    <div className="no-design-icon">
+                      <IconComponent name="art-palette" size={48} />
+                    </div>
                     <h4>還沒有串珠設計</h4>
                     <p>請先到珠子收納櫃創建並保存您的串珠設計</p>
                     <Button 
@@ -1155,7 +1164,7 @@ const BeadRating = () => {
                       size="medium"
                       onClick={goToBeadCabinet}
                       className="border-blue-400 text-blue-400 hover:bg-blue-400/10"
-                      startIcon={<span>🏠</span>}
+                      startIcon={<IconComponent name="home" size={20} />}
                     >
                       前往珠子收納櫃
                     </Button>
@@ -1165,7 +1174,7 @@ const BeadRating = () => {
 
               {/* 雷達圖 */}
               <div className="radar-chart-section">
-                <h3>🌟 能量評分圖</h3>
+                <h3><IconComponent name="moon-stars" size={24} /> 能量評分圖</h3>
                 
                 <div className="radar-chart">
                   {/* SVG雷達圖 */}
@@ -1255,16 +1264,28 @@ const BeadRating = () => {
           <div className="bottom-navigation">
             <div className="nav-grid">
               <button className="nav-button" onClick={goHome}>
-                <div className="nav-icon">🏠</div>
+                <div className="nav-icon">
+                  <IconComponent name="home" size={20} />
+                </div>
                 <div className="nav-text">返回首頁</div>
               </button>
               <button className="nav-button" onClick={goToBeadCabinet}>
-                <div className="nav-icon">🎨</div>
+                <div className="nav-icon">
+                  <IconComponent name="art-palette" size={20} />
+                </div>
                 <div className="nav-text">數位串珠</div>
               </button>
               <button className="nav-button" onClick={() => window.location.href = '/guide'}>
-                <div className="nav-icon">📚</div>
+                <div className="nav-icon">
+                  <IconComponent name="book-guide" size={20} />
+                </div>
                 <div className="nav-text">珠子指南</div>
+              </button>
+              <button className="nav-button" onClick={() => window.location.href = '/fortune'}>
+                <div className="nav-icon">
+                  <IconComponent name="crystal-ball" size={20} />
+                </div>
+                <div className="nav-text">每日運勢</div>
               </button>
             </div>
           </div>

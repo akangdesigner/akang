@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { StatCard } from './SharedBeadComponents';
 import './BeadCabinet.css';
+import IconComponent from './IconComponent';
 
 /*
  * ========================================
@@ -1023,7 +1024,7 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
               onClick={completeStringingAnimation}
               title="完成串珠"
             >
-              ✨ 完成串珠
+              <IconComponent name="sparkle" size={16} /> 完成串珠
             </button>
             <button
               className="save-after-animation-btn"
@@ -1423,7 +1424,7 @@ const BeadCabinet = () => {
     { id: 13, color: '#40E0D0', name: '靛色', type: '水晶珠', page: '/tutorial', shine: '#F0FFFF', image: 'indigo-bead-ID13.png' },
     { id: 14, color: '#98FB98', name: '天空藍', type: '水晶珠', page: '/patterns', shine: '#F0FFF0', image: 'sky-blue-bead-ID14.png' },
     { id: 15, color: '#DDA0DD', name: '淺藍', type: '水晶珠', page: '/tutorial', shine: '#E6E6FA', image: 'light-blue-bead-ID15.png' },
-    { id: 16, color: '#DDA0DD', name: '紅棕', type: '水晶珠', page: '/patterns', shine: '#F8F8FF', image: 'red-brown-bead-ID16.png' },
+    { id: 16, color: '#DDA0DD', name: '紅棕', type: '木珠', page: '/patterns', shine: '#F8F8FF', image: 'red-brown-bead-ID16.png' },
     { id: 17, color: '#F0E68C', name: '深棕', type: '木珠', page: '/tutorial', shine: '#FFFACD', image: 'dark-brown-bead-ID17.png' },
     { id: 18, color: '#4682B4', name: '淺棕', type: '木珠', page: '/patterns', shine: '#F0F8FF', image: 'light-brown-bead-ID18.png' },
     { id: 19, color: '#228B22', name: '黑色', type: '木珠', page: '/tutorial', shine: '#F0FFF0', image: 'black-bead-ID19.png' },
@@ -1681,7 +1682,7 @@ const BeadCabinet = () => {
     <div className="bead-cabinet-container">
       {/* 標題區域 */}
       <div className="cabinet-title">
-        <h1 className="h1 text-center mb-4">✨ 數位串珠創作區 ✨</h1>
+        <h1 className="h1 text-center mb-4"><IconComponent name="sparkle" size={32} /> 數位串珠創作區 <IconComponent name="sparkle" size={32} /></h1>
         
 
         
@@ -1692,12 +1693,12 @@ const BeadCabinet = () => {
         {/* 手機版：使用 Swiper 滑動櫃子 */}
         <div className="d-block d-lg-none mobile-cabinet-section">
           <div className="cabinet-instructions mb-3">
-            <h3 className="h5 text-center">📚 櫃子操作說明</h3>
+            <h3 className="h5 text-center"><IconComponent name="book-guide" size={20} /> 櫃子操作說明</h3>
             <div className="instruction-content">
-              <p className="mb-2"><strong>🔍 查看珠子：</strong>點擊抽屜即可打開查看珠子詳情</p>
+              <p className="mb-2"><strong><IconComponent name="magnifying-glass" size={16} /> 查看珠子：</strong>點擊抽屜即可打開查看珠子詳情</p>
               <p className="mb-2"><strong>🧵 選擇珠子：</strong>點擊珠子即可選擇，選中的珠子會顯示在下方串珠盤</p>
               <p className="mb-2"><strong>📝 珠子資訊：</strong>每個抽屜顯示珠子名稱、類型和顏色</p>
-              <p className="mb-2"><strong>🎯 快速操作：</strong>使用下方按鈕可快速關閉或打開所有抽屜</p>
+              <p className="mb-2"><strong><IconComponent name="target" size={16} /> 快速操作：</strong>使用下方按鈕可快速關閉或打開所有抽屜</p>
               <p className="mb-2"><strong>📱 手機操作：</strong>點擊浮空珠子即可添加到串珠盤，無需拖曳</p>
             </div>
           </div>
@@ -1794,7 +1795,7 @@ const BeadCabinet = () => {
                                     setIsDragging(true);
                                   }}
                                 >
-                                  ✨ 取出珠子
+                                  <IconComponent name="sparkle" size={16} /> 取出珠子
                                 </button>
                               </div>
                             </div>
@@ -1902,7 +1903,7 @@ const BeadCabinet = () => {
                                     setIsDragging(true);
                                   }}
                                 >
-                                  ✨ 取出珠子
+                                  <IconComponent name="sparkle" size={16} /> 取出珠子
                                 </button>
                               </div>
                             </div>
@@ -2010,7 +2011,7 @@ const BeadCabinet = () => {
                                     setIsDragging(true);
                                   }}
                                 >
-                                  ✨ 取出珠子
+                                  <IconComponent name="sparkle" size={16} /> 取出珠子
                                 </button>
                               </div>
                             </div>
@@ -2118,7 +2119,7 @@ const BeadCabinet = () => {
                                       setIsDragging(true);
                                     }}
                                   >
-                                    ✨ 取出珠子
+                                    <IconComponent name="sparkle" size={16} /> 取出珠子
                                   </button>
                                 </div>
                               </div>
@@ -2142,12 +2143,12 @@ const BeadCabinet = () => {
         <div className="d-none d-lg-block cabinet-section">
           {/* 櫃子操作說明 */}
           <div className="cabinet-instructions">
-            <h3>📚 櫃子操作說明</h3>
+            <h3><IconComponent name="book-guide" size={20} /> 櫃子操作說明</h3>
             <div className="instruction-content">
-              <p><strong>🔍 查看珠子：</strong>點擊抽屜即可打開查看珠子詳情</p>
+              <p><strong><IconComponent name="magnifying-glass" size={16} /> 查看珠子：</strong>點擊抽屜即可打開查看珠子詳情</p>
               <p><strong>🧵 選擇珠子：</strong>點擊珠子即可選擇，選中的珠子會顯示在右側串珠盤</p>
               <p><strong>📝 珠子資訊：</strong>每個抽屜顯示珠子名稱、類型和顏色</p>
-              <p><strong>🎯 快速操作：</strong>使用下方按鈕可快速關閉或打開所有抽屜</p>
+              <p><strong><IconComponent name="target" size={16} /> 快速操作：</strong>使用下方按鈕可快速關閉或打開所有抽屜</p>
               <p><strong>📱 手機操作：</strong>點擊浮空珠子即可添加到串珠盤，無需拖曳</p>
             </div>
           </div>
@@ -2720,7 +2721,9 @@ const BeadCabinet = () => {
             }}
             title="返回首頁"
           >
-            <div className="nav-icon">🏠</div>
+            <div className="nav-icon">
+              <IconComponent name="home" size={20} />
+            </div>
             <div className="nav-text">返回首頁</div>
           </button>
           
@@ -2732,7 +2735,9 @@ const BeadCabinet = () => {
             }}
             title="珠子介紹指南"
           >
-            <div className="nav-icon">📚</div>
+            <div className="nav-icon">
+              <IconComponent name="book-guide" size={20} />
+            </div>
             <div className="nav-text">珠子指南</div>
           </button>
           
@@ -2741,8 +2746,20 @@ const BeadCabinet = () => {
             onClick={() => window.location.href = '/rating'}
             title="串珠評分"
           >
-            <div className="nav-icon">🔮</div>
+            <div className="nav-icon">
+              <IconComponent name="crystal-ball" size={20} />
+            </div>
             <div className="nav-text">串珠評分</div>
+          </button>
+          <button
+            className="nav-button"
+            onClick={() => window.location.href = '/fortune'}
+            title="每日運勢"
+          >
+            <div className="nav-icon">
+              <IconComponent name="crystal-ball" size={20} />
+            </div>
+            <div className="nav-text">每日運勢</div>
           </button>
         </div>
       </div>

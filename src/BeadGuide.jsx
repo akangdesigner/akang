@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './BeadGuide.css';
+import IconComponent from './IconComponent';
 
 
 // 珠子材質數據
@@ -242,7 +243,7 @@ const MaterialDetail = ({ material, data }) => {
       
       <div className="detail-content">
         <div className="detail-section">
-          <h3>✨ 特點</h3>
+          <h3><IconComponent name="sparkle" size={20} /> 特點</h3>
           <ul className="characteristics-list">
             {data.characteristics.map((char, index) => (
               <li key={index}>{char}</li>
@@ -251,7 +252,7 @@ const MaterialDetail = ({ material, data }) => {
         </div>
         
         <div className="detail-section">
-          <h3>🎯 適用範圍</h3>
+          <h3><IconComponent name="target" size={20} /> 適用範圍</h3>
           <div className="applications-grid">
             {data.applications.map((app, index) => (
               <span key={index} className="application-tag">{app}</span>
@@ -260,7 +261,7 @@ const MaterialDetail = ({ material, data }) => {
         </div>
         
         <div className="detail-section">
-          <h3>🎨 常見顏色</h3>
+          <h3><IconComponent name="art-palette" size={20} /> 常見顏色</h3>
           <div className="colors-grid">
             {data.colors.map((color, index) => (
               <span key={index} className="color-tag">{color}</span>
@@ -284,23 +285,6 @@ const SavedDesigns = () => {
     setSavedDesigns(designs);
   }, []);
 
-  // 點擊外部取消編輯
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (editingId && !event.target.closest('.edit-name-container')) {
-        cancelEdit();
-      }
-    };
-
-    if (editingId) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [editingId]);
-
   const deleteDesign = (designId) => {
     const updatedDesigns = savedDesigns.filter(design => design.id !== designId);
     localStorage.setItem('beadDesigns', JSON.stringify(updatedDesigns));
@@ -318,7 +302,7 @@ const SavedDesigns = () => {
       alert('設計名稱不能為空！');
       return;
     }
-    
+
     const updatedDesigns = savedDesigns.map(design => 
       design.id === designId 
         ? { ...design, name: newName }
@@ -328,43 +312,6 @@ const SavedDesigns = () => {
     setSavedDesigns(updatedDesigns);
     setEditingId(null);
     setEditingName('');
-    
-    // 顯示成功提示
-    const successMessage = document.createElement('div');
-    successMessage.textContent = '✅ 設計名稱已更新！';
-    successMessage.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: linear-gradient(135deg, #4CAF50, #45a049);
-      color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      z-index: 1000;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      animation: slideIn 0.3s ease;
-    `;
-    
-    // 添加動畫樣式
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes slideIn {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-      }
-    `;
-    document.head.appendChild(style);
-    
-    document.body.appendChild(successMessage);
-    
-    // 3秒後自動移除提示
-    setTimeout(() => {
-      if (successMessage.parentNode) {
-        successMessage.parentNode.removeChild(successMessage);
-      }
-    }, 3000);
   };
 
   const cancelEdit = () => {
@@ -475,7 +422,7 @@ const SavedDesigns = () => {
     return (
       <div className="saved-designs-empty">
         <div className="empty-content">
-          <h3>✨ 還沒有保存的設計</h3>
+          <h3><IconComponent name="sparkle" size={20} /> 還沒有保存的設計</h3>
           <p>在珠子收納櫃中串珠後，點擊「💾 保存設計」按鈕來保存您的創作！</p>
           <div className="empty-icon">💡</div>
         </div>
@@ -485,7 +432,7 @@ const SavedDesigns = () => {
 
   return (
     <div className="saved-designs">
-      <h3>💾 已保存的設計 ({savedDesigns.length})</h3>
+      <h3>💾 推薦設計參考 ({savedDesigns.length})</h3>
       <div className="designs-grid">
         {savedDesigns.map((design) => (
           <div key={design.id} className="design-card">
@@ -494,57 +441,44 @@ const SavedDesigns = () => {
                 <div className="design-header">
                   {editingId === design.id ? (
                     <div className="edit-name-container">
-                      <div className="edit-tip">編輯模式 - 按Enter保存，按Escape取消</div>
-                      <div className="edit-name-input-row">
-                        <input
-                          type="text"
-                          value={editingName}
-                          onChange={(e) => setEditingName(e.target.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                              saveEdit(design.id);
-                            } else if (e.key === 'Escape') {
-                              cancelEdit();
-                            }
-                          }}
-                          onBlur={() => {
-                            if (editingName.trim()) {
-                              saveEdit(design.id);
-                            } else {
-                              cancelEdit();
-                            }
-                          }}
-                          onInput={(e) => {
-                            if (e.target.value.length >= 30) {
-                              e.target.style.borderColor = '#FF9800';
-                            } else {
-                              e.target.style.borderColor = '#667eea';
-                            }
-                          }}
-                          className="edit-name-input"
-                          placeholder="輸入設計名稱"
-                          maxLength="30"
-                          autoFocus
-                        />
-                        <div className={`char-count ${editingName.length >= 25 ? 'char-count-warning' : ''}`}>
-                          {editingName.length}/30
-                        </div>
-                        <div className="edit-buttons">
-                          <button 
-                            className="save-edit-btn"
-                            onClick={() => saveEdit(design.id)}
-                            title="保存名稱"
-                          >
-                            ✅
-                          </button>
-                          <button 
-                            className="cancel-edit-btn"
-                            onClick={cancelEdit}
-                            title="取消編輯"
-                          >
-                            ❌
-                          </button>
-                        </div>
+                      <input
+                        type="text"
+                        value={editingName}
+                        onChange={(e) => setEditingName(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            saveEdit(design.id);
+                          } else if (e.key === 'Escape') {
+                            cancelEdit();
+                          }
+                        }}
+                        onBlur={() => {
+                          if (editingName.trim()) {
+                            saveEdit(design.id);
+                          } else {
+                            cancelEdit();
+                          }
+                        }}
+                        className="edit-name-input"
+                        placeholder="輸入設計名稱"
+                        maxLength="30"
+                        autoFocus
+                      />
+                      <div className="edit-buttons">
+                        <button 
+                          className="save-edit-btn"
+                          onClick={() => saveEdit(design.id)}
+                          title="保存"
+                        >
+                          ✅
+                        </button>
+                        <button 
+                          className="cancel-edit-btn"
+                          onClick={cancelEdit}
+                          title="取消"
+                        >
+                          ❌
+                        </button>
                       </div>
                     </div>
                   ) : (
@@ -561,7 +495,7 @@ const SavedDesigns = () => {
                         onClick={() => startEditing(design)}
                         title="編輯名稱"
                       >
-                        ✏️
+                        <IconComponent name="art-palette" size={16} />
                       </button>
                     </div>
                   )}
@@ -570,7 +504,7 @@ const SavedDesigns = () => {
                     onClick={() => deleteDesign(design.id)}
                     title="刪除設計"
                   >
-                    🗑️
+                    <IconComponent name="sparkle" size={16} />
                   </button>
                 </div>
                 <div className="design-details">
@@ -649,7 +583,7 @@ const ColorCard = ({ color, data }) => {
 
         {showRecommendations && (
           <div className="recommendations-section">
-            <h4>🎯 推薦搭配</h4>
+            <h4><IconComponent name="target" size={18} /> 推薦搭配</h4>
             <div className="recommendations-grid">
               {data.recommendations.map((rec, index) => (
                 <div key={index} className="recommendation-card">
@@ -683,7 +617,7 @@ const BeadGuide = () => {
   return (
     <div className="bead-guide-container">
       <div className="guide-header">
-        <h1>🎨 珠子介紹指南</h1>
+        <h1><IconComponent name="art-palette" size={32} /> 珠子介紹指南</h1>
         <p>了解不同材質和顏色的珠子特性，為您的串珠創作提供靈感</p>
       </div>
 
@@ -698,7 +632,7 @@ const BeadGuide = () => {
           className={`tab-btn ${activeTab === 'colors' ? 'active' : ''}`}
           onClick={() => setActiveTab('colors')}
         >
-          🎨 顏色特性
+          <IconComponent name="art-palette" size={16} /> 顏色特性
         </button>
         <button 
           className={`tab-btn ${activeTab === 'recommendations' ? 'active' : ''}`}
@@ -746,10 +680,6 @@ const BeadGuide = () => {
 
         {activeTab === 'recommendations' && (
           <div className="recommendations-page">
-            <div className="recommendations-header">
-              <h2>🎯 推薦搭配</h2>
-              <p>精選的手串設計方案，為您提供創作靈感</p>
-            </div>
             <div className="recommendations-container">
               <SavedDesigns />
             </div>
@@ -761,16 +691,28 @@ const BeadGuide = () => {
       <div className="bottom-navigation">
         <div className="nav-grid">
                   <button className="nav-button" onClick={() => window.location.href = '/home'}>
-          <div className="nav-icon">🏠</div>
+          <div className="nav-icon">
+            <IconComponent name="home" size={20} />
+          </div>
           <div className="nav-text">返回首頁</div>
         </button>
           <button className="nav-button" onClick={() => window.location.href = '/'}>
-            <div className="nav-icon">🎨</div>
+            <div className="nav-icon">
+              <IconComponent name="art-palette" size={20} />
+            </div>
             <div className="nav-text">數位串珠</div>
           </button>
           <button className="nav-button" onClick={() => window.location.href = '/rating'}>
-            <div className="nav-icon">🔮</div>
+            <div className="nav-icon">
+              <IconComponent name="crystal-ball" size={20} />
+            </div>
             <div className="nav-text">串珠評分</div>
+          </button>
+          <button className="nav-button" onClick={() => window.location.href = '/fortune'}>
+            <div className="nav-icon">
+              <IconComponent name="crystal-ball" size={20} />
+            </div>
+            <div className="nav-text">每日運勢</div>
           </button>
         </div>
       </div>

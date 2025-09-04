@@ -5,6 +5,7 @@ import BeadRating from './BeadRating';
 import BeadStores from './BeadStores';
 import DebugFloatingBeads from './DebugFloatingBeads';
 import HomePage from './HomePage';
+import DailyFortune from './DailyFortune';
 import './App.css';
 
 function App() {
@@ -29,6 +30,10 @@ function App() {
   
   if (path === '/home') {
     return <HomePage />;
+  }
+  
+  if (path === '/fortune') {
+    return <DailyFortune />;
   }
   
   return (

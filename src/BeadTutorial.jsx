@@ -1,11 +1,12 @@
 import React from 'react';
 import './BeadTutorial.css';
+import IconComponent from './IconComponent';
 
 const BeadTutorial = () => {
   return (
     <div className="bead-tutorial-container">
       <div className="tutorial-header">
-        <h1>🎨 珠子製作教學</h1>
+        <h1><IconComponent name="art-palette" size={32} /> 珠子製作教學</h1>
         <p>學習各種珠子製作技巧和工藝</p>
       </div>
       
@@ -19,7 +20,9 @@ const BeadTutorial = () => {
               <p>用於彎曲和切割金屬線</p>
             </div>
             <div className="tool-item">
-              <div className="tool-icon">✂️</div>
+              <div className="tool-icon">
+                <IconComponent name="art-palette" size={24} />
+              </div>
               <h3>剪刀</h3>
               <p>裁剪線材和布料</p>
             </div>
@@ -37,7 +40,7 @@ const BeadTutorial = () => {
         </div>
 
         <div className="tutorial-section">
-          <h2>🎯 基礎技巧</h2>
+          <h2><IconComponent name="target" size={24} /> 基礎技巧</h2>
           <div className="techniques-grid">
             <div className="technique-card">
               <h3>串珠技巧</h3>
@@ -70,7 +73,7 @@ const BeadTutorial = () => {
         </div>
 
         <div className="tutorial-section">
-          <h2>📚 進階課程</h2>
+          <h2><IconComponent name="book-guide" size={24} /> 進階課程</h2>
           <div className="courses-grid">
             <div className="course-card">
               <h3>玻璃珠製作</h3>

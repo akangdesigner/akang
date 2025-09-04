@@ -114,7 +114,6 @@
 
 .material-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .material-card.active {
@@ -441,44 +440,48 @@
 .recommendations-header h2 {
   font-size: 2.2rem;
   font-weight: bold;
-  background: linear-gradient(45deg, #8a2be2, #4b0082);
+  background: linear-gradient(45deg, #ff6b6b, #ffa500);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 15px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
 .recommendations-header p {
   font-size: 1.1rem;
-  color: #666;
+  color: rgba(255, 255, 255, 0.8);
   max-width: 600px;
   margin: 0 auto;
 }
 
 /* 推薦搭配預留空間 */
 .recommendations-container {
-  background: rgba(243, 244, 246, 0.95);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
   min-height: 500px;
 }
 
 /* 保存的設計樣式 */
 .saved-designs {
-  color: #333;
+  color: white;
 }
 
 .saved-designs h3 {
   font-size: 1.8rem;
   font-weight: bold;
-  color: #333;
+  color: white;
   margin-bottom: 30px;
   text-align: center;
-  background: linear-gradient(45deg, #8a2be2, #4b0082);
+  background: linear-gradient(45deg, #ff6b6b, #ffa500);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
 .designs-grid {
@@ -488,10 +491,11 @@
 }
 
 .design-card {
-  background: #f8f9fa;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 15px;
   padding: 20px;
-  border: 2px solid #e9ecef;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
   transition: all 0.3s ease;
 }
 
@@ -507,9 +511,8 @@
 }
 
 .design-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-color: #667eea;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 165, 0, 0.4);
 }
 
 .design-header {
@@ -524,7 +527,7 @@
 .design-header h4 {
   font-size: 1.3rem;
   font-weight: bold;
-  color: #333;
+  color: white;
   margin: 0;
 }
 
@@ -546,25 +549,9 @@
   user-select: none;
 }
 
-.design-name::after {
-  content: '✏️';
-  position: absolute;
-  right: -25px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.8rem;
-  opacity: 0;
-  transition: all 0.3s ease;
-}
-
 .design-name:hover {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
-}
-
-.design-name:hover::after {
-  opacity: 1;
-  right: -30px;
+  background: rgba(255, 165, 0, 0.1);
+  color: #ffa500;
 }
 
 .edit-name-btn {
@@ -580,77 +567,48 @@
 
 .edit-name-btn:hover {
   opacity: 1;
-  background: rgba(102, 126, 234, 0.1);
-  transform: scale(1.1);
+  background: rgba(255, 165, 0, 0.1);
 }
 
 /* 編輯名稱容器樣式 */
 .edit-name-container {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  flex: 1;
-}
-
-.edit-tip {
-  font-size: 0.75rem;
-  color: #667eea;
-  text-align: center;
-  padding: 4px 8px;
-  background: rgba(102, 126, 234, 0.1);
-  border-radius: 6px;
-  font-weight: 500;
-}
-
-.edit-name-input-row {
-  display: flex;
   align-items: center;
   gap: 10px;
+  flex: 1;
+  max-width: 300px;
 }
 
 .edit-name-input {
   flex: 1;
   padding: 8px 12px;
-  border: 2px solid #667eea;
+  border: 2px solid rgba(255, 165, 0, 0.4);
   border-radius: 8px;
   font-size: 1rem;
   font-family: inherit;
-  background: white;
-  color: #333;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
   transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  min-width: 120px;
+  max-width: 200px;
 }
 
 .edit-name-input:focus {
   outline: none;
-  border-color: #764ba2;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #ffa500;
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.1);
   transform: scale(1.02);
 }
 
 .edit-name-input::placeholder {
-  color: #999;
-}
-
-.char-count {
-  font-size: 0.75rem;
-  color: #999;
-  text-align: center;
-  min-width: 35px;
-  padding: 2px 6px;
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
-
-.char-count-warning {
-  color: #FF9800;
-  background: rgba(255, 152, 0, 0.1);
-  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .edit-buttons {
   display: flex;
   gap: 5px;
+  flex-shrink: 0;
 }
 
 .save-edit-btn,
@@ -666,13 +624,11 @@
 
 .save-edit-btn:hover {
   background: rgba(76, 175, 80, 0.1);
-  transform: scale(1.1);
   color: #4CAF50;
 }
 
 .cancel-edit-btn:hover {
   background: rgba(244, 67, 54, 0.1);
-  transform: scale(1.1);
   color: #F44336;
 }
 
@@ -693,7 +649,6 @@
 
 .delete-design-btn:hover {
   background: #ffebee;
-  transform: scale(1.1);
 }
 
 .design-info {
@@ -709,18 +664,19 @@
 }
 
 .meta-tag {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: rgba(255, 165, 0, 0.2);
   color: white;
   padding: 6px 12px;
   border-radius: 15px;
   font-size: 0.8rem;
   font-weight: 500;
+  border: 1px solid rgba(255, 165, 0, 0.3);
 }
 
 .design-beads h5 {
   font-size: 1rem;
   font-weight: bold;
-  color: #333;
+  color: white;
   margin-bottom: 10px;
 }
 
@@ -731,17 +687,18 @@
 }
 
 .bead-tag {
-  background: linear-gradient(135deg, #FFE66D, #FFD93D);
-  color: #333;
+  background: rgba(255, 165, 0, 0.2);
+  color: white;
   padding: 4px 8px;
   border-radius: 10px;
   font-size: 0.8rem;
   font-weight: 500;
+  border: 1px solid rgba(255, 165, 0, 0.3);
 }
 
 .design-date {
   font-size: 0.85rem;
-  color: #666;
+  color: rgba(255, 255, 255, 0.6);
   font-style: italic;
 }
 
@@ -750,25 +707,26 @@
 /* 空狀態樣式 */
 .saved-designs-empty {
   text-align: center;
-  color: #666;
+  color: rgba(255, 255, 255, 0.8);
   padding: 60px 20px;
 }
 
 .empty-content h3 {
   font-size: 1.8rem;
   font-weight: bold;
-  color: #333;
+  color: white;
   margin-bottom: 15px;
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: linear-gradient(45deg, #ff6b6b, #ffa500);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
 .empty-content p {
   font-size: 1.1rem;
   margin-bottom: 30px;
-  color: #666;
+  color: rgba(255, 255, 255, 0.8);
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
@@ -1324,28 +1282,8 @@
     min-height: 220px;
   }
   
-  /* 手機版串珠盤額外修復 */
-  .design-name::after {
-    position: static;
-    right: auto;
-    top: auto;
-    transform: none;
-    margin-left: 8px;
-    opacity: 1;
-  }
-  
-  .design-name:hover::after {
-    right: auto;
-    transform: none;
-  }
-  
-  /* 修復編輯按鈕定位 */
+  /* 手機版編輯樣式 */
   .edit-name-container {
-    position: relative;
-    width: 100%;
-  }
-  
-  .edit-name-input-row {
     position: relative;
     width: 100%;
   }
@@ -1353,13 +1291,6 @@
   .edit-name-input {
     width: 100%;
     box-sizing: border-box;
-  }
-  
-  .char-count {
-    position: static;
-    margin-top: 5px;
-    width: 100%;
-    text-align: center;
   }
 }
 
@@ -1487,26 +1418,9 @@
     min-height: 200px;
   }
   
-  /* 小螢幕串珠盤額外修復 */
-  .design-name::after {
-    font-size: 0.7rem;
-    margin-left: 6px;
-  }
+
   
-  .edit-name-input {
-    font-size: 0.9rem;
-    padding: 6px 10px;
-  }
-  
-  .edit-tip {
-    font-size: 0.7rem;
-    padding: 3px 6px;
-  }
-  
-  .char-count {
-    font-size: 0.7rem;
-    padding: 2px 4px;
-  }
+
 }
 
 /* 觸控優化 */
