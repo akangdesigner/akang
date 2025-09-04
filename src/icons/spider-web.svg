@@ -1,0 +1,24 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 蜘蛛網背景圓 -->
+  <circle cx="32" cy="32" r="20" fill="#8B5CF6" stroke="#7C3AED" stroke-width="2"/>
+  
+  <!-- 蜘蛛網線條 -->
+  <g stroke="#A78BFA" stroke-width="2" fill="none">
+    <!-- 五邊形外框 -->
+    <path d="M32 12 L48 24 L42 44 L22 44 L16 24 Z"/>
+    
+    <!-- 內部線條 -->
+    <path d="M32 12 L32 44"/>
+    <path d="M48 24 L16 24"/>
+    <path d="M42 44 L22 44"/>
+    
+    <!-- 對角線 -->
+    <path d="M32 12 L48 24"/>
+    <path d="M32 12 L16 24"/>
+    <path d="M48 24 L42 44"/>
+    <path d="M16 24 L22 44"/>
+    
+    <!-- 中心點 -->
+    <circle cx="32" cy="32" r="2" fill="#A78BFA"/>
+  </g>
+</svg>

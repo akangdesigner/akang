@@ -1,0 +1,25 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 珠子手鍊 -->
+  <g transform="translate(32, 32)">
+    <!-- 粉色珠子 -->
+    <circle cx="-12" cy="-8" r="4" fill="#F472B6"/>
+    <circle cx="0" cy="-12" r="4" fill="#F472B6"/>
+    <circle cx="12" cy="-8" r="4" fill="#F472B6"/>
+    <circle cx="12" cy="8" r="4" fill="#F472B6"/>
+    
+    <!-- 紫色珠子 -->
+    <circle cx="-12" cy="8" r="4" fill="#8B5CF6"/>
+    <circle cx="0" cy="12" r="4" fill="#8B5CF6"/>
+    <circle cx="12" cy="8" r="4" fill="#8B5CF6"/>
+    <circle cx="-12" cy="-8" r="4" fill="#8B5CF6"/>
+    
+    <!-- 橙色珠子 -->
+    <circle cx="0" cy="0" r="4" fill="#FB923C"/>
+    <circle cx="-12" cy="0" r="4" fill="#FB923C"/>
+    <circle cx="12" cy="0" r="4" fill="#FB923C"/>
+    <circle cx="0" cy="-8" r="4" fill="#FB923C"/>
+    
+    <!-- 連接線 -->
+    <path d="M-12,-8 L0,-12 L12,-8 L12,8 L0,12 L-12,8 L-12,-8" stroke="#6B7280" stroke-width="1" fill="none"/>
+  </g>
+</svg>

@@ -1,0 +1,19 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 調色盤主體 -->
+  <path d="M32 8 C40 8 48 16 48 24 C48 32 40 40 32 40 C24 40 16 32 16 24 C16 16 24 8 32 8 Z" 
+        fill="#8B5CF6" stroke="#7C3AED" stroke-width="2"/>
+  
+  <!-- 調色盤缺口 -->
+  <path d="M32 40 L28 44 L36 44 Z" fill="#8B5CF6"/>
+  
+  <!-- 顏料點 -->
+  <circle cx="24" cy="20" r="3" fill="#F472B6"/>
+  <circle cx="40" cy="20" r="3" fill="#60A5FA"/>
+  <circle cx="28" cy="28" r="3" fill="#FBBF24"/>
+  <circle cx="36" cy="28" r="3" fill="#10B981"/>
+  <circle cx="32" cy="32" r="3" fill="#EF4444"/>
+  
+  <!-- 畫筆 -->
+  <rect x="50" y="12" width="2" height="16" fill="#6B7280" stroke="#4B5563" stroke-width="1"/>
+  <rect x="48" y="10" width="6" height="4" fill="#FBBF24" stroke="#F59E0B" stroke-width="1"/>
+</svg>

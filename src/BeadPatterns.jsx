@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './BeadPatterns.css';
+import IconComponent from './IconComponent';
 
 const BeadPatterns = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -56,10 +57,10 @@ const BeadPatterns = () => {
   ];
 
   const categories = [
-    { id: 'all', name: '全部', icon: '🌟' },
-    { id: 'bracelet', name: '手鍊', icon: '💫' },
-    { id: 'necklace', name: '項鍊', icon: '✨' },
-    { id: 'earring', name: '耳環', icon: '💎' },
+    { id: 'all', name: '全部', icon: 'moon-stars' },
+    { id: 'bracelet', name: '手鍊', icon: 'bead-bracelet' },
+    { id: 'necklace', name: '項鍊', icon: 'sparkle' },
+    { id: 'earring', name: '耳環', icon: 'crystal-pendant' },
     { id: 'ring', name: '戒指', icon: '💍' }
   ];
 
@@ -70,7 +71,7 @@ const BeadPatterns = () => {
   return (
     <div className="bead-patterns-container">
       <div className="patterns-header">
-        <h1>📚 珠子圖案庫</h1>
+        <h1><IconComponent name="book-guide" size={32} /> 珠子圖案庫</h1>
         <p>探索各種精美的珠子製作圖案和設計靈感</p>
       </div>
 
@@ -118,7 +119,7 @@ const BeadPatterns = () => {
               
               <div className="pattern-actions">
                 <button className="action-btn view-btn">
-                  👁️ 查看詳情
+                  <IconComponent name="mystic-eye" size={16} /> 查看詳情
                 </button>
                 <button className="action-btn download-btn">
                   📥 下載圖案
@@ -130,12 +131,12 @@ const BeadPatterns = () => {
 
         {/* 創建新圖案 */}
         <div className="create-pattern-section">
-          <h2>🎨 創建自己的圖案</h2>
+          <h2><IconComponent name="art-palette" size={24} /> 創建自己的圖案</h2>
           <div className="create-pattern-card">
             <div className="pattern-creator">
               <h3>設計工具</h3>
               <div className="creator-tools">
-                <button className="tool-btn">🎨 顏色選擇器</button>
+                <button className="tool-btn"><IconComponent name="art-palette" size={16} /> 顏色選擇器</button>
                 <button className="tool-btn">📏 尺寸調整</button>
                 <button className="tool-btn">🔄 圖案預覽</button>
                 <button className="tool-btn">💾 儲存設計</button>
