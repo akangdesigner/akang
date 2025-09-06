@@ -47,9 +47,9 @@ const ModernBeadRatingApp = () => {
   const mockBeadDesign = {
     designName: '神秘能量串珠',
     beads: [
-      { name: '淺藍水晶珠', type: '水晶珠', image: 'light-blue-bead-ID15.png' },
+      { name: '淺藍水晶珠', type: '水晶珠', image: 'light-blue-bead-ID17.png' },
       { name: '粉色玻璃珠', type: '玻璃珠', image: 'pink-bead-ID7.png' },
-      { name: '紫色米珠', type: '米珠', image: 'dark-purple-bead-ID8.png' }
+      { name: '紫色米珠', type: '米珠', image: 'dark-purple-bead-ID10.png' }
     ],
     timestamp: Date.now()
   };

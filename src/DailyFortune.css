@@ -203,6 +203,7 @@
 .show-fortune-btn {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   padding: 12px 20px;
   background: linear-gradient(135deg, #8B5CF6, #A855F7);
@@ -213,8 +214,9 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 15px;
+  margin: 15px auto 0;
   box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+  width: fit-content;
 }
 
 .show-fortune-btn:hover {
@@ -236,6 +238,78 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* 雙面向運勢顯示樣式 */
+.two-aspect-fortune-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 統一的運勢卡片樣式 */
+.fortune-card {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.fortune-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* 今日宜卡片 - 綠色主題 */
+.fortune-card.top-fortune {
+  border-left: 6px solid #10B981;
+  border-top: 2px solid rgba(16, 185, 129, 0.3);
+  border-right: 2px solid rgba(16, 185, 129, 0.3);
+  border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+}
+
+/* 今日不宜卡片 - 紅色主題 */
+.fortune-card.bottom-fortune {
+  border-left: 6px solid #EF4444;
+  border-top: 2px solid rgba(239, 68, 68, 0.3);
+  border-right: 2px solid rgba(239, 68, 68, 0.3);
+  border-bottom: 2px solid rgba(239, 68, 68, 0.3);
+}
+
+
+.fortune-advice-card {
+  margin-top: 25px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+.advice-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.advice-text h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.advice-text p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
 }
 
 /* 單一運勢顯示樣式 */
@@ -458,18 +532,7 @@
   gap: 20px;
 }
 
-.fortune-card {
-  padding: 20px;
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-
-.fortune-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-}
+/* 移除重複的fortune-card定義，使用統一樣式 */
 
 .good-card {
   background: rgba(16, 185, 129, 0.1);
@@ -587,7 +650,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-bottom: 30px;
+  margin-bottom: 5px;
   font-size: 1.5rem;
   font-weight: 600;
   color: #fbbf24;
@@ -615,18 +678,7 @@
   margin: 0 auto;
 }
 
-/* 運勢卡片 */
-.fortune-card {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 25px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-}
+/* 移除重複的運勢卡片定義，使用統一樣式 */
 
 .fortune-card::before {
   content: '';
@@ -646,7 +698,6 @@
 
 .fortune-card:hover {
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   border-color: var(--card-color, #3B82F6);
 }
 
@@ -731,9 +782,31 @@
   opacity: 0.1;
 }
 
+/* 幸運資訊置中對齊 */
+.lucky-info-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.lucky-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.lucky-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 /* 珠子推薦區域 */
 .bead-recommendations-section {
-  margin-bottom: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .bead-recommendations-slider {
@@ -857,17 +930,13 @@
 
 .bead-image {
   width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    height: 70px;
+    object-fit: cover;
   transition: all 0.3s ease;
-  border: 3px solid rgba(255, 255, 255, 0.2);
 }
 
 .bead-recommendation:hover .bead-image {
-  transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1) rotate(5deg);
 }
 
 .bead-glow {
@@ -987,14 +1056,12 @@
   padding: 12px 8px;
   color: white;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+    transition: all 0.3s ease;
   border: 1px solid rgba(138, 43, 226, 0.3);
 }
 
 .nav-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(138, 43, 226, 0.4);
+    transform: translateY(-3px);
 }
 
 .nav-icon {
@@ -1075,7 +1142,37 @@
   .show-fortune-btn {
     padding: 8px 14px;
     font-size: 0.85rem;
-    margin-top: 10px;
+    margin: 10px auto 0;
+    width: fit-content;
+  }
+
+  .two-aspect-fortune-container {
+    padding: 5px;
+    margin: 0;
+    gap: 12px;
+  }
+
+  .fortune-card {
+    padding: 15px;
+  }
+
+
+  .fortune-advice-card {
+    margin-top: 15px;
+    padding: 12px;
+  }
+
+  .advice-content {
+    gap: 10px;
+  }
+
+  .advice-text h4 {
+    font-size: 1rem;
+  }
+
+  .advice-text p {
+    font-size: 0.95rem;
+    line-height: 1.5;
   }
 
   .single-fortune-container {
@@ -1155,7 +1252,36 @@
   .show-fortune-btn {
     padding: 10px 16px;
     font-size: 0.9rem;
-    margin-top: 12px;
+    margin: 12px auto 0;
+    width: fit-content;
+  }
+
+  .two-aspect-fortune-container {
+    padding: 10px;
+    margin: 0 5px;
+    gap: 15px;
+  }
+
+  .fortune-card {
+    padding: 20px;
+  }
+
+
+  .fortune-advice-card {
+    margin-top: 20px;
+    padding: 15px;
+  }
+
+  .advice-content {
+    gap: 12px;
+  }
+
+  .advice-text h4 {
+    font-size: 1.1rem;
+  }
+
+  .advice-text p {
+    font-size: 1rem;
   }
 
   .single-fortune-container {
