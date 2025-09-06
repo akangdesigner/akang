@@ -1416,24 +1416,29 @@ const BeadCabinet = () => {
     { id: 5, color: '#4ECDC4', name: '紅色', type: '玻璃珠', page: '/tutorial', shine: '#87CEEB', image: 'red-bead-ID5.png' },
     { id: 6, color: '#FFD700', name: '黃粉色', type: '玻璃珠', page: '/tutorial', shine: '#FFFACD', image: 'yellow-pink-bead-ID6.png' },
     { id: 7, color: '#87CEEB', name: '粉色', type: '玻璃珠', page: '/tutorial', shine: '#F0F8FF', image: 'pink-bead-ID7.png' },
-    { id: 8, color: '#98FB98', name: '深紫色', type: '水晶珠', page: '/patterns', shine: '#F0FFF0', image: 'dark-purple-bead-ID8.png' },
-    { id: 9, color: '#FFA07A', name: '金棕', type: '水晶珠', page: '/patterns', shine: '#FFD700', image: 'gold-brown-bead-ID9.png' },
-    { id: 10, color: '#FFB6C1', name: '紅色', type: '水晶珠', page: '/patterns', shine: '#FFF0F5', image: 'red-bead-ID10.png' },
-    { id: 11, color: '#F0E68C', name: '粉色', type: '水晶珠', page: '/tutorial', shine: '#FFF8DC', image: 'pink-bead-ID11.png' },
-    { id: 12, color: '#DC143C', name: '淡紫色', type: '水晶珠', page: '/patterns', shine: '#FFF0F5', image: 'light-purple-bead-ID12.png' },
-    { id: 13, color: '#40E0D0', name: '靛色', type: '水晶珠', page: '/tutorial', shine: '#F0FFFF', image: 'indigo-bead-ID13.png' },
-    { id: 14, color: '#98FB98', name: '天空藍', type: '水晶珠', page: '/patterns', shine: '#F0FFF0', image: 'sky-blue-bead-ID14.png' },
-    { id: 15, color: '#DDA0DD', name: '淺藍', type: '水晶珠', page: '/tutorial', shine: '#E6E6FA', image: 'light-blue-bead-ID15.png' },
-    { id: 16, color: '#DDA0DD', name: '紅棕', type: '木珠', page: '/patterns', shine: '#F8F8FF', image: 'red-brown-bead-ID16.png' },
-    { id: 17, color: '#F0E68C', name: '深棕', type: '木珠', page: '/tutorial', shine: '#FFFACD', image: 'dark-brown-bead-ID17.png' },
-    { id: 18, color: '#4682B4', name: '淺棕', type: '木珠', page: '/patterns', shine: '#F0F8FF', image: 'light-brown-bead-ID18.png' },
-    { id: 19, color: '#228B22', name: '黑色', type: '木珠', page: '/tutorial', shine: '#F0FFF0', image: 'black-bead-ID19.png' },
-    { id: 20, color: '#FF69B4', name: '白色', type: '珍珠', page: '/patterns', shine: '#FFF0F5', image: 'white-pearl-ID20.png' },
-    { id: 21, color: '#00CED1', name: '金色', type: '過渡珠', page: '/tutorial', shine: '#F0FFFF', image: 'gold-bead-ID21.png' },
-    { id: 22, color: '#FF4500', name: '銀色', type: '過渡珠', page: '/tutorial', shine: '#FFF5EE', image: 'silver-bead-ID22.png' },
-    { id: 23, color: '#32CD32', name: '黑色', type: '米珠', page: '/tutorial', shine: '#F0FFF0', image: 'black-bead-ID23.png' },
-    { id: 24, color: '#9370DB', name: '白色', type: '米珠', page: '/patterns', shine: '#F8F8FF', image: 'white-bead-ID24.png' },
-    { id: 25, color: '#FF6347', name: '酒紅', type: '米珠', page: '/patterns', shine: '#FFF5EE', image: 'tomato-red-bead-ID25.png' }
+    { id: 10, color: '#98FB98', name: '深紫色', type: '水晶珠', page: '/patterns', shine: '#F0FFF0', image: 'dark-purple-bead-ID8.png' },
+    { id: 11, color: '#FFA07A', name: '金棕', type: '水晶珠', page: '/patterns', shine: '#FFD700', image: 'gold-brown-bead-ID9.png' },
+    { id: 12, color: '#FFB6C1', name: '紅色', type: '水晶珠', page: '/patterns', shine: '#FFF0F5', image: 'red-bead-ID10.png' },
+    { id: 13, color: '#F0E68C', name: '粉色', type: '水晶珠', page: '/tutorial', shine: '#FFF8DC', image: 'pink-bead-ID11.png' },
+    { id: 14, color: '#DC143C', name: '淡紫色', type: '水晶珠', page: '/patterns', shine: '#FFF0F5', image: 'light-purple-bead-ID12.png' },
+    { id: 15, color: '#40E0D0', name: '靛色', type: '水晶珠', page: '/tutorial', shine: '#F0FFFF', image: 'indigo-bead-ID13.png' },
+    { id: 16, color: '#98FB98', name: '天空藍', type: '水晶珠', page: '/patterns', shine: '#F0FFF0', image: 'sky-blue-bead-ID14.png' },
+    { id: 17, color: '#DDA0DD', name: '淺藍', type: '水晶珠', page: '/tutorial', shine: '#E6E6FA', image: 'light-blue-bead-ID15.png' },
+    { id: 19, color: '#DDA0DD', name: '紅棕', type: '木珠', page: '/patterns', shine: '#F8F8FF', image: 'red-brown-bead-ID16.png' },
+    { id: 20, color: '#F0E68C', name: '深棕', type: '木珠', page: '/tutorial', shine: '#FFFACD', image: 'dark-brown-bead-ID17.png' },
+    { id: 21, color: '#4682B4', name: '淺棕', type: '木珠', page: '/patterns', shine: '#F0F8FF', image: 'light-brown-bead-ID18.png' },
+    { id: 22, color: '#228B22', name: '黑色', type: '木珠', page: '/tutorial', shine: '#F0FFF0', image: 'black-bead-ID19.png' },
+    { id: 23, color: '#228B22', name: '孔雀石', type: '天然礦石', page: '/patterns', shine: '#32CD32', image: 'malachite-bead-ID23.png' },
+    { id: 24, color: '#C0C0C0', name: '銀耀石', type: '天然礦石', page: '/tutorial', shine: '#E6E6FA', image: 'silver-shine-bead-ID24.png' },
+    { id: 25, color: '#87CEEB', name: '海藍寶', type: '天然礦石', page: '/patterns', shine: '#F0F8FF', image: 'aquamarine-bead-ID25.png' },
+    { id: 26, color: '#F0F8FF', name: '白月光', type: '天然礦石', page: '/tutorial', shine: '#FFFFFF', image: 'moonstone-bead-ID26.png' },
+    { id: 27, color: '#696969', name: '煙水晶', type: '天然礦石', page: '/patterns', shine: '#A9A9A9', image: 'smoky-quartz-bead-ID27.png' },
+    { id: 28, color: '#00CED1', name: '金色', type: '過渡珠', page: '/tutorial', shine: '#F0FFFF', image: 'gold-bead-ID21.png' },
+    { id: 29, color: '#FF4500', name: '銀色', type: '過渡珠', page: '/tutorial', shine: '#FFF5EE', image: 'silver-bead-ID22.png' },
+    { id: 30, color: '#F0F8FF', name: '白色', type: '珍珠', page: '/patterns', shine: '#FFFFFF', image: 'white-pearl-ID20.png' },
+    { id: 31, color: '#32CD32', name: '黑色', type: '米珠', page: '/tutorial', shine: '#F0FFF0', image: 'black-bead-ID23.png' },
+    { id: 32, color: '#9370DB', name: '白色', type: '米珠', page: '/patterns', shine: '#F8F8FF', image: 'white-bead-ID24.png' },
+    { id: 33, color: '#FF6347', name: '酒紅', type: '米珠', page: '/patterns', shine: '#FFF5EE', image: 'tomato-red-bead-ID25.png' }
   ];
   // 保留原有的四個櫃子分類系統
 
@@ -1616,7 +1621,10 @@ const BeadCabinet = () => {
     // 添加新設計
     const updatedDesigns = [...existingDesigns, design];
     
-    // 保存到串珠評分區的 localStorage 鍵
+    // 保存到串珠指南的推薦搭配頁面
+    localStorage.setItem('beadDesigns', JSON.stringify(updatedDesigns));
+    
+    // 同時保存到串珠評分區的 localStorage 鍵
     const ratingDesign = {
       designName: design.name,
       timestamp: Date.now(),
@@ -1635,15 +1643,15 @@ const BeadCabinet = () => {
       saveMessage += `\n圓形手鍊: 半徑${braceletStyle.radius}px, 線寬${braceletStyle.strokeWidth}px`;
     }
     
-    saveMessage += `\n\n您可以在串珠評分區的「你的串珠設計」中查看。`;
+    saveMessage += `\n\n您可以在串珠指南的「推薦搭配」頁面中查看。`;
 
     alert(saveMessage);
   };
 
   // 創建抽屜陣列 - 按類型分類
   const glassBeads = [];      // 玻璃珠 (7個)
-  const crystalBeads = [];    // 水晶珠 (9個)
-  const woodBeads = [];       // 木珠 (3個)
+  const crystalBeads = [];    // 水晶珠 (8個)
+  const woodBeads = [];       // 木珠區：木珠 (4個) + 天然礦石 (5個) = 9個
   const smallBeads = [];      // 小珠子：米珠、珍珠、過渡珠 (6個)
 
   // 分類珠子
@@ -1660,7 +1668,7 @@ const BeadCabinet = () => {
         id: `crystal-${index}`,
         ...beadData
       });
-    } else if (bead.type === '木珠') {
+    } else if (bead.type === '木珠' || bead.type === '天然礦石') {
       woodBeads.push({
         id: `wood-${index}`,
         ...beadData
@@ -1675,7 +1683,7 @@ const BeadCabinet = () => {
 
   console.log('玻璃珠數量:', glassBeads.length);
   console.log('水晶珠數量:', crystalBeads.length);
-  console.log('木珠數量:', woodBeads.length);
+  console.log('木珠區數量 (木珠+天然礦石):', woodBeads.length);
   console.log('小珠子數量:', smallBeads.length);
 
   return (
@@ -1921,7 +1929,7 @@ const BeadCabinet = () => {
               </div>
             </div>
 
-            {/* 木珠櫃子 */}
+            {/* 木珠區櫃子 (木珠 + 天然礦石) */}
             <div className="cabinet-unit wood-unit mb-4">
               <div className="cabinet-frame">
                 {woodBeads.map((drawer) => (
@@ -2363,7 +2371,7 @@ const BeadCabinet = () => {
 
             {/* 櫃子下半部分 */}
             <div className="cabinet-lower-section">
-              {/* 第三個櫃子：木珠 */}
+              {/* 第三個櫃子：木珠區 (木珠 + 天然礦石) */}
               <div className="cabinet-unit wood-unit">
                 <div className="cabinet-frame">
                   {woodBeads.map((drawer) => (

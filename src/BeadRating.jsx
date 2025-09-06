@@ -12,7 +12,7 @@ const BeadRating = () => {
   const [scores, setScores] = useState({
     love: 0,
     windfall: 0,
-    regularIncome: 0,
+    social: 0,
     career: 0,
     health: 0
   });
@@ -67,7 +67,7 @@ const BeadRating = () => {
         secondary: { category: 'career', name: '薄荷綠玻璃珠', score: 1, description: '事業自信' }
       },
       '黃色': { 
-        primary: { category: 'regularIncome', name: '黃色玻璃珠', score: 1, description: '淨化與平衡' },
+        primary: { category: 'social', name: '黃色玻璃珠', score: 1, description: '人際和諧' },
         secondary: { category: 'health', name: '黃色玻璃珠', score: 1, description: '身心淨化' }
       },
       '紅色': { 
@@ -89,12 +89,12 @@ const BeadRating = () => {
         secondary: { category: 'health', name: '紫色米珠', score: 1, description: '生命力' }
       },
       '淺綠': { 
-        primary: { category: 'regularIncome', name: '淺綠米珠', score: 1, description: '智慧與財富' },
+        primary: { category: 'social', name: '淺綠米珠', score: 1, description: '人際智慧' },
         secondary: { category: 'love', name: '淺綠米珠', score: 1, description: '智慧愛情' }
       },
       '米色': { 
         primary: { category: 'career', name: '米色米珠', score: 1, description: '保護與力量' },
-        secondary: { category: 'regularIncome', name: '米色米珠', score: 1, description: '財運保護' }
+        secondary: { category: 'social', name: '米色米珠', score: 1, description: '人際保護' }
       },
       '淺粉': { 
         primary: { category: 'health', name: '淺粉米珠', score: 1, description: '保護與平衡' },
@@ -102,7 +102,7 @@ const BeadRating = () => {
       },
       '天藍': { 
         primary: { category: 'love', name: '天藍米珠', score: 1, description: '溫柔與包容' },
-        secondary: { category: 'regularIncome', name: '天藍米珠', score: 1, description: '財運和諧' }
+        secondary: { category: 'social', name: '天藍米珠', score: 1, description: '人際和諧' }
       },
       '淡紫': { 
         primary: { category: 'windfall', name: '淡紫米珠', score: 1, description: '智慧與財運' },
@@ -113,7 +113,7 @@ const BeadRating = () => {
         secondary: { category: 'career', name: '淡紫色米珠', score: 1, description: '事業智慧' }
       },
       '金棕': { 
-        primary: { category: 'regularIncome', name: '金棕米珠', score: 1, description: '平靜與穩定' },
+        primary: { category: 'social', name: '金棕米珠', score: 1, description: '人際穩定' },
         secondary: { category: 'health', name: '金棕米珠', score: 1, description: '情緒穩定' }
       },
       '深藍': { 
@@ -138,7 +138,7 @@ const BeadRating = () => {
     let scores = {
       love: 3,        // 基礎分3分
       windfall: 3,    // 基礎分3分
-      regularIncome: 3, // 基礎分3分
+      social: 3,      // 基礎分3分
       career: 3,      // 基礎分3分
       health: 3       // 基礎分3分
     };
@@ -173,9 +173,9 @@ const BeadRating = () => {
           console.log('偏財加上主要面向分數: +0.5, 總分:', scores.windfall);
           break;
           
-        case 'regularIncome':
-          scores.regularIncome = Math.min(10, scores.regularIncome + 0.5);
-          console.log('正財加上主要面向分數: +0.5, 總分:', scores.regularIncome);
+        case 'social':
+          scores.social = Math.min(10, scores.social + 0.5);
+          console.log('人際加上主要面向分數: +0.5, 總分:', scores.social);
           break;
           
         case 'career':
@@ -205,9 +205,9 @@ const BeadRating = () => {
           console.log('偏財加上第二面向分數: +0.5, 總分:', scores.windfall);
           break;
           
-        case 'regularIncome':
-          scores.regularIncome = Math.min(10, scores.regularIncome + 0.5);
-          console.log('正財加上第二面向分數: +0.5, 總分:', scores.regularIncome);
+        case 'social':
+          scores.social = Math.min(10, scores.social + 0.5);
+          console.log('人際加上第二面向分數: +0.5, 總分:', scores.social);
           break;
           
         case 'career':
@@ -255,12 +255,12 @@ const BeadRating = () => {
       advice += '偏財運勢穩定，建議保持當前的理財方式，穩健的投資會帶來可觀的收益。';
     }
     
-    if (scores.regularIncome >= 8) {
-      advice += '正財運勢極佳，穩定收入將大幅增長，你的努力將得到豐厚的回報。';
-    } else if (scores.regularIncome >= 6) {
-      advice += '正財運勢穩定，繼續保持當前的理財方式，穩健的投資會帶來可觀的收益。';
-    } else if (scores.regularIncome >= 4) {
-      advice += '正財運勢良好，建議保持耐心，穩定的收入會逐步增長。';
+    if (scores.social >= 8) {
+      advice += '人際運勢非常旺盛！你將在社交場合大放異彩，結識許多貴人朋友，人脈關係將為你帶來意想不到的機會。';
+    } else if (scores.social >= 6) {
+      advice += '人際運勢穩定發展，你的社交能力正在提升，建議多參加聚會活動，拓展人脈網絡。';
+    } else if (scores.social >= 4) {
+      advice += '人際運勢良好，建議保持開放的心態，主動與人交流，建立良好的關係。';
     }
     
     if (scores.career >= 8) {
@@ -427,12 +427,12 @@ const BeadRating = () => {
          }
        }
        
-       // 正財運勢預測
-       if (scores.regularIncome > 5) {
-         if (scores.regularIncome >= 8) {
-           advice += '正財運勢非常穩定！你的工作收入將大幅增長，升職加薪的機會就在眼前，你的努力將得到豐厚的回報。';
-         } else if (scores.regularIncome >= 6) {
-           advice += '正財運勢穩定，繼續保持當前的理財方式，穩健的投資會帶來可觀的收益。';
+       // 人際運勢預測
+       if (scores.social > 5) {
+         if (scores.social >= 8) {
+           advice += '人際運勢非常旺盛！你將在社交場合大放異彩，結識許多貴人朋友，人脈關係將為你帶來意想不到的機會。';
+         } else if (scores.social >= 6) {
+           advice += '人際運勢穩定發展，你的社交能力正在提升，建議多參加聚會活動，拓展人脈網絡。';
          }
        }
        
@@ -833,8 +833,8 @@ const BeadRating = () => {
       // 右下：偏財 (右下方向，30度角)
       { x: centerX + (scores.windfall / 10) * 86.6, y: centerY + (scores.windfall / 10) * 50 },
       
-      // 底部：正財 (y軸正方向)
-      { x: centerX, y: centerY + (scores.regularIncome / 10) * 100 },
+      // 底部：人際 (y軸正方向)
+      { x: centerX, y: centerY + (scores.social / 10) * 100 },
       
       // 左下：事業 (左下方向，30度角)
       { x: centerX - (scores.career / 10) * 86.6, y: centerY + (scores.career / 10) * 50 },
@@ -1251,7 +1251,7 @@ const BeadRating = () => {
                      <text x="175" y="60" className="axis-label" textAnchor="middle">設計感 ({scores.love})</text>
                      <text x="290" y="130" className="axis-label" textAnchor="start">愛情 ({scores.love})</text>
                      <text x="290" y="230" className="axis-label" textAnchor="start">偏財 ({scores.windfall})</text>
-                     <text x="175" y="300" className="axis-label" textAnchor="middle">正財 ({scores.regularIncome})</text>
+                     <text x="175" y="300" className="axis-label" textAnchor="middle">人際 ({scores.social})</text>
                      <text x="60" y="230" className="axis-label" textAnchor="end">事業 ({scores.career})</text>
                      <text x="60" y="130" className="axis-label" textAnchor="end">健康 ({scores.health})</text>
                   </svg>

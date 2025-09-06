@@ -191,10 +191,16 @@ const IconComponent = ({ name, size = 24, className = '', style = {} }) => {
     'star-rating': (
       <svg {...iconProps}>
         <path d="M32 8 L36 24 L52 24 L40 36 L44 52 L32 44 L20 52 L24 36 L12 24 L28 24 Z" 
-              fill="#FBBF24" stroke="#F59E0B" strokeWidth="2"/>
+              fill="#8B5CF6" stroke="#7C3AED" strokeWidth="2"/>
         <path d="M32 12 L34 22 L42 22 L36 28 L38 36 L32 32 L26 36 L28 28 L22 22 L30 22 Z" 
-              fill="#FDE047"/>
-        <circle cx="32" cy="32" r="3" fill="#FEF3C7"/>
+              fill="#A78BFA"/>
+        <circle cx="32" cy="32" r="3" fill="#C4B5FD"/>
+        <g transform="translate(32, 32)">
+          <circle cx="0" cy="-8" r="1" fill="#FBBF24"/>
+          <circle cx="8" cy="0" r="1" fill="#FBBF24"/>
+          <circle cx="0" cy="8" r="1" fill="#FBBF24"/>
+          <circle cx="-8" cy="0" r="1" fill="#FBBF24"/>
+        </g>
       </svg>
     ),
     
@@ -333,6 +339,164 @@ const IconComponent = ({ name, size = 24, className = '', style = {} }) => {
       <svg {...iconProps}>
         <path d="M40 16 L24 32 L40 48" stroke="#8B5CF6" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
         <path d="M24 32 L40 32" stroke="#8B5CF6" strokeWidth="4" strokeLinecap="round"/>
+      </svg>
+    ),
+
+    // 新增的串珠指南專用圖標
+    'gemstone': (
+      <svg {...iconProps}>
+        <circle cx="32" cy="32" r="16" fill="#8B5CF6" stroke="#7C3AED" strokeWidth="2"/>
+        <path d="M32 16 L40 24 L32 32 L24 24 Z" fill="#A78BFA"/>
+        <path d="M32 32 L40 40 L32 48 L24 40 Z" fill="#A78BFA"/>
+        <path d="M16 32 L24 24 L32 32 L24 40 Z" fill="#C4B5FD"/>
+        <path d="M48 32 L40 24 L32 32 L40 40 Z" fill="#C4B5FD"/>
+        <circle cx="32" cy="32" r="4" fill="#FBBF24"/>
+        <ellipse cx="28" cy="28" rx="2" ry="3" fill="#FDE047" opacity="0.8"/>
+        <ellipse cx="36" cy="36" rx="2" ry="3" fill="#FDE047" opacity="0.8"/>
+      </svg>
+    ),
+
+    'heart': (
+      <svg {...iconProps}>
+        <path d="M32 12 C28 8 20 8 20 16 C20 24 32 36 32 36 C32 36 44 24 44 16 C44 8 36 8 32 12 Z" 
+              fill="#F472B6" stroke="#EC4899" strokeWidth="2"/>
+        <path d="M32 16 C30 14 26 14 26 18 C26 22 32 28 32 28 C32 28 38 22 38 18 C38 14 34 14 32 16 Z" 
+              fill="#F9A8D4"/>
+        <circle cx="28" cy="20" r="1" fill="#FDE047"/>
+        <circle cx="36" cy="20" r="1" fill="#FDE047"/>
+        <ellipse cx="32" cy="24" rx="2" ry="1" fill="#FEF3C7" opacity="0.6"/>
+      </svg>
+    ),
+
+    'four-pointed-star': (
+      <svg {...iconProps}>
+        <path d="M32 8 L36 24 L52 24 L40 36 L44 52 L32 44 L20 52 L24 36 L12 24 L28 24 Z" 
+              fill="#FBBF24" stroke="#F59E0B" strokeWidth="2"/>
+        <path d="M32 12 L34 22 L42 22 L36 28 L38 36 L32 32 L26 36 L28 28 L22 22 L30 22 Z" 
+              fill="#FDE047"/>
+        <circle cx="32" cy="32" r="3" fill="#FEF3C7"/>
+        <g transform="translate(32, 32)">
+          <circle cx="0" cy="-8" r="1" fill="#F59E0B"/>
+          <circle cx="8" cy="0" r="1" fill="#F59E0B"/>
+          <circle cx="0" cy="8" r="1" fill="#F59E0B"/>
+          <circle cx="-8" cy="0" r="1" fill="#F59E0B"/>
+        </g>
+      </svg>
+    ),
+
+    'magic-circle': (
+      <svg {...iconProps}>
+        <circle cx="32" cy="32" r="20" fill="#8B5CF6" stroke="#7C3AED" strokeWidth="2"/>
+        <g stroke="#A78BFA" strokeWidth="2" fill="none">
+          <path d="M32 12 L48 24 L42 44 L22 44 L16 24 Z"/>
+          <path d="M32 12 L32 44"/>
+          <path d="M48 24 L16 24"/>
+          <path d="M42 44 L22 44"/>
+          <path d="M32 12 L48 24"/>
+          <path d="M32 12 L16 24"/>
+          <path d="M48 24 L42 44"/>
+          <path d="M16 24 L22 44"/>
+          <circle cx="32" cy="32" r="4" fill="#A78BFA"/>
+          <circle cx="32" cy="32" r="2" fill="#FBBF24"/>
+        </g>
+      </svg>
+    ),
+
+    'bead-string': (
+      <svg {...iconProps}>
+        <g transform="translate(32, 32)">
+          <circle cx="-16" cy="0" r="3" fill="#F472B6"/>
+          <circle cx="-8" cy="0" r="3" fill="#8B5CF6"/>
+          <circle cx="0" cy="0" r="3" fill="#FBBF24"/>
+          <circle cx="8" cy="0" r="3" fill="#60A5FA"/>
+          <circle cx="16" cy="0" r="3" fill="#10B981"/>
+          <path d="M-16,0 L-8,0 M-8,0 L0,0 M0,0 L8,0 M8,0 L16,0" 
+                stroke="#6B7280" strokeWidth="1" fill="none"/>
+        </g>
+      </svg>
+    ),
+
+    'crystal-heart': (
+      <svg {...iconProps}>
+        <path d="M32 8 C28 4 20 4 20 12 C20 20 32 32 32 32 C32 32 44 20 44 12 C44 4 36 4 32 8 Z" 
+              fill="#8B5CF6" stroke="#7C3AED" strokeWidth="2"/>
+        <path d="M32 12 C30 10 26 10 26 14 C26 18 32 24 32 24 C32 24 38 18 38 14 C38 10 34 10 32 12 Z" 
+              fill="#A78BFA"/>
+        <ellipse cx="28" cy="16" rx="2" ry="3" fill="#FBBF24" opacity="0.8"/>
+        <ellipse cx="36" cy="16" rx="2" ry="3" fill="#FBBF24" opacity="0.8"/>
+        <circle cx="32" cy="20" r="1" fill="#FDE047"/>
+      </svg>
+    ),
+
+    'mystic-symbol': (
+      <svg {...iconProps}>
+        <circle cx="32" cy="32" r="20" fill="#8B5CF6" stroke="#7C3AED" strokeWidth="2"/>
+        <g stroke="#A78BFA" strokeWidth="2" fill="none">
+          <path d="M32 12 L48 24 L42 44 L22 44 L16 24 Z"/>
+          <path d="M32 12 L32 44"/>
+          <path d="M48 24 L16 24"/>
+          <path d="M42 44 L22 44"/>
+          <circle cx="32" cy="32" r="6" fill="none"/>
+          <circle cx="32" cy="32" r="3" fill="#FBBF24"/>
+        </g>
+        <g transform="translate(32, 20)">
+          <path d="M0,-4 L1,-1 L4,-1 L2,1 L3,4 L0,2 L-3,4 L-2,1 L-4,-1 L-1,-1 Z" fill="#FBBF24"/>
+        </g>
+      </svg>
+    ),
+
+    'bead-pattern': (
+      <svg {...iconProps}>
+        <g transform="translate(32, 32)">
+          <circle cx="-12" cy="-8" r="4" fill="#F472B6"/>
+          <circle cx="0" cy="-12" r="4" fill="#8B5CF6"/>
+          <circle cx="12" cy="-8" r="4" fill="#FBBF24"/>
+          <circle cx="12" cy="8" r="4" fill="#60A5FA"/>
+          <circle cx="-12" cy="8" r="4" fill="#10B981"/>
+          <circle cx="0" cy="12" r="4" fill="#F59E0B"/>
+          <circle cx="0" cy="0" r="4" fill="#8B5CF6"/>
+          <path d="M-12,-8 L0,-12 L12,-8 L12,8 L0,12 L-12,8 L-12,-8" 
+                stroke="#6B7280" strokeWidth="1" fill="none"/>
+        </g>
+      </svg>
+    ),
+
+    'energy-flow': (
+      <svg {...iconProps}>
+        <circle cx="32" cy="32" r="20" fill="#8B5CF6" stroke="#7C3AED" strokeWidth="2"/>
+        <g stroke="#A78BFA" strokeWidth="2" fill="none">
+          <path d="M12 32 Q20 20 28 32 Q36 44 44 32"/>
+          <path d="M12 32 Q20 44 28 32 Q36 20 44 32"/>
+          <circle cx="20" cy="32" r="2" fill="#FBBF24"/>
+          <circle cx="32" cy="32" r="3" fill="#FBBF24"/>
+          <circle cx="44" cy="32" r="2" fill="#FBBF24"/>
+        </g>
+      </svg>
+    ),
+
+    'bead-craft': (
+      <svg {...iconProps}>
+        <rect x="16" y="20" width="32" height="24" rx="4" fill="#8B5CF6" stroke="#7C3AED" strokeWidth="2"/>
+        <rect x="20" y="24" width="24" height="16" fill="#A78BFA" opacity="0.8"/>
+        <circle cx="24" cy="28" r="2" fill="#FBBF24"/>
+        <circle cx="32" cy="28" r="2" fill="#60A5FA"/>
+        <circle cx="40" cy="28" r="2" fill="#F472B6"/>
+        <circle cx="24" cy="36" r="2" fill="#10B981"/>
+        <circle cx="32" cy="36" r="2" fill="#F59E0B"/>
+        <circle cx="40" cy="36" r="2" fill="#8B5CF6"/>
+        <rect x="22" y="32" width="20" height="1" fill="#A78BFA" opacity="0.6"/>
+      </svg>
+    ),
+
+    'mystic-crystal': (
+      <svg {...iconProps}>
+        <path d="M32 8 L40 16 L48 16 L42 22 L44 30 L36 26 L28 30 L30 22 L24 16 L32 16 Z" 
+              fill="#8B5CF6" stroke="#7C3AED" strokeWidth="2"/>
+        <path d="M32 12 L36 16 L40 16 L38 18 L40 22 L36 20 L32 22 L28 20 L30 18 L28 16 Z" 
+              fill="#A78BFA"/>
+        <ellipse cx="32" cy="20" rx="2" ry="4" fill="#FBBF24" opacity="0.8"/>
+        <ellipse cx="36" cy="18" rx="1" ry="2" fill="#FDE047" opacity="0.6"/>
+        <ellipse cx="28" cy="18" rx="1" ry="2" fill="#FDE047" opacity="0.6"/>
       </svg>
     )
   };

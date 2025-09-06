@@ -2,7 +2,7 @@
 .bead-guide-container {
   min-height: 100vh;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  padding: 20px;
+  padding: 8px;
   padding-bottom: 120px;
   font-family: 'Arial', sans-serif;
   color: white;
@@ -140,6 +140,12 @@
   flex-shrink: 0;
 }
 
+/* 米珠圖片特殊縮小 */
+.material-card[data-material="seed"] .material-icon {
+  width: 40px !important;
+  height: 40px !important;
+}
+
 .material-icon img {
   width: 100% !important;
   height: 100% !important;
@@ -152,6 +158,8 @@
   color: #333;
   margin: 0;
   line-height: 1.2;
+  margin-left: -15px;
+  margin-top: 15px;
 }
 
 .material-description {
@@ -291,19 +299,21 @@
 
 /* 顏色卡片 */
 .color-card {
-  background: white;
+  background: linear-gradient(135deg, #f8f4ff 0%, #f3f0ff 100%);
   border-radius: 15px;
   padding: 25px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  border: 3px solid;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.15);
+  border: 2px solid rgba(139, 92, 246, 0.2);
   transition: all 0.3s ease;
   min-height: 350px;
   overflow: visible;
+  backdrop-filter: blur(10px);
 }
 
 .color-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.25);
+  border-color: rgba(139, 92, 246, 0.4);
 }
 
 .color-header {
@@ -333,8 +343,110 @@
 .color-header h3 {
   font-size: 1.3rem;
   font-weight: bold;
-  color: #333;
+  color: #4C1D95;
   flex: 1;
+  margin-left: -15px;
+  margin-top: 20px;
+}
+
+/* 紅色系卡片 */
+.color-card[data-color="red"] .color-content p {
+  color: #EF4444;
+}
+
+.color-card[data-color="red"] .occasion-tag {
+  background: linear-gradient(135deg, #FEE2E2, #FECACA);
+  color: #DC2626;
+}
+
+.color-card[data-color="red"] .combination-tag {
+  background: linear-gradient(135deg, #FEF2F2, #FEE2E2);
+  color: #DC2626;
+}
+
+.color-card[data-color="red"] .bead-tag {
+  background: linear-gradient(135deg, #FEE2E2, #FECACA);
+  color: #DC2626;
+}
+
+/* 藍色系卡片 */
+.color-card[data-color="blue"] .color-content p {
+  color: #3B82F6;
+}
+
+.color-card[data-color="blue"] .occasion-tag {
+  background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+  color: #2563EB;
+}
+
+.color-card[data-color="blue"] .combination-tag {
+  background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+  color: #2563EB;
+}
+
+.color-card[data-color="blue"] .bead-tag {
+  background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+  color: #2563EB;
+}
+
+/* 綠色系卡片 */
+.color-card[data-color="green"] .color-content p {
+  color: #10B981;
+}
+
+.color-card[data-color="green"] .occasion-tag {
+  background: linear-gradient(135deg, #DCFCE7, #BBF7D0);
+  color: #059669;
+}
+
+.color-card[data-color="green"] .combination-tag {
+  background: linear-gradient(135deg, #F0FDF4, #DCFCE7);
+  color: #059669;
+}
+
+.color-card[data-color="green"] .bead-tag {
+  background: linear-gradient(135deg, #DCFCE7, #BBF7D0);
+  color: #059669;
+}
+
+/* 紫色系卡片 */
+.color-card[data-color="purple"] .color-content p {
+  color: #8B5CF6;
+}
+
+.color-card[data-color="purple"] .occasion-tag {
+  background: linear-gradient(135deg, #E9D5FF, #DDD6FE);
+  color: #7C3AED;
+}
+
+.color-card[data-color="purple"] .combination-tag {
+  background: linear-gradient(135deg, #F3F0FF, #E9D5FF);
+  color: #7C3AED;
+}
+
+.color-card[data-color="purple"] .bead-tag {
+  background: linear-gradient(135deg, #E9D5FF, #DDD6FE);
+  color: #7C3AED;
+}
+
+/* 黃色系卡片 */
+.color-card[data-color="yellow"] .color-content p {
+  color: #F59E0B;
+}
+
+.color-card[data-color="yellow"] .occasion-tag {
+  background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+  color: #D97706;
+}
+
+.color-card[data-color="yellow"] .combination-tag {
+  background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
+  color: #D97706;
+}
+
+.color-card[data-color="yellow"] .bead-tag {
+  background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+  color: #D97706;
 }
 
 .color-sample {
@@ -356,12 +468,12 @@
 .color-content h4 {
   font-size: 1rem;
   font-weight: bold;
-  color: #333;
+  color: #4C1D95;
   margin-bottom: 8px;
 }
 
 .color-content p {
-  color: #666;
+  color: #6B46C1;
   font-size: 0.9rem;
   line-height: 1.4;
 }
@@ -375,28 +487,50 @@
 }
 
 .occasion-tag {
-  background: linear-gradient(135deg, #4ECDC4, #44A08D);
+  background: linear-gradient(135deg, #A78BFA, #C4B5FD);
   color: white;
   padding: 6px 10px;
   border-radius: 15px;
   font-size: 0.8rem;
+  box-shadow: 0 2px 8px rgba(167, 139, 250, 0.3);
+  transition: all 0.3s ease;
+}
+
+.occasion-tag:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(167, 139, 250, 0.4);
 }
 
 .combination-tag {
-  background: linear-gradient(135deg, #a78bfa, #c084fc);
-  color: white;
+  background: linear-gradient(135deg, #DDD6FE, #C4B5FD);
+  color: #6B46C1;
   padding: 6px 10px;
   border-radius: 15px;
   font-size: 0.8rem;
+  box-shadow: 0 2px 8px rgba(196, 181, 253, 0.3);
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.combination-tag:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(196, 181, 253, 0.4);
 }
 
 .bead-tag {
-  background: linear-gradient(135deg, #fbbf24, #d97706);
-  color: #333;
+  background: linear-gradient(135deg, #8B5CF6, #A855F7);
+  color: white;
   padding: 6px 10px;
   border-radius: 15px;
   font-size: 0.8rem;
   font-weight: 500;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+  transition: all 0.3s ease;
+}
+
+.bead-tag:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
 }
 
 /* 頁腳 */
@@ -425,94 +559,83 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* 推薦搭配分頁 */
+
+
+/* 推薦搭配頁面樣式 */
 .recommendations-page {
+  padding: 20px;
+  min-height: 100vh;
+  color: #ffffff;
+}
+
+.recommendations-container {
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.recommendations-header {
-  text-align: center;
-  margin-bottom: 40px;
-  color: #333;
-}
-
-.recommendations-header h2 {
-  font-size: 2.2rem;
-  font-weight: bold;
-  background: linear-gradient(45deg, #ff6b6b, #ffa500);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 15px;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-.recommendations-header p {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-/* 推薦搭配預留空間 */
-.recommendations-container {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 40px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  min-height: 500px;
-}
-
-/* 保存的設計樣式 */
 .saved-designs {
-  color: white;
+  margin-bottom: 30px;
 }
 
 .saved-designs h3 {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 30px;
+  color: #8b5cf6;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
   text-align: center;
-  background: linear-gradient(45deg, #ff6b6b, #ffa500);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .designs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 25px;
-}
-
-.design-card {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-
-.design-content {
-  display: flex;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 20px;
-  align-items: flex-start;
+  margin-top: 20px;
 }
 
-.design-info {
-  flex: 1;
-  min-width: 0;
+.saved-designs-empty {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.empty-content h3 {
+  color: #8b5cf6;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.empty-content p {
+  color: #a78bfa;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  opacity: 0.7;
+}
+
+/* 推薦搭配卡片樣式 */
+.design-card {
+  background: rgba(173, 62, 233, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .design-card:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 165, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.design-content {
+  position: relative;
+  z-index: 1;
 }
 
 .design-header {
@@ -520,386 +643,185 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid #e9ecef;
-}
-
-.design-header h4 {
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: white;
-  margin: 0;
-}
-
-/* 名稱顯示容器樣式 */
-.name-display-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .design-name {
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 5px 8px;
-  border-radius: 8px;
+  color: #8b5cf6;
+  font-size: 1.2rem;
+  font-weight: 600;
   margin: 0;
-  position: relative;
-  user-select: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .design-name:hover {
-  background: rgba(255, 165, 0, 0.1);
-  color: #ffa500;
+  color: #a78bfa;
 }
 
-.edit-name-btn {
-  background: none;
-  border: none;
-  font-size: 1rem;
+.edit-name-btn, .delete-design-btn {
+  background: rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 6px;
+  padding: 6px 8px;
+  color: #8b5cf6;
   cursor: pointer;
-  padding: 5px;
-  border-radius: 5px;
   transition: all 0.3s ease;
-  opacity: 0.7;
+  margin-left: 8px;
 }
 
-.edit-name-btn:hover {
-  opacity: 1;
-  background: rgba(255, 165, 0, 0.1);
+.edit-name-btn:hover, .delete-design-btn:hover {
+  background: rgba(139, 92, 246, 0.3);
+  border-color: rgba(139, 92, 246, 0.5);
 }
 
-/* 編輯名稱容器樣式 */
-.edit-name-container {
+.basic-settings {
+  margin-bottom: 15px;
+}
+
+.basic-settings h5 {
+  color: #8b5cf6;
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.design-meta {
   display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
   align-items: center;
-  gap: 10px;
-  flex: 1;
-  max-width: 300px;
+}
+
+.bead-types {
+  margin-bottom: 15px;
+}
+
+.bead-types h5 {
+  color: #8b5cf6;
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.bead-type-list {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.bead-type-tag {
+  background: linear-gradient(135deg, #a78bfa, #c4b5fd);
+  color: #ffffff;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+}
+
+.meta-tag-small {
+  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+  color: #ffffff;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.design-description {
+  background: rgba(139, 92, 246, 0.05);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.design-description h5 {
+  color: #8b5cf6;
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.design-description p {
+  color: #a78bfa;
+  margin: 0;
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
+.design-beads {
+  background: rgba(167, 139, 250, 0.05);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.design-beads h5 {
+  color: #8b5cf6;
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.design-date {
+  color: #8b5cf6;
+  font-size: 0.85rem;
+  text-align: right;
+  padding-top: 10px;
+  border-top: 1px solid rgba(139, 92, 246, 0.3);
+  font-style: italic;
 }
 
 .edit-name-input {
-  flex: 1;
-  padding: 8px 12px;
-  border: 2px solid rgba(255, 165, 0, 0.4);
-  border-radius: 8px;
-  font-size: 1rem;
-  font-family: inherit;
   background: rgba(255, 255, 255, 0.1);
-  color: white;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  min-width: 120px;
-  max-width: 200px;
+  border: 2px solid #8b5cf6;
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: #8b5cf6;
+  font-size: 1rem;
+  width: 100%;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .edit-name-input:focus {
   outline: none;
-  border-color: #ffa500;
-  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.1);
-  transform: scale(1.02);
-}
-
-.edit-name-input::placeholder {
-  color: rgba(255, 255, 255, 0.6);
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.3);
 }
 
 .edit-buttons {
   display: flex;
   gap: 5px;
-  flex-shrink: 0;
+  margin-left: 10px;
 }
 
-.save-edit-btn,
-.cancel-edit-btn {
-  background: none;
+.save-edit-btn, .cancel-edit-btn {
+  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
   border: none;
-  font-size: 1rem;
+  border-radius: 6px;
+  padding: 6px 10px;
+  color: white;
   cursor: pointer;
-  padding: 5px;
-  border-radius: 5px;
   transition: all 0.3s ease;
-}
-
-.save-edit-btn:hover {
-  background: rgba(76, 175, 80, 0.1);
-  color: #4CAF50;
-}
-
-.cancel-edit-btn:hover {
-  background: rgba(244, 67, 54, 0.1);
-  color: #F44336;
-}
-
-.save-edit-btn:active,
-.cancel-edit-btn:active {
-  transform: scale(0.95);
-}
-
-.delete-design-btn {
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 5px;
-  border-radius: 5px;
-  transition: all 0.3s ease;
-}
-
-.delete-design-btn:hover {
-  background: #ffebee;
-}
-
-.design-info {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.design-meta {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.meta-tag {
-  background: rgba(255, 165, 0, 0.2);
-  color: white;
-  padding: 6px 12px;
-  border-radius: 15px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  border: 1px solid rgba(255, 165, 0, 0.3);
-}
-
-.design-beads h5 {
-  font-size: 1rem;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 10px;
-}
-
-.beads-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.bead-tag {
-  background: rgba(255, 165, 0, 0.2);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 10px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  border: 1px solid rgba(255, 165, 0, 0.3);
-}
-
-.design-date {
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.6);
-  font-style: italic;
-}
-
-
-
-/* 空狀態樣式 */
-.saved-designs-empty {
-  text-align: center;
-  color: rgba(255, 255, 255, 0.8);
-  padding: 60px 20px;
-}
-
-.empty-content h3 {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 15px;
-  background: linear-gradient(45deg, #ff6b6b, #ffa500);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-.empty-content p {
-  font-size: 1.1rem;
-  margin-bottom: 30px;
-  color: rgba(255, 255, 255, 0.8);
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.5;
-}
-
-.empty-icon {
-  font-size: 4rem;
-  margin-top: 20px;
-}
-
-.recommendations-placeholder {
-  text-align: center;
-  color: #666;
-}
-
-.placeholder-content h3 {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 15px;
-  background: linear-gradient(45deg, #667eea, #764ba2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.placeholder-content p {
-  font-size: 1.1rem;
-  margin-bottom: 40px;
-  color: #666;
-}
-
-.placeholder-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-  margin-top: 40px;
-}
-
-.placeholder-item {
-  background: #f8f9fa;
-  border-radius: 15px;
-  padding: 25px;
-  border: 2px solid #e9ecef;
-  transition: all 0.3s ease;
-}
-
-.placeholder-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-color: #667eea;
-}
-
-.placeholder-icon {
-  font-size: 3rem;
-  margin-bottom: 15px;
-}
-
-.placeholder-item h4 {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.placeholder-item p {
   font-size: 0.9rem;
-  color: #666;
-  line-height: 1.4;
-  margin: 0;
 }
 
-/* 推薦搭配按鈕 */
-.recommendation-btn {
-  background: linear-gradient(135deg, #a78bfa, #c084fc);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(167, 139, 250, 0.2);
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.recommendation-btn:hover {
-  transform: translateY(-50%) scale(1.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-/* 推薦搭配區域 */
-.recommendations-section {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 2px solid #f0f0f0;
-}
-
-.recommendations-section h4 {
-  color: #333;
-  margin-bottom: 15px;
-  font-size: 1.1rem;
-}
-
-.recommendations-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 15px;
-}
-
-.recommendation-card {
-  background: #f8f9fa;
-  border-radius: 12px;
-  padding: 15px;
-  border-left: 4px solid #8a2be2;
-}
-
-.recommendation-card h5 {
-  color: #333;
-  margin-bottom: 10px;
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-.recommendation-details {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 8px;
-}
-
-.length-tag, .width-tag {
-  background: linear-gradient(135deg, #8a2be2, #6a5acd);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-
-.recommendation-description {
-  color: #666;
-  font-size: 0.85rem;
-  line-height: 1.4;
-  margin-bottom: 10px;
-}
-
-.recommended-beads {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.beads-label {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: #333;
-}
-
-.recommended-bead-tag {
-  background: linear-gradient(135deg, #fbbf24, #d97706);
-  color: #333;
-  padding: 4px 8px;
-  border-radius: 10px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  display: inline-block;
-  margin-right: 6px;
-  margin-bottom: 4px;
+.save-edit-btn:hover, .cancel-edit-btn:hover {
+  background: linear-gradient(135deg, #a78bfa, #c4b5fd);
+  transform: translateY(-1px);
 }
 
 /* 響應式設計 */
@@ -963,32 +885,6 @@
     grid-template-columns: 1fr;
   }
   
-  .recommendations-header h2 {
-    font-size: 1.8rem;
-  }
-  
-  .placeholder-content h3 {
-    font-size: 1.5rem;
-  }
-  
-  .designs-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .design-content {
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-
-  
-  .saved-designs h3 {
-    font-size: 1.5rem;
-  }
-  
-  .empty-content h3 {
-    font-size: 1.5rem;
-  }
 }
 
 /* 手串預覽樣式 */
@@ -1028,7 +924,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 260px; /* 調整為適合新的 SVG 尺寸 */
+  min-height: 240px; /* 調整為適合更大的手鍊 */
   position: relative;
   overflow: hidden;
 }
@@ -1119,7 +1015,7 @@
 /* 手機版響應式設計優化 */
 @media (max-width: 768px) {
   .bead-guide-container {
-    padding: 15px;
+    padding: 5px;
     padding-bottom: 110px;
   }
   
@@ -1253,22 +1149,6 @@
     line-height: 1.4;
   }
   
-  .designs-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-  
-  .design-content {
-    flex-direction: column;
-    gap: 12px;
-    padding: 15px;
-  }
-  
-  .saved-designs h3,
-  .empty-content h3 {
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-  }
   
   .bracelet-preview,
   .circular-bracelet-preview {
@@ -1296,7 +1176,7 @@
 
 @media (max-width: 480px) {
   .bead-guide-container {
-    padding: 10px;
+    padding: 3px;
     padding-bottom: 105px;
   }
   
@@ -1398,14 +1278,7 @@
     font-size: 0.8rem;
   }
   
-  .design-content {
-    padding: 12px;
-  }
   
-  .saved-designs h3,
-  .empty-content h3 {
-    font-size: 1.2rem;
-  }
   
   .bracelet-preview,
   .circular-bracelet-preview {
@@ -1774,6 +1647,83 @@
   
   .nav-text {
     font-size: 0.65rem;
+  }
+  
+  /* 推薦搭配卡片響應式樣式 */
+  .designs-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .design-card {
+    padding: 15px;
+  }
+  
+  .design-name {
+    font-size: 1.1rem;
+    color: #8b5cf6;
+  }
+  
+  .edit-name-input {
+    font-size: 0.9rem;
+    color: #8b5cf6;
+    border-color: #8b5cf6;
+  }
+  
+  .basic-settings h5,
+  .bead-types h5 {
+    font-size: 0.9rem;
+    color: #8b5cf6;
+  }
+  
+  .design-meta {
+    gap: 4px;
+    flex-wrap: nowrap;
+  }
+  
+  .meta-tag-small {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    color: #ffffff;
+    white-space: nowrap;
+  }
+  
+  .bead-type-list {
+    gap: 4px;
+  }
+  
+  .bead-type-tag {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+  }
+  
+  .design-description h5 {
+    font-size: 0.95rem;
+    color: #8b5cf6;
+  }
+  
+  .design-description p {
+    font-size: 0.85rem;
+    color: #a78bfa;
+  }
+  
+  .design-beads h5 {
+    font-size: 0.95rem;
+    color: #8b5cf6;
+  }
+  
+  .design-date {
+    color: #8b5cf6;
+  }
+  
+  .edit-name-btn, .delete-design-btn {
+    padding: 4px 6px;
+    font-size: 0.7rem;
+  }
+  
+  .save-edit-btn, .cancel-edit-btn {
+    padding: 5px 8px;
+    font-size: 0.8rem;
   }
 }
 

@@ -7,49 +7,49 @@ import IconComponent from './IconComponent';
 const beadMaterials = {
   glass: {
     name: '玻璃珠',
-    description: '晶瑩剔透，色彩豐富',
+    description: '色彩繽紛，工藝多變',
     icon: '/light-pink-bead-ID1.png',
     characteristics: [
-      '透明度高，光澤度好',
-      '色彩飽和度高',
-      '適合製作亮眼的首飾',
-      '重量適中，佩戴舒適'
+      '人工製作，顏色與形狀高度多樣',
+      '光澤亮麗，可仿水晶、寶石質感',
+      '價格親民，適合大量運用',
+      '表面可加工（切割、壓紋、噴色）增加變化'
     ],
     care: '避免碰撞，定期清潔',
     price: '中等',
-    applications: ['項鍊', '手鍊', '耳環', '髮飾'],
+    applications: ['流行飾品', 'DIY 串珠手作', '裝飾品、工藝設計'],
     colors: ['紅色', '藍色', '綠色', '紫色', '黃色', '粉色', '金色', '銀色']
   },
   
   seed: {
     name: '米珠',
-    description: '小巧精緻，質地細膩',
+    description: '精緻小巧，百搭運用',
     icon: '/white-bead-ID24.png',
     characteristics: [
-      '尺寸小，適合精細工藝',
-      '質地堅硬，不易損壞',
-      '色彩柔和，適合搭配',
-      '重量輕，佩戴無負擔'
+      '體積小巧，適合細緻設計',
+      '重量輕盈，長時間配戴無負擔',
+      '顏色與材質多樣，組合彈性大',
+      '常用於點綴或編織，提升作品細節感'
     ],
     care: '避免潮濕，定期擦拭',
     price: '經濟實惠',
-    applications: ['精細編織', '刺繡裝飾', '小配件'],
+    applications: ['手鍊、項鍊點綴', '織珠工藝、串珠畫', 'DIY 飾品配件'],
     colors: ['淺粉', '薄荷綠', '天藍', '米色', '淺紫', '淺黃']
   },
   
   crystal: {
     name: '水晶珠',
-    description: '高貴典雅，光澤璀璨',
+    description: '晶瑩剔透，能量療癒',
     icon: '/dark-purple-bead-ID8.png',
     characteristics: [
-      '折射率高，光澤璀璨',
-      '質地堅硬，不易刮傷',
-      '色彩純淨，高貴典雅',
-      '重量較重，質感十足'
+      '透光性佳，色澤清澈',
+      '擁有天然能量，寓意療癒與平衡',
+      '硬度高，耐用不易刮傷',
+      '色彩多樣，常帶有天然紋理'
     ],
     care: '避免化學品，定期拋光',
     price: '較高',
-    applications: ['高級首飾', '禮品製作', '收藏品'],
+    applications: ['能量手鍊、項鍊', '靈性療癒飾品', '高質感時尚配件'],
     colors: ['透明', '粉晶', '紫晶', '黃晶', '綠晶', '白晶']
   },
   
@@ -178,7 +178,7 @@ const colorCharacteristics = {
   
   yellow: {
     name: '黃色系',
-    icon: '/gold-brown-bead-ID9.png',
+    icon: '/gold-brown-bead-ID4.png',
     psychology: '快樂、樂觀、智慧',
     occasions: ['生日慶祝', '學習場合', '創意活動'],
     combinations: ['白色', '藍色', '綠色'],
@@ -210,6 +210,7 @@ const MaterialCard = ({ material, data, isActive, onClick }) => {
   return (
     <div 
       className={`material-card ${isActive ? 'active' : ''}`}
+      data-material={material}
       onClick={onClick}
     >
       <div className="material-header">
@@ -243,7 +244,7 @@ const MaterialDetail = ({ material, data }) => {
       
       <div className="detail-content">
         <div className="detail-section">
-          <h3><IconComponent name="sparkle" size={20} /> 特點</h3>
+          <h3><IconComponent name="gemstone" size={20} /> 特點</h3>
           <ul className="characteristics-list">
             {data.characteristics.map((char, index) => (
               <li key={index}>{char}</li>
@@ -252,7 +253,7 @@ const MaterialDetail = ({ material, data }) => {
         </div>
         
         <div className="detail-section">
-          <h3><IconComponent name="target" size={20} /> 適用範圍</h3>
+          <h3><IconComponent name="bead-string" size={20} /> 適用範圍</h3>
           <div className="applications-grid">
             {data.applications.map((app, index) => (
               <span key={index} className="application-tag">{app}</span>
@@ -261,7 +262,7 @@ const MaterialDetail = ({ material, data }) => {
         </div>
         
         <div className="detail-section">
-          <h3><IconComponent name="art-palette" size={20} /> 常見顏色</h3>
+          <h3><IconComponent name="bead-pattern" size={20} /> 常見顏色</h3>
           <div className="colors-grid">
             {data.colors.map((color, index) => (
               <span key={index} className="color-tag">{color}</span>
@@ -271,6 +272,44 @@ const MaterialDetail = ({ material, data }) => {
       </div>
     </div>
   );
+};
+
+// 生成設計描述的函數
+const generateDesignDescription = (design) => {
+  const beadTypes = [...new Set(design.beads.map(bead => bead.type))];
+  const beadColors = [...new Set(design.beads.map(bead => bead.color))];
+  
+  let description = `這是一個由${design.beads.length}顆珠子組成的精美設計`;
+  
+  if (beadTypes.length === 1) {
+    description += `，全部採用${beadTypes[0]}材質`;
+  } else if (beadTypes.length > 1) {
+    description += `，融合了${beadTypes.join('、')}等多種材質`;
+  }
+  
+  if (beadColors.length <= 3) {
+    description += `，以${beadColors.join('、')}色調為主`;
+  } else {
+    description += `，色彩豐富多樣`;
+  }
+  
+  if (design.stringLength === 'half') {
+    description += `，採用半圓設計，簡約優雅`;
+  } else if (design.stringLength === 'four-thirds') {
+    description += `，採用4/3圓設計，層次豐富`;
+  } else {
+    description += `，採用全圓設計，完整和諧`;
+  }
+  
+  if (design.stringWidth === 'thin') {
+    description += `，搭配細線材質，精緻細膩`;
+  } else if (design.stringWidth === 'thick') {
+    description += `，搭配粗線材質，穩重大氣`;
+  } else {
+    description += `，搭配中等線材，平衡美觀`;
+  }
+  
+  return description;
 };
 
 // 保存的設計組件
@@ -324,15 +363,15 @@ const SavedDesigns = () => {
          // 根據串珠長度設定等比例縮小的半徑
      let radius;
      if (design.stringLength === 'half') {
-       radius = 65; // 半圓：調整到 65px
+       radius = 75; // 半圓：調整到 75px
      } else if (design.stringLength === 'four-thirds') {
-       radius = 70; // 4/3圓：保持 70px
+       radius = 70; // 4/3圓：調整到 70px
      } else { // full
        radius = 70; // 全圓：調整到 70px
      }
 
-    const centerX = 110; // 圓心 X 座標
-    const centerY = 110; // 圓心 Y 座標
+    const centerX = 120; // 圓心 X 座標
+    const centerY = 120; // 圓心 Y 座標
     
     return (
       <div className="circular-bracelet-preview">
@@ -349,7 +388,7 @@ const SavedDesigns = () => {
           />
         </div>
         
-        <svg width="220" height="220" viewBox="0 0 220 220" className="bracelet-svg-overlay">
+        <svg width="240" height="240" viewBox="0 0 240 240" className="bracelet-svg-overlay">
           {/* 圓形串珠線 - 與圓形手鍊動畫邏輯相同 */}
           <circle
             cx={centerX}
@@ -374,22 +413,17 @@ const SavedDesigns = () => {
           />
           {/* 珠子放在圓形線上 - 與圓形手鍊動畫邏輯相同 */}
           {design.beads.map((bead, index) => {
+            // 調整角度計算，讓珠子間隔更均勻
             const angle = (2 * Math.PI / design.beads.length) * index - Math.PI / 2; // 從12點開始，與動畫邏輯一致
             const beadX = centerX + radius * Math.cos(angle);
             const beadY = centerY + radius * Math.sin(angle);
-                         // 根據手鍊長度調整珠子大小：半圓最大，4/3圓次之，全圓最小
-             let baseSize;
-             if (design.stringLength === 'half') {
-               baseSize = 1.1; // 半圓：珠子最大
-             } else if (design.stringLength === 'four-thirds') {
-               baseSize = 1.0; // 4/3圓：珠子中等
-             } else { // full
-               baseSize = 0.9; // 全圓：珠子最小
-             }
+                         // 統一珠子大小，不根據手鍊長度調整
+             let baseSize = 1.0; // 所有手鍊長度使用相同大小
              
-             const beadSize = bead.type === '過渡珠' ? Math.round(6 * baseSize) : /* 從 5 增加到 6 */
-                            (bead.type === '米珠' || bead.type === '珍珠') ? Math.round(8 * baseSize) : /* 從 7 增加到 8 */
-                            Math.round(22 * baseSize); /* 從 20 增加到 22 */
+             // 調整珠子大小，讓間隔更均勻
+             const beadSize = bead.type === '過渡珠' ? Math.round(7 * baseSize * 0.8) : /* 過渡珠 */
+                            (bead.type === '米珠' || bead.type === '珍珠') ? Math.round(10 * baseSize * 0.8) : /* 米珠/珍珠 */
+                            Math.round(24 * baseSize * 0.8); /* 大珠子 */
             
             return (
               <g key={index}>
@@ -422,7 +456,7 @@ const SavedDesigns = () => {
     return (
       <div className="saved-designs-empty">
         <div className="empty-content">
-          <h3><IconComponent name="sparkle" size={20} /> 還沒有保存的設計</h3>
+          <h3><IconComponent name="mystic-crystal" size={20} /> 還沒有保存的設計</h3>
           <p>在珠子收納櫃中串珠後，點擊「💾 保存設計」按鈕來保存您的創作！</p>
           <div className="empty-icon">💡</div>
         </div>
@@ -495,7 +529,7 @@ const SavedDesigns = () => {
                         onClick={() => startEditing(design)}
                         title="編輯名稱"
                       >
-                        <IconComponent name="art-palette" size={16} />
+                        ✏️
                       </button>
                     </div>
                   )}
@@ -504,22 +538,53 @@ const SavedDesigns = () => {
                     onClick={() => deleteDesign(design.id)}
                     title="刪除設計"
                   >
-                    <IconComponent name="sparkle" size={16} />
+                    ❌
                   </button>
                 </div>
                 <div className="design-details">
-                  <div className="design-meta">
-                    <span className="meta-tag">線材: {design.stringWidth}</span>
-                    <span className="meta-tag">長度: {design.stringLength}</span>
-                    <span className="meta-tag">珠子: {design.beads.length} 顆</span>
+                  <div className="basic-settings">
+                    <h5>基礎設定:</h5>
+                    <div className="design-meta">
+                      <span className="meta-tag-small">線材: {design.stringWidth}</span>
+                      <span className="meta-tag-small">長度: {design.stringLength}</span>
+                      <span className="meta-tag-small">珠子: {design.beads.length} 顆</span>
+                    </div>
                   </div>
+                  
+                  <div className="bead-types">
+                    <h5>使用珠子種類:</h5>
+                    <div className="bead-type-list">
+                      {(() => {
+                        // 計算每種珠子的數量
+                        const beadCounts = {};
+                        design.beads.forEach(bead => {
+                          // 組合珠子的名稱和類型
+                          const fullName = bead.name && bead.type ? 
+                            `${bead.name}${bead.type}` : 
+                            (bead.name || bead.type);
+                          beadCounts[fullName] = (beadCounts[fullName] || 0) + 1;
+                        });
+                        
+                        // 生成標籤
+                        return Object.entries(beadCounts).map(([beadName, count]) => (
+                          <span key={beadName} className="bead-type-tag">
+                            {beadName} x{count}
+                          </span>
+                        ));
+                      })()}
+                    </div>
+                  </div>
+                  
+                  <div className="design-description">
+                    <h5>設計描述:</h5>
+                    <p>{design.description || generateDesignDescription(design)}</p>
+                  </div>
+                  
                   <div className="design-beads">
                     <h5>手串預覽:</h5>
                     {/* 所有手串都使用圓形樣式 */}
                     {renderCircularBracelet(design)}
                   </div>
-                  
-
                   
                   <div className="design-date">
                     創建於: {new Date(design.createdAt).toLocaleDateString('zh-TW')}
@@ -539,7 +604,7 @@ const ColorCard = ({ color, data }) => {
   const [showRecommendations, setShowRecommendations] = useState(false);
 
   return (
-    <div className="color-card" style={{ borderColor: data.hex }}>
+    <div className="color-card" data-color={color} style={{ borderColor: data.hex }}>
       <div className="color-header">
         <div className="color-icon">
           <img src={data.icon} alt={data.name} />
@@ -583,7 +648,7 @@ const ColorCard = ({ color, data }) => {
 
         {showRecommendations && (
           <div className="recommendations-section">
-            <h4><IconComponent name="target" size={18} /> 推薦搭配</h4>
+            <h4><IconComponent name="energy-flow" size={18} /> 推薦搭配</h4>
             <div className="recommendations-grid">
               {data.recommendations.map((rec, index) => (
                 <div key={index} className="recommendation-card">
@@ -617,7 +682,7 @@ const BeadGuide = () => {
   return (
     <div className="bead-guide-container">
       <div className="guide-header">
-        <h1><IconComponent name="art-palette" size={32} /> 珠子介紹指南</h1>
+        <h1><IconComponent name="crystal-heart" size={32} /> 珠子介紹指南</h1>
         <p>了解不同材質和顏色的珠子特性，為您的串珠創作提供靈感</p>
       </div>
 
@@ -632,13 +697,13 @@ const BeadGuide = () => {
           className={`tab-btn ${activeTab === 'colors' ? 'active' : ''}`}
           onClick={() => setActiveTab('colors')}
         >
-          <IconComponent name="art-palette" size={16} /> 顏色特性
+          <IconComponent name="magic-circle" size={16} /> 顏色特性
         </button>
         <button 
           className={`tab-btn ${activeTab === 'recommendations' ? 'active' : ''}`}
           onClick={() => setActiveTab('recommendations')}
         >
-          💡 推薦搭配
+          <IconComponent name="four-pointed-star" size={16} /> 推薦搭配
         </button>
       </div>
 
@@ -698,13 +763,13 @@ const BeadGuide = () => {
         </button>
           <button className="nav-button" onClick={() => window.location.href = '/'}>
             <div className="nav-icon">
-              <IconComponent name="art-palette" size={20} />
+              <IconComponent name="bead-bracelet" size={20} />
             </div>
             <div className="nav-text">數位串珠</div>
           </button>
           <button className="nav-button" onClick={() => window.location.href = '/rating'}>
             <div className="nav-icon">
-              <IconComponent name="crystal-ball" size={20} />
+              <IconComponent name="star-rating" size={20} />
             </div>
             <div className="nav-text">串珠評分</div>
           </button>
