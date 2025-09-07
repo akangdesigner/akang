@@ -68,7 +68,7 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
       tempContainer.style.left = '-9999px';
       tempContainer.style.top = '-9999px';
       tempContainer.style.width = '800px';
-      tempContainer.style.height = '1200px';
+      tempContainer.style.height = '1000px';
       tempContainer.style.backgroundColor = '#1a1a2e';
       tempContainer.style.padding = '40px 40px 10px 40px';
               tempContainer.style.fontFamily = 'Arial, sans-serif';
@@ -114,8 +114,8 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
       if (design?.beads) {
         const braceletContainer = document.createElement('div');
         braceletContainer.style.position = 'relative';
-        braceletContainer.style.width = '400px';
-        braceletContainer.style.height = '400px';
+        braceletContainer.style.width = '320px';
+        braceletContainer.style.height = '320px';
         braceletContainer.style.margin = '0 auto';
         braceletContainer.style.border = '3px solid #8B4513';
         braceletContainer.style.borderRadius = '50%';
@@ -141,8 +141,8 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         
         // 創建 Canvas 來渲染珠子 - 與串珠評分區完全一致
         const canvas = document.createElement('canvas');
-        canvas.width = 400;
-        canvas.height = 400;
+        canvas.width = 320;
+        canvas.height = 320;
         canvas.style.position = 'absolute';
         canvas.style.top = '0';
         canvas.style.left = '0';
@@ -150,18 +150,18 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         
         const ctx = canvas.getContext('2d');
         
-        // 根據手鍊長度設定半徑 - 與串珠評分區邏輯一致
+        // 根據手鍊長度設定半徑 - 分享圖等比例內縮
         let radius;
         if (design.stringLength === 'half') {
-          radius = 120;
+          radius = 80; // 進一步縮小到80
         } else if (design.stringLength === 'four-thirds') {
-          radius = 130;
+          radius = 110; // 稍微增加4/3圓線半徑
         } else {
-          radius = 140;
+          radius = 100; // 進一步縮小到100
         }
         
-        const centerX = 200;
-        const centerY = 200;
+        const centerX = 160;
+        const centerY = 160;
         
         // 繪製串珠線 - 與串珠評分區邏輯一致
         ctx.beginPath();
@@ -184,7 +184,7 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
             } else if (design.stringLength === 'four-thirds') {
               baseSize = 1.0; // 4/3圓：珠子中等
             } else { // full
-              baseSize = 0.9; // 全圓：珠子最小
+              baseSize = 0.7; // 全圓：珠子更小
             }
             
             // 調整分享圖中珠子的大小，小型珠子要更小
@@ -303,10 +303,10 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         radarTitle.style.textAlign = 'left';
         radarSection.appendChild(radarTitle);
         
-        // 創建 SVG 雷達圖
+        // 創建 SVG 雷達圖 - 五邊形版本
         const radarSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        radarSvg.setAttribute('width', '400');
-        radarSvg.setAttribute('height', '400');
+        radarSvg.setAttribute('width', '420');
+        radarSvg.setAttribute('height', '420');
         radarSvg.setAttribute('viewBox', '0 0 600 600');
         radarSvg.style.margin = '0';
         radarSvg.style.display = 'block';
@@ -316,64 +316,91 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         
         const centerX = 300;
         const centerY = 300;
+        const R = 150; // 五邊形半徑
+        const N = 5; // 五邊形
         
-        // 繪製背景網格
-        const grid1 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-        grid1.setAttribute('points', '300,150 450,225 450,375 300,450 150,375 150,225');
-        grid1.setAttribute('fill', 'none');
-        grid1.setAttribute('stroke', 'rgba(255,255,255,0.3)');
-        grid1.setAttribute('stroke-width', '1');
-        radarSvg.appendChild(grid1);
+        // 計算五邊形頂點
+        const getPentagonPoints = (radius) => {
+          const points = [];
+          for (let i = 0; i < N; i++) {
+            const ang = -90 + i * (360 / N);
+            const x = centerX + radius * Math.cos(ang * Math.PI / 180);
+            const y = centerY + radius * Math.sin(ang * Math.PI / 180);
+            points.push([x, y]);
+          }
+          return points;
+        };
         
-        const grid2 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-        grid2.setAttribute('points', '300,195 405,255 405,345 300,405 195,345 195,255');
-        grid2.setAttribute('fill', 'none');
-        grid2.setAttribute('stroke', 'rgba(255,255,255,0.3)');
-        grid2.setAttribute('stroke-width', '1');
-        radarSvg.appendChild(grid2);
+        // 繪製背景網格 - 四個同心五邊形
+        [0.8, 0.6, 0.4, 0.2].forEach(scale => {
+          const gridPoints = getPentagonPoints(R * scale);
+          const grid = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+          grid.setAttribute('points', gridPoints.map(p => p.join(',')).join(' '));
+          grid.setAttribute('fill', 'none');
+          grid.setAttribute('stroke', 'rgba(255,255,255,0.3)');
+          grid.setAttribute('stroke-width', '1');
+          radarSvg.appendChild(grid);
+        });
         
-        const grid3 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-        grid3.setAttribute('points', '300,240 360,285 360,315 300,360 240,315 240,285');
-        grid3.setAttribute('fill', 'none');
-        grid3.setAttribute('stroke', 'rgba(255,255,255,0.3)');
-        grid3.setAttribute('stroke-width', '1');
-        radarSvg.appendChild(grid3);
-        
-        // 繪製軸線
-        const axes = [
-          { x1: centerX, y1: centerY, x2: centerX, y2: 150 },
-          { x1: centerX, y1: centerY, x2: 450, y2: 225 },
-          { x1: centerX, y1: centerY, x2: 450, y2: 375 },
-          { x1: centerX, y1: centerY, x2: centerX, y2: 450 },
-          { x1: centerX, y1: centerY, x2: 150, y2: 375 },
-          { x1: centerX, y1: centerY, x2: 150, y2: 225 }
-        ];
-        
-        axes.forEach(axis => {
+        // 繪製軸線 - 五條輻射線
+        const framePoints = getPentagonPoints(R);
+        framePoints.forEach(([x, y]) => {
           const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          line.setAttribute('x1', axis.x1);
-          line.setAttribute('y1', axis.y1);
-          line.setAttribute('x2', axis.x2);
-          line.setAttribute('y2', axis.y2);
-          line.setAttribute('stroke', 'rgba(255,255,255,0.5)');
-          line.setAttribute('stroke-width', '1');
+          line.setAttribute('x1', centerX);
+          line.setAttribute('y1', centerY);
+          line.setAttribute('x2', x);
+          line.setAttribute('y2', y);
+          line.setAttribute('stroke', 'rgba(255,255,255,0.25)');
+          line.setAttribute('stroke-width', '2');
           radarSvg.appendChild(line);
         });
         
-        // 計算評分點位置
+        // 先繪製外框，確保紫色區域在上面
+        const frame = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+        frame.setAttribute('points', framePoints.map(p => p.join(',')).join(' '));
+        frame.setAttribute('fill', 'none');
+        frame.setAttribute('stroke', '#FFFFFF');
+        frame.setAttribute('stroke-width', '3');
+        radarSvg.appendChild(frame);
+        
+        // 計算評分點位置 - 五邊形版本
         const getScorePoints = () => {
-          return [
-            { x: centerX, y: centerY - (scores.love / 10) * 150 }, // 上方：愛情
-            { x: centerX + (scores.windfall / 10) * 129.9, y: centerY - (scores.windfall / 10) * 75 }, // 右上：偏財
-            { x: centerX + (scores.regularIncome / 10) * 129.9, y: centerY + (scores.regularIncome / 10) * 75 }, // 右下：正財
-            { x: centerX, y: centerY + (scores.career / 10) * 150 }, // 下方：事業
-            { x: centerX - (scores.health / 10) * 129.9, y: centerY + (scores.health / 10) * 75 }, // 左下：健康
-            { x: centerX - (scores.love / 10) * 129.9, y: centerY - (scores.love / 10) * 75 } // 左上：設計感（使用love分數）
+          // 確保 scores 有默認值，避免 undefined
+          const safeScores = {
+            love: scores.love || 3,
+            windfall: scores.windfall || 3,
+            social: scores.social || 3,
+            career: scores.career || 3,
+            health: scores.health || 3
+          };
+          
+          const values = [
+            safeScores.love / 10,
+            safeScores.windfall / 10,
+            safeScores.social / 10,
+            safeScores.career / 10,
+            safeScores.health / 10
           ];
+          
+          console.log('分享圖評分數據:', safeScores, 'values:', values);
+          
+          const points = [];
+          for (let i = 0; i < N; i++) {
+            const ang = -90 + i * (360 / N);
+            const value = isNaN(values[i]) ? 0.3 : (values[i] || 0.3); // 默認 0.3 (3分)
+            const r = Math.max(0, Math.min(1, value)) * R;
+            const x = centerX + r * Math.cos(ang * Math.PI / 180);
+            const y = centerY + r * Math.sin(ang * Math.PI / 180);
+            points.push([x, y]);
+          }
+          return points;
         };
         
         const scorePoints = getScorePoints();
-        const pointsString = scorePoints.map(point => `${point.x},${point.y}`).join(' ');
+        const pointsString = scorePoints.map(point => `${point[0]},${point[1]}`).join(' ');
+        
+        console.log('分享圖評分點:', scorePoints);
+        console.log('分享圖點位字符串:', pointsString);
         
         // 繪製評分填充區域
         const fillArea = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
@@ -383,24 +410,36 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         fillArea.setAttribute('stroke-width', '2');
         radarSvg.appendChild(fillArea);
         
-        // 繪製評分點
+        console.log('分享圖紫色區域已添加，點位:', pointsString);
+        
+        // 繪製評分點 - 白色圓點
         scorePoints.forEach(point => {
           const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          circle.setAttribute('cx', point.x);
-          circle.setAttribute('cy', point.y);
+          circle.setAttribute('cx', point[0]);
+          circle.setAttribute('cy', point[1]);
           circle.setAttribute('r', '4');
-          circle.setAttribute('fill', '#ffd700');
+          circle.setAttribute('fill', '#FFFFFF');
+          circle.setAttribute('stroke', 'rgba(138, 43, 226, 0.8)');
+          circle.setAttribute('stroke-width', '2');
           radarSvg.appendChild(circle);
         });
         
-        // 添加軸線標籤
+        
+        // 添加軸線標籤 - 五邊形版本
+        const safeScores = {
+          love: scores.love || 3,
+          windfall: scores.windfall || 3,
+          social: scores.social || 3,
+          career: scores.career || 3,
+          health: scores.health || 3
+        };
+        
         const labels = [
-          { x: centerX, y: 120, text: `愛情 (${scores.love})`, anchor: 'middle' }, // 上方：愛情
-          { x: 465, y: 225, text: `偏財 (${scores.windfall})`, anchor: 'start' }, // 右上：偏財
-          { x: 465, y: 375, text: `正財 (${scores.regularIncome})`, anchor: 'start' }, // 右下：正財
-          { x: centerX, y: 480, text: `事業 (${scores.career})`, anchor: 'middle' }, // 下方：事業
-          { x: 135, y: 375, text: `健康 (${scores.health})`, anchor: 'end' }, // 左下：健康
-          { x: 135, y: 225, text: `設計感 (${scores.love})`, anchor: 'end' } // 左上：設計感
+          { x: centerX, y: 120, text: `愛情 (${safeScores.love})`, anchor: 'middle' }, // 上方：愛情
+          { x: 450, y: 225, text: `偏財 (${safeScores.windfall})`, anchor: 'start' }, // 右上：偏財
+          { x: 350, y: 480, text: `人際 (${safeScores.social})`, anchor: 'start' }, // 右下：人際
+          { x: 250, y: 480, text: `事業 (${safeScores.career})`, anchor: 'end' }, // 左下：事業
+          { x: 165, y: 225, text: `健康 (${safeScores.health})`, anchor: 'end' } // 左上：健康
         ];
         
         labels.forEach(label => {
@@ -408,8 +447,8 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
           text.setAttribute('x', label.x);
           text.setAttribute('y', label.y);
           text.setAttribute('text-anchor', label.anchor);
-          text.setAttribute('fill', 'white');
-          text.setAttribute('font-size', '20px');
+          text.setAttribute('fill', '#ffd700');
+          text.setAttribute('font-size', '27px');
           text.setAttribute('font-weight', 'bold');
           text.textContent = label.text;
           radarSvg.appendChild(text);
@@ -725,12 +764,12 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
             }
           }
           
-          // 正財運勢預測
-          if (scores.regularIncome > 5) {
-            if (scores.regularIncome >= 8) {
-              advice += '正財運勢非常穩定！你的工作收入將大幅增長，升職加薪的機會就在眼前，你的努力將得到豐厚的回報。';
-            } else if (scores.regularIncome >= 6) {
-              advice += '正財運勢穩定，繼續保持當前的理財方式，穩健的投資會帶來可觀的收益。';
+          // 人際運勢預測
+          if (scores.social > 5) {
+            if (scores.social >= 8) {
+              advice += '人際運勢非常旺盛！你將在社交圈中大放異彩，新的朋友和合作機會將接踵而至。';
+            } else if (scores.social >= 6) {
+              advice += '人際運勢良好，你的溝通能力和魅力正在提升，建議多參與社交活動。';
             }
           }
           
@@ -781,7 +820,7 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         allowTaint: true,
         logging: false,
         width: 800,
-        height: 1200
+        height: 1000
       });
       
       const imageDataUrl = canvas.toDataURL('image/png', 1.0);

@@ -148,7 +148,7 @@ const BeadPatterns = () => {
 
       <div className="patterns-navigation">
         <button className="nav-btn" onClick={() => window.history.back()}>
-          ← 返回收納櫃
+          ← 返回創作區
         </button>
         <button className="nav-btn" onClick={() => window.location.href = '/tutorial'}>
           教學中心 →

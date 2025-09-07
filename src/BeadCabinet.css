@@ -3539,7 +3539,7 @@
   background: rgba(26, 26, 46, 0.95);
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255, 165, 0, 0.3);
-  padding: 8px 0;
+  padding: 4px 0;
   z-index: 1000;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
 }
@@ -3602,8 +3602,8 @@
   }
   
   .nav-button {
-    padding: 8px 5px;
-    min-height: 48px;
+    padding: 5px 3px;
+    min-height: 30px;
   }
   
   .nav-icon {
@@ -3622,8 +3622,8 @@
   }
   
   .nav-button {
-    padding: 6px 4px;
-    min-height: 45px;
+    padding: 4px 2px;
+    min-height: 28px;
   }
   
   .nav-icon {
@@ -3642,8 +3642,8 @@
   }
   
   .nav-button {
-    padding: 5px 3px;
-    min-height: 40px;
+    padding: 3px 2px;
+    min-height: 24px;
   }
   
   .nav-icon {

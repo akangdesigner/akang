@@ -690,6 +690,15 @@
   padding: 20px;
 }
 
+/* 雷達圖圖片容器 */
+.radar-image-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+}
+
 /* 雷達圖圖片 */
 .radar-chart-image {
   max-width: 100%;
@@ -697,6 +706,17 @@
   border-radius: 0;
   box-shadow: none;
   transition: none;
+  display: block;
+}
+
+/* 指標文字覆蓋層 */
+.radar-labels-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 /* 雷達圖標籤容器 */
@@ -708,7 +728,7 @@
   margin: 20px 0;
 }
 
-/* 六個標籤元素 */
+/* 五個標籤元素 */
 .radar-label {
   position: absolute;
   color: #ffd700;
@@ -718,45 +738,41 @@
   white-space: nowrap;
 }
 
-/* 上方標籤 - 對應六邊形頂點 */
+/* 上方標籤 - 愛情 */
 .radar-label.top {
-  top:0px;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
 }
 
-/* 右上標籤 - 對應六邊形右上頂點 */
+/* 右上標籤 - 偏財 */
 .radar-label.top-right {
-  top: 50px;
-  right: 150px;
-}
-
-/* 右側標籤 - 對應六邊形右側頂點 */
-.radar-label.right {
-  top:80%;
-  right: 150px;
+  top: 25%;
+  right: 10px;
   transform: translateY(-50%);
 }
 
-/* 右下標籤 - 對應六邊形右下頂點 */
+/* 右下標籤 - 人際 */
 .radar-label.bottom-right {
-  bottom: 70px;
-  right: 400px;
+  bottom: 25%;
+  right: 10px;
+  transform: translateY(50%);
 }
 
-/* 下方標籤 - 對應六邊形底部頂點 */
-.radar-label.bottom {
-  bottom: 0px;
-  left: 50%;
-  transform: translateX(-50%);
+/* 左下標籤 - 事業 */
+.radar-label.bottom-left {
+  bottom: 25%;
+  left: 10px;
+  transform: translateY(50%);
 }
 
-/* 左側標籤 - 對應六邊形左側頂點 */
-.radar-label.left {
-  top: 20%;
-  left: 150px;
+/* 左上標籤 - 健康 */
+.radar-label.top-left {
+  top: 25%;
+  left: 10px;
   transform: translateY(-50%);
 }
+
 
 .radar-chart-image:hover {
   transform: none;
@@ -770,11 +786,47 @@
   filter: drop-shadow(0 0 10px rgba(138, 43, 226, 0.3));
 }
 
-.axis-label {
-  fill: #ffd700;
-  font-size: 14px;
-  font-weight: bold;
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+.radar-container {
+  position: relative;
+  display: inline-block;
+}
+
+.radar-label {
+  position: absolute;
+  color: #ffd700;
+  font-size: 10px;
+  pointer-events: none;
+}
+
+.radar-label.top {
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.radar-label.top-right {
+  top: 35%;
+  right: -15px;
+  text-align: right;
+}
+
+.radar-label.bottom-right {
+  bottom: 15%;
+  right: 15px;
+  text-align: right;
+}
+
+.radar-label.bottom-left {
+  bottom: 15%;
+  left: 5px;
+  text-align: left;
+}
+
+.radar-label.top-left {
+  top: 35%;
+  left:-10px;
+  text-align: left;
 }
 
 .score-label {
@@ -955,7 +1007,7 @@
   background: rgba(26, 26, 46, 0.95);
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255, 165, 0, 0.3);
-  padding: 8px 0;
+  padding: 4px 0;
   z-index: 1000;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
 }
@@ -977,11 +1029,11 @@
   background: transparent;
   border: none;
   color: white;
-  padding: 10px 6px;
+  padding: 5px 3px;
   cursor: pointer;
   transition: all 0.3s ease;
-  border-radius: 12px;
-  min-height: 50px;
+  border-radius: 8px;
+  min-height: 35px;
 }
 
 .nav-button:hover {
@@ -1018,8 +1070,8 @@
   }
   
   .nav-button {
-    padding: 8px 5px;
-    min-height: 48px;
+    padding: 5px 3px;
+    min-height: 30px;
   }
   
   .nav-icon {
@@ -1038,8 +1090,8 @@
   }
   
   .nav-button {
-    padding: 6px 4px;
-    min-height: 45px;
+    padding: 4px 2px;
+    min-height: 28px;
   }
   
   .nav-icon {
@@ -1058,8 +1110,8 @@
   }
   
   .nav-button {
-    padding: 5px 3px;
-    min-height: 40px;
+    padding: 3px 2px;
+    min-height: 24px;
   }
   
   .nav-icon {

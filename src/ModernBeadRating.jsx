@@ -90,32 +90,32 @@ const ModernBeadRating = () => {
           secondary: beadInfo.secondary 
         });
         
-        // 主要面向評分 - 加1分
+        // 主要面向評分 - 加0.5分
         if (beadInfo.primary.category !== 'unknown') {
           switch (beadInfo.primary.category) {
             case 'love':
-              scores.love = Math.min(10, scores.love + 1);
-              console.log('愛情加上主要面向分數: +1, 總分:', scores.love);
+              scores.love = Math.min(10, Math.round((scores.love + 0.5) * 10) / 10);
+              console.log('愛情加上主要面向分數: +0.5, 總分:', scores.love);
               break;
               
             case 'windfall':
-              scores.windfall = Math.min(10, scores.windfall + 1);
-              console.log('偏財加上主要面向分數: +1, 總分:', scores.windfall);
+              scores.windfall = Math.min(10, Math.round((scores.windfall + 0.5) * 10) / 10);
+              console.log('偏財加上主要面向分數: +0.5, 總分:', scores.windfall);
               break;
               
             case 'regularIncome':
-              scores.regularIncome = Math.min(10, scores.regularIncome + 1);
-              console.log('正財加上主要面向分數: +1, 總分:', scores.regularIncome);
+              scores.regularIncome = Math.min(10, Math.round((scores.regularIncome + 0.5) * 10) / 10);
+              console.log('正財加上主要面向分數: +0.5, 總分:', scores.regularIncome);
               break;
               
             case 'career':
-              scores.career = Math.min(10, scores.career + 1);
-              console.log('事業加上主要面向分數: +1, 總分:', scores.career);
+              scores.career = Math.min(10, Math.round((scores.career + 0.5) * 10) / 10);
+              console.log('事業加上主要面向分數: +0.5, 總分:', scores.career);
               break;
               
             case 'health':
-              scores.health = Math.min(10, scores.health + 1);
-              console.log('健康加上主要面向分數: +1, 總分:', scores.health);
+              scores.health = Math.min(10, Math.round((scores.health + 0.5) * 10) / 10);
+              console.log('健康加上主要面向分數: +0.5, 總分:', scores.health);
               break;
               
             default:
@@ -124,32 +124,32 @@ const ModernBeadRating = () => {
           }
         }
         
-        // 第二面向評分 - 加1分
+        // 第二面向評分 - 加0.25分
         if (beadInfo.secondary.category !== 'unknown') {
           switch (beadInfo.secondary.category) {
             case 'love':
-              scores.love = Math.min(10, scores.love + 1);
-              console.log('愛情加上第二面向分數: +1, 總分:', scores.love);
+              scores.love = Math.min(10, Math.round((scores.love + 0.25) * 10) / 10);
+              console.log('愛情加上第二面向分數: +0.25, 總分:', scores.love);
               break;
               
             case 'windfall':
-              scores.windfall = Math.min(10, scores.windfall + 1);
-              console.log('偏財加上第二面向分數: +1, 總分:', scores.windfall);
+              scores.windfall = Math.min(10, Math.round((scores.windfall + 0.25) * 10) / 10);
+              console.log('偏財加上第二面向分數: +0.25, 總分:', scores.windfall);
               break;
               
             case 'regularIncome':
-              scores.regularIncome = Math.min(10, scores.regularIncome + 1);
-              console.log('正財加上第二面向分數: +1, 總分:', scores.regularIncome);
+              scores.regularIncome = Math.min(10, Math.round((scores.regularIncome + 0.25) * 10) / 10);
+              console.log('正財加上第二面向分數: +0.25, 總分:', scores.regularIncome);
               break;
               
             case 'career':
-              scores.career = Math.min(10, scores.career + 1);
-              console.log('事業加上第二面向分數: +1, 總分:', scores.career);
+              scores.career = Math.min(10, Math.round((scores.career + 0.25) * 10) / 10);
+              console.log('事業加上第二面向分數: +0.25, 總分:', scores.career);
               break;
               
             case 'health':
-              scores.health = Math.min(10, scores.health + 1);
-              console.log('健康加上第二面向分數: +1, 總分:', scores.health);
+              scores.health = Math.min(10, Math.round((scores.health + 0.25) * 10) / 10);
+              console.log('健康加上第二面向分數: +0.25, 總分:', scores.health);
               break;
               
             default:
@@ -158,7 +158,7 @@ const ModernBeadRating = () => {
           }
         }
         
-        console.log(`珠子${index + 1}評分完成 - 主要:+1, 第二:+1`);
+        console.log(`珠子${index + 1}評分完成 - 主要:+0.5, 第二:+0.25`);
         console.log('當前累計評分:', scores);
       });
     }
@@ -233,6 +233,28 @@ const ModernBeadRating = () => {
       '深綠': { 
         primary: { category: 'health', name: '深綠米珠', score: 1, description: '淨化與療癒' },
         secondary: { category: 'windfall', name: '深綠米珠', score: 1, description: '財運淨化' }
+      },
+      
+      // 天然礦石系列
+      '孔雀石': { 
+        primary: { category: 'health', name: '孔雀石', score: 1, description: '療癒與保護' },
+        secondary: { category: 'career', name: '孔雀石', score: 1, description: '事業保護' }
+      },
+      '銀耀石': { 
+        primary: { category: 'career', name: '銀耀石', score: 1, description: '智慧與直覺' },
+        secondary: { category: 'love', name: '銀耀石', score: 1, description: '靈性愛情' }
+      },
+      '海藍寶': { 
+        primary: { category: 'love', name: '海藍寶', score: 1, description: '溝通與表達' },
+        secondary: { category: 'health', name: '海藍寶', score: 1, description: '情緒平衡' }
+      },
+      '白月光': { 
+        primary: { category: 'love', name: '白月光', score: 1, description: '溫柔與包容' },
+        secondary: { category: 'health', name: '白月光', score: 1, description: '身心平衡' }
+      },
+      '煙水晶': { 
+        primary: { category: 'windfall', name: '煙水晶', score: 1, description: '財富與保護' },
+        secondary: { category: 'career', name: '煙水晶', score: 1, description: '事業穩定' }
       }
     };
     
@@ -355,14 +377,18 @@ const ModernBeadRating = () => {
         { name: '紅色水晶珠', color: '#FFB6C1', type: '水晶珠' },
         { name: '酒紅米珠', color: '#FF6347', type: '米珠' },
         { name: '粉色玻璃珠', color: '#87CEEB', type: '玻璃珠' },
-        { name: '白色珍珠', color: '#FF69B4', type: '珍珠' }
+        { name: '白色珍珠', color: '#FF69B4', type: '珍珠' },
+        { name: '海藍寶', color: '#87CEEB', type: '天然礦石' },
+        { name: '白月光', color: '#F0F8FF', type: '天然礦石' },
+        { name: '銀耀石', color: '#C0C0C0', type: '天然礦石' }
       ],
       windfall: [
         { name: '橘色玻璃珠', color: '#FFE66D', type: '玻璃珠' },
         { name: '黃粉色玻璃珠', color: '#FFD700', type: '玻璃珠' },
         { name: '金色過渡珠', color: '#00CED1', type: '過渡珠' },
         { name: '金棕玻璃珠', color: '#FF6B6B', type: '玻璃珠' },
-        { name: '金棕水晶珠', color: '#FFA07A', type: '水晶珠' }
+        { name: '金棕水晶珠', color: '#FFA07A', type: '水晶珠' },
+        { name: '煙水晶', color: '#696969', type: '天然礦石' }
       ],
       regularIncome: [
         { name: '薄荷綠玻璃珠', color: '#4ECDC4', type: '玻璃珠' },
@@ -376,14 +402,19 @@ const ModernBeadRating = () => {
         { name: '銀色過渡珠', color: '#FF4500', type: '過渡珠' },
         { name: '金棕玻璃珠', color: '#FF6B6B', type: '玻璃珠' },
         { name: '金棕水晶珠', color: '#FFA07A', type: '水晶珠' },
-        { name: '天空藍水晶珠', color: '#98FB98', type: '水晶珠' }
+        { name: '天空藍水晶珠', color: '#98FB98', type: '水晶珠' },
+        { name: '孔雀石', color: '#228B22', type: '天然礦石' },
+        { name: '銀耀石', color: '#C0C0C0', type: '天然礦石' },
+        { name: '煙水晶', color: '#696969', type: '天然礦石' }
       ],
       health: [
         { name: '白色珍珠', color: '#FF69B4', type: '珍珠' },
         { name: '白色米珠', color: '#9370DB', type: '米珠' },
         { name: '淺藍水晶珠', color: '#DDA0DD', type: '水晶珠' },
         { name: '薄荷綠玻璃珠', color: '#4ECDC4', type: '玻璃珠' },
-        { name: '紅色玻璃珠', color: '#4ECDC4', type: '玻璃珠' }
+        { name: '孔雀石', color: '#228B22', type: '天然礦石' },
+        { name: '海藍寶', color: '#87CEEB', type: '天然礦石' },
+        { name: '白月光', color: '#F0F8FF', type: '天然礦石' }
       ]
     };
 

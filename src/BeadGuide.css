@@ -661,21 +661,6 @@
   color: #a78bfa;
 }
 
-.edit-name-btn, .delete-design-btn {
-  background: rgba(139, 92, 246, 0.2);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  border-radius: 6px;
-  padding: 6px 8px;
-  color: #8b5cf6;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-left: 8px;
-}
-
-.edit-name-btn:hover, .delete-design-btn:hover {
-  background: rgba(139, 92, 246, 0.3);
-  border-color: rgba(139, 92, 246, 0.5);
-}
 
 .basic-settings {
   margin-bottom: 15px;
@@ -759,6 +744,8 @@
   margin: 0;
   line-height: 1.5;
   font-size: 0.9rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .design-beads {
@@ -915,12 +902,27 @@
   border-radius: 13px;
 }
 
+/* 只有10顆珠子時才縮小木製串珠盤 */
+.tray-bg-image.tray-small {
+  transform: scale(0.8);
+}
+
+/* 4/3圓線時縮小串珠盤圖片 */
+.tray-bg-image.tray-four-thirds {
+  transform: scale(0.9);
+}
+
+/* 4/3圓線時縮小整個預覽容器 */
+.circular-bracelet-preview.preview-four-thirds {
+  transform: scale(0.8);
+  min-height: 192px; /* 調整高度 240 * 0.8 */
+}
+
 /* 圓形手串預覽樣式 */
 .circular-bracelet-preview {
   margin-top: 10px;
   padding: 15px;
   border-radius: 15px;
-  border: 2px solid #8B4513;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1162,11 +1164,6 @@
     min-height: 220px;
   }
   
-  /* 手機版編輯樣式 */
-  .edit-name-container {
-    position: relative;
-    width: 100%;
-  }
   
   .edit-name-input {
     width: 100%;
@@ -1485,6 +1482,22 @@
     border-radius: 10px;
   }
   
+  /* 只有10顆珠子時才縮小木製串珠盤 */
+  .tray-bg-image.tray-small {
+    transform: scale(0.7);
+  }
+  
+  /* 4/3圓線時縮小串珠盤圖片 */
+  .tray-bg-image.tray-four-thirds {
+    transform: scale(0.9);
+  }
+  
+  /* 4/3圓線時縮小整個預覽容器 */
+  .circular-bracelet-preview.preview-four-thirds {
+    transform: scale(0.9);
+    min-height: 160px; /* 手機版調整高度 */
+  }
+  
   /* 確保內容不會溢出 */
   .circular-bracelet-preview * {
     max-width: 100%;
@@ -1627,7 +1640,7 @@
 /* 響應式底部導航 */
 @media (max-width: 768px) {
   .bottom-navigation {
-    padding: 6px 0;
+    padding: 4px 0;
   }
   
   .nav-grid {
@@ -1636,8 +1649,8 @@
   }
   
   .nav-button {
-    padding: 8px 4px;
-    min-height: 45px;
+    padding: 4px 2px;
+    min-height: 24px;
   }
   
   .nav-icon {
@@ -1716,10 +1729,6 @@
     color: #8b5cf6;
   }
   
-  .edit-name-btn, .delete-design-btn {
-    padding: 4px 6px;
-    font-size: 0.7rem;
-  }
   
   .save-edit-btn, .cancel-edit-btn {
     padding: 5px 8px;
@@ -1729,7 +1738,7 @@
 
 @media (max-width: 480px) {
   .bottom-navigation {
-    padding: 5px 0;
+    padding: 3px 0;
   }
   
   .nav-grid {
@@ -1738,8 +1747,8 @@
   }
   
   .nav-button {
-    padding: 6px 3px;
-    min-height: 40px;
+    padding: 4px 2px;
+    min-height: 24px;
   }
   
   .nav-icon {
@@ -1759,8 +1768,8 @@
   }
   
   .nav-button {
-    padding: 5px 2px;
-    min-height: 35px;
+    padding: 3px 2px;
+    min-height: 22px;
   }
   
   .nav-icon {

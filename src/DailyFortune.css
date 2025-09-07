@@ -1050,14 +1050,14 @@
 }
 
 .nav-button {
-  background: linear-gradient(135deg, #8a2be2 0%, #4b0082 100%);
+  background: transparent;
   border: none;
   border-radius: 15px;
-  padding: 12px 8px;
+  padding: 6px 4px;
   color: white;
   cursor: pointer;
-    transition: all 0.3s ease;
-  border: 1px solid rgba(138, 43, 226, 0.3);
+  transition: all 0.3s ease;
+  min-height: 40px;
 }
 
 .nav-button:hover {
@@ -1440,7 +1440,8 @@
   }
 
   .nav-button {
-    padding: 10px 6px;
+    padding: 6px 4px;
+    min-height: 35px;
   }
 
   .nav-icon {

@@ -2744,7 +2744,7 @@ const BeadCabinet = () => {
             title="珠子介紹指南"
           >
             <div className="nav-icon">
-              <IconComponent name="book-guide" size={20} />
+              <IconComponent name="magnifying-glass" size={20} />
             </div>
             <div className="nav-text">珠子指南</div>
           </button>
@@ -2755,7 +2755,7 @@ const BeadCabinet = () => {
             title="串珠評分"
           >
             <div className="nav-icon">
-              <IconComponent name="crystal-ball" size={20} />
+              <IconComponent name="star-rating" size={20} />
             </div>
             <div className="nav-text">串珠評分</div>
           </button>

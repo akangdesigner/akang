@@ -274,49 +274,10 @@ const MaterialDetail = ({ material, data }) => {
   );
 };
 
-// 生成設計描述的函數
-const generateDesignDescription = (design) => {
-  const beadTypes = [...new Set(design.beads.map(bead => bead.type))];
-  const beadColors = [...new Set(design.beads.map(bead => bead.color))];
-  
-  let description = `這是一個由${design.beads.length}顆珠子組成的精美設計`;
-  
-  if (beadTypes.length === 1) {
-    description += `，全部採用${beadTypes[0]}材質`;
-  } else if (beadTypes.length > 1) {
-    description += `，融合了${beadTypes.join('、')}等多種材質`;
-  }
-  
-  if (beadColors.length <= 3) {
-    description += `，以${beadColors.join('、')}色調為主`;
-  } else {
-    description += `，色彩豐富多樣`;
-  }
-  
-  if (design.stringLength === 'half') {
-    description += `，採用半圓設計，簡約優雅`;
-  } else if (design.stringLength === 'four-thirds') {
-    description += `，採用4/3圓設計，層次豐富`;
-  } else {
-    description += `，採用全圓設計，完整和諧`;
-  }
-  
-  if (design.stringWidth === 'thin') {
-    description += `，搭配細線材質，精緻細膩`;
-  } else if (design.stringWidth === 'thick') {
-    description += `，搭配粗線材質，穩重大氣`;
-  } else {
-    description += `，搭配中等線材，平衡美觀`;
-  }
-  
-  return description;
-};
 
 // 保存的設計組件
 const SavedDesigns = () => {
   const [savedDesigns, setSavedDesigns] = useState([]);
-  const [editingId, setEditingId] = useState(null);
-  const [editingName, setEditingName] = useState('');
 
   useEffect(() => {
     // 從 localStorage 讀取保存的設計
@@ -324,63 +285,42 @@ const SavedDesigns = () => {
     setSavedDesigns(designs);
   }, []);
 
-  const deleteDesign = (designId) => {
-    const updatedDesigns = savedDesigns.filter(design => design.id !== designId);
-    localStorage.setItem('beadDesigns', JSON.stringify(updatedDesigns));
-    setSavedDesigns(updatedDesigns);
-  };
-
-  const startEditing = (design) => {
-    setEditingId(design.id);
-    setEditingName(design.name);
-  };
-
-  const saveEdit = (designId) => {
-    const newName = editingName.trim();
-    if (!newName) {
-      alert('設計名稱不能為空！');
-      return;
-    }
-
-    const updatedDesigns = savedDesigns.map(design => 
-      design.id === designId 
-        ? { ...design, name: newName }
-        : design
-    );
-    localStorage.setItem('beadDesigns', JSON.stringify(updatedDesigns));
-    setSavedDesigns(updatedDesigns);
-    setEditingId(null);
-    setEditingName('');
-  };
-
-  const cancelEdit = () => {
-    setEditingId(null);
-    setEditingName('');
-  };
 
   // 渲染圓形手串預覽
   const renderCircularBracelet = (design) => {
-         // 根據串珠長度設定等比例縮小的半徑
+         // 根據串珠長度和珠子數量設定半徑
      let radius;
-     if (design.stringLength === 'half') {
-       radius = 75; // 半圓：調整到 75px
-     } else if (design.stringLength === 'four-thirds') {
-       radius = 70; // 4/3圓：調整到 70px
-     } else { // full
-       radius = 70; // 全圓：調整到 70px
+     if (design.beads.length === 10) {
+       // 10顆珠子時使用更小的半徑
+       if (design.stringLength === 'half') {
+         radius = 45; // 半圓：10顆珠子時調整到 45px
+       } else if (design.stringLength === 'four-thirds') {
+         radius = 50; // 4/3圓：10顆珠子時縮小到 50px
+       } else { // full
+         radius = 50; // 全圓：10顆珠子時縮小到 50px
+       }
+     } else {
+       // 其他數量珠子時使用正常半徑
+       if (design.stringLength === 'half') {
+         radius = 70; // 半圓：調大到 70px
+         } else if (design.stringLength === 'four-thirds') {
+           radius = Math.round(70 * 0.9); // 4/3圓：調整到 63px (70 * 0.9)
+       } else { // full
+         radius = 70; // 全圓：正常大小 70px
+       }
      }
 
     const centerX = 120; // 圓心 X 座標
     const centerY = 120; // 圓心 Y 座標
     
     return (
-      <div className="circular-bracelet-preview">
+      <div className={`circular-bracelet-preview ${design.beads.length === 10 ? 'preview-small' : ''} ${design.stringLength === 'four-thirds' ? 'preview-four-thirds' : ''}`}>
         {/* 木製串珠盤背景圖片 */}
         <div className="wooden-tray-background">
           <img 
             src="/wooden-tray.png" 
             alt="木製串珠盤"
-            className="tray-bg-image"
+            className={`tray-bg-image ${design.beads.length === 10 ? 'tray-small' : ''} ${design.stringLength === 'four-thirds' ? 'tray-four-thirds' : ''}`}
             onError={(e) => {
               // 如果圖片載入失敗，隱藏圖片但不設置背景色
               e.target.style.display = 'none';
@@ -421,8 +361,8 @@ const SavedDesigns = () => {
              let baseSize = 1.0; // 所有手鍊長度使用相同大小
              
              // 調整珠子大小，讓間隔更均勻
-             const beadSize = bead.type === '過渡珠' ? Math.round(7 * baseSize * 0.8) : /* 過渡珠 */
-                            (bead.type === '米珠' || bead.type === '珍珠') ? Math.round(10 * baseSize * 0.8) : /* 米珠/珍珠 */
+             const beadSize = bead.type === '過渡珠' ? Math.round(7 * baseSize * 0.8) + 2 : /* 過渡珠 */
+                            (bead.type === '米珠' || bead.type === '珍珠') ? Math.round(10 * baseSize * 0.8) + 2 : /* 米珠/珍珠 */
                             Math.round(24 * baseSize * 0.8); /* 大珠子 */
             
             return (
@@ -457,7 +397,7 @@ const SavedDesigns = () => {
       <div className="saved-designs-empty">
         <div className="empty-content">
           <h3><IconComponent name="mystic-crystal" size={20} /> 還沒有保存的設計</h3>
-          <p>在珠子收納櫃中串珠後，點擊「💾 保存設計」按鈕來保存您的創作！</p>
+          <p>在數位串珠創作區中串珠後，點擊「💾 保存設計」按鈕來保存您的創作！</p>
           <div className="empty-icon">💡</div>
         </div>
       </div>
@@ -466,80 +406,15 @@ const SavedDesigns = () => {
 
   return (
     <div className="saved-designs">
-      <h3>💾 推薦設計參考 ({savedDesigns.length})</h3>
       <div className="designs-grid">
         {savedDesigns.map((design) => (
           <div key={design.id} className="design-card">
             <div className="design-content">
               <div className="design-info">
                 <div className="design-header">
-                  {editingId === design.id ? (
-                    <div className="edit-name-container">
-                      <input
-                        type="text"
-                        value={editingName}
-                        onChange={(e) => setEditingName(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            saveEdit(design.id);
-                          } else if (e.key === 'Escape') {
-                            cancelEdit();
-                          }
-                        }}
-                        onBlur={() => {
-                          if (editingName.trim()) {
-                            saveEdit(design.id);
-                          } else {
-                            cancelEdit();
-                          }
-                        }}
-                        className="edit-name-input"
-                        placeholder="輸入設計名稱"
-                        maxLength="30"
-                        autoFocus
-                      />
-                      <div className="edit-buttons">
-                        <button 
-                          className="save-edit-btn"
-                          onClick={() => saveEdit(design.id)}
-                          title="保存"
-                        >
-                          ✅
-                        </button>
-                        <button 
-                          className="cancel-edit-btn"
-                          onClick={cancelEdit}
-                          title="取消"
-                        >
-                          ❌
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="name-display-container">
-                      <h4 
-                        className="design-name"
-                        onClick={() => startEditing(design)}
-                        title="點擊編輯名稱"
-                      >
-                        {design.name}
-                      </h4>
-                      <button 
-                        className="edit-name-btn"
-                        onClick={() => startEditing(design)}
-                        title="編輯名稱"
-                      >
-                        ✏️
-                      </button>
-                    </div>
-                  )}
-                  <button 
-                    className="delete-design-btn"
-                    onClick={() => deleteDesign(design.id)}
-                    title="刪除設計"
-                  >
-                    ❌
-                  </button>
+                  <h4 className="design-name">
+                    {design.name}
+                  </h4>
                 </div>
                 <div className="design-details">
                   <div className="basic-settings">
@@ -577,7 +452,9 @@ const SavedDesigns = () => {
                   
                   <div className="design-description">
                     <h5>設計描述:</h5>
-                    <p>{design.description || generateDesignDescription(design)}</p>
+                    <p className="design-description-text">
+                      {design.description || '暫無設計描述'}
+                    </p>
                   </div>
                   
                   <div className="design-beads">
@@ -586,9 +463,6 @@ const SavedDesigns = () => {
                     {renderCircularBracelet(design)}
                   </div>
                   
-                  <div className="design-date">
-                    創建於: {new Date(design.createdAt).toLocaleDateString('zh-TW')}
-                  </div>
                 </div>
               </div>
             </div>
@@ -763,7 +637,7 @@ const BeadGuide = () => {
         </button>
           <button className="nav-button" onClick={() => window.location.href = '/'}>
             <div className="nav-icon">
-              <IconComponent name="bead-bracelet" size={20} />
+              <IconComponent name="art-palette" size={20} />
             </div>
             <div className="nav-text">數位串珠</div>
           </button>
