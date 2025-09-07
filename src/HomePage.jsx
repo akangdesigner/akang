@@ -7,9 +7,6 @@ function HomePage() {
     window.location.href = '/';
   };
 
-  const openTutorial = () => {
-    window.location.href = '/tutorial';
-  };
 
   const openGuide = () => {
     window.location.href = '/guide';
@@ -20,7 +17,7 @@ function HomePage() {
   };
 
   const openStores = () => {
-    window.location.href = '/stores';
+    alert('功能測試中...');
   };
 
   const openFortune = () => {
@@ -51,14 +48,6 @@ function HomePage() {
               </div>
               <div className="nav-text">數位串珠</div>
               <div className="nav-description">開始您的數位串珠創作之旅</div>
-            </div>
-            
-            <div className="nav-button" onClick={openTutorial}>
-              <div className="nav-icon">
-                <IconComponent name="book-guide" size={32} />
-              </div>
-              <div className="nav-text">教學指南</div>
-              <div className="nav-description">學習串珠技巧與方法</div>
             </div>
             
             <div className="nav-button" onClick={openGuide}>

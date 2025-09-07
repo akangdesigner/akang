@@ -123,6 +123,34 @@ const BeadRating = () => {
       '深綠': { 
         primary: { category: 'health', name: '深綠米珠', score: 1, description: '淨化與療癒' },
         secondary: { category: 'windfall', name: '深綠米珠', score: 1, description: '財運淨化' }
+      },
+      
+      // 天然礦石系列
+      '孔雀石': { 
+        primary: { category: 'health', name: '孔雀石', score: 1, description: '療癒與保護' },
+        secondary: { category: 'career', name: '孔雀石', score: 1, description: '事業保護' }
+      },
+      '銀耀石': { 
+        primary: { category: 'career', name: '銀耀石', score: 1, description: '智慧與直覺' },
+        secondary: { category: 'love', name: '銀耀石', score: 1, description: '靈性愛情' }
+      },
+      '海藍寶': { 
+        primary: { category: 'love', name: '海藍寶', score: 1, description: '溝通與表達' },
+        secondary: { category: 'health', name: '海藍寶', score: 1, description: '情緒平衡' }
+      },
+      '白月光': { 
+        primary: { category: 'love', name: '白月光', score: 1, description: '溫柔與包容' },
+        secondary: { category: 'health', name: '白月光', score: 1, description: '身心平衡' }
+      },
+      '煙水晶': { 
+        primary: { category: 'windfall', name: '煙水晶', score: 1, description: '財富與保護' },
+        secondary: { category: 'career', name: '煙水晶', score: 1, description: '事業穩定' }
+      },
+      
+      // 靛色系列
+      '靛色': { 
+        primary: { category: 'career', name: '靛色珠', score: 1, description: '智慧與靈性' },
+        secondary: { category: 'love', name: '靛色珠', score: 1, description: '靈性愛情' }
       }
     };
     
@@ -161,30 +189,36 @@ const BeadRating = () => {
         secondary: beadInfo.secondary 
       });
       
+      // 檢查 beadInfo 是否有效
+      if (!beadInfo || !beadInfo.primary || !beadInfo.secondary) {
+        console.warn(`珠子 ${name} 的評分信息無效，跳過此珠子`);
+        return;
+      }
+      
       // 主要面向評分 - 加0.5分
       switch (beadInfo.primary.category) {
         case 'love':
-          scores.love = Math.min(10, scores.love + 0.5);
+          scores.love = Math.min(10, Math.round((scores.love + 0.5) * 10) / 10);
           console.log('愛情加上主要面向分數: +0.5, 總分:', scores.love);
           break;
           
         case 'windfall':
-          scores.windfall = Math.min(10, scores.windfall + 0.5);
+          scores.windfall = Math.min(10, Math.round((scores.windfall + 0.5) * 10) / 10);
           console.log('偏財加上主要面向分數: +0.5, 總分:', scores.windfall);
           break;
           
         case 'social':
-          scores.social = Math.min(10, scores.social + 0.5);
+          scores.social = Math.min(10, Math.round((scores.social + 0.5) * 10) / 10);
           console.log('人際加上主要面向分數: +0.5, 總分:', scores.social);
           break;
           
         case 'career':
-          scores.career = Math.min(10, scores.career + 0.5);
+          scores.career = Math.min(10, Math.round((scores.career + 0.5) * 10) / 10);
           console.log('事業加上主要面向分數: +0.5, 總分:', scores.career);
           break;
           
         case 'health':
-          scores.health = Math.min(10, scores.health + 0.5);
+          scores.health = Math.min(10, Math.round((scores.health + 0.5) * 10) / 10);
           console.log('健康加上主要面向分數: +0.5, 總分:', scores.health);
           break;
           
@@ -193,31 +227,31 @@ const BeadRating = () => {
           break;
       }
       
-      // 第二面向評分 - 加0.5分
+      // 第二面向評分 - 加0.25分
       switch (beadInfo.secondary.category) {
         case 'love':
-          scores.love = Math.min(10, scores.love + 0.5);
-          console.log('愛情加上第二面向分數: +0.5, 總分:', scores.love);
+          scores.love = Math.min(10, Math.round((scores.love + 0.25) * 10) / 10);
+          console.log('愛情加上第二面向分數: +0.25, 總分:', scores.love);
           break;
           
         case 'windfall':
-          scores.windfall = Math.min(10, scores.windfall + 0.5);
-          console.log('偏財加上第二面向分數: +0.5, 總分:', scores.windfall);
+          scores.windfall = Math.min(10, Math.round((scores.windfall + 0.25) * 10) / 10);
+          console.log('偏財加上第二面向分數: +0.25, 總分:', scores.windfall);
           break;
           
         case 'social':
-          scores.social = Math.min(10, scores.social + 0.5);
-          console.log('人際加上第二面向分數: +0.5, 總分:', scores.social);
+          scores.social = Math.min(10, Math.round((scores.social + 0.25) * 10) / 10);
+          console.log('人際加上第二面向分數: +0.25, 總分:', scores.social);
           break;
           
         case 'career':
-          scores.career = Math.min(10, scores.career + 0.5);
-          console.log('事業加上第二面向分數: +0.5, 總分:', scores.career);
+          scores.career = Math.min(10, Math.round((scores.career + 0.25) * 10) / 10);
+          console.log('事業加上第二面向分數: +0.25, 總分:', scores.career);
           break;
           
         case 'health':
-          scores.health = Math.min(10, scores.health + 0.5);
-          console.log('健康加上第二面向分數: +0.5, 總分:', scores.health);
+          scores.health = Math.min(10, Math.round((scores.health + 0.25) * 10) / 10);
+          console.log('健康加上第二面向分數: +0.25, 總分:', scores.health);
           break;
           
         default:
@@ -225,7 +259,7 @@ const BeadRating = () => {
           break;
       }
       
-      console.log(`珠子${index + 1}評分完成 - 主要:+0.5, 第二:+0.5`);
+      console.log(`珠子${index + 1}評分完成 - 主要:+0.5, 第二:+0.25`);
       console.log('當前累計評分:', scores);
     });
     
@@ -537,7 +571,7 @@ const BeadRating = () => {
   // 模擬AI分析過程
   const startAnalysis = () => {
     if (!savedDesign) {
-      alert('請先在珠子收納櫃保存串珠設計！');
+      alert('請先在數位串珠創作區保存串珠設計！');
       return;
     }
 
@@ -681,7 +715,7 @@ const BeadRating = () => {
     }
   };
 
-  // 前往珠子收納櫃創建新設計
+  // 前往數位串珠創作區創建新設計
   const goToBeadCabinet = () => {
     window.location.href = '/';
   };
@@ -815,36 +849,6 @@ const BeadRating = () => {
     return { x, y };
   };
 
-  // 計算六邊形評分區域的頂點位置
-  const getHexagonScorePoints = (scores) => {
-    // 六邊形的六個頂點，從頂部順時針排列，與軸線標籤完全匹配
-    const centerX = 175;
-    const centerY = 175;
-    
-    // 評分範圍：0分在圓心，高分在頂點
-    // 計算每個軸線上的評分點位置
-    const points = [
-      // 頂部：設計感 (y軸負方向)
-      { x: centerX, y: centerY - (scores.love / 10) * 100 },
-      
-      // 右上：愛情 (右上方向，30度角)
-      { x: centerX + (scores.love / 10) * 86.6, y: centerY - (scores.love / 10) * 50 },
-      
-      // 右下：偏財 (右下方向，30度角)
-      { x: centerX + (scores.windfall / 10) * 86.6, y: centerY + (scores.windfall / 10) * 50 },
-      
-      // 底部：人際 (y軸正方向)
-      { x: centerX, y: centerY + (scores.social / 10) * 100 },
-      
-      // 左下：事業 (左下方向，30度角)
-      { x: centerX - (scores.career / 10) * 86.6, y: centerY + (scores.career / 10) * 50 },
-      
-      // 左上：健康 (左上方向，30度角)
-      { x: centerX - (scores.health / 10) * 86.6, y: centerY - (scores.health / 10) * 50 }
-    ];
-    
-    return points;
-  };
 
   return (
     <>
@@ -885,7 +889,7 @@ const BeadRating = () => {
                     {savedDesign ? (
                       <p>我看到你精心設計的串珠作品，讓我為你揭示其中的奧秘。</p>
                     ) : (
-                      <p>請先在珠子收納櫃創建並保存您的串珠設計，我將為你揭示其中的奧秘。</p>
+                      <p>請先在數位串珠創作區創建並保存您的串珠設計，我將為你揭示其中的奧秘。</p>
                     )}
                   </div>
                 )}
@@ -1158,7 +1162,7 @@ const BeadRating = () => {
                       <IconComponent name="art-palette" size={48} />
                     </div>
                     <h4>還沒有串珠設計</h4>
-                    <p>請先到珠子收納櫃創建並保存您的串珠設計</p>
+                    <p>請先到數位串珠創作區創建並保存您的串珠設計</p>
                     <Button 
                       variant="outlined" 
                       size="medium"
@@ -1166,7 +1170,7 @@ const BeadRating = () => {
                       className="border-blue-400 text-blue-400 hover:bg-blue-400/10"
                       startIcon={<IconComponent name="home" size={20} />}
                     >
-                      前往珠子收納櫃
+                      前往數位串珠創作區
                     </Button>
                   </div>
                 )}
@@ -1177,84 +1181,129 @@ const BeadRating = () => {
                 <h3><IconComponent name="moon-stars" size={24} /> 能量評分圖</h3>
                 
                 <div className="radar-chart">
-                  {/* SVG雷達圖 */}
-                  <svg 
-                    className="radar-svg" 
-                    viewBox="0 0 350 350" 
-                    width="350" 
-                    height="350"
-                  >
-                    {/* 背景網格 - 三個同心六邊形 */}
-                    <polygon 
-                      points="175,75 275,125 275,225 175,275 75,225 75,125" 
-                      fill="none" 
-                      stroke="rgba(255,255,255,0.3)" 
-                      strokeWidth="1"
-                    />
-                    <polygon 
-                      points="175,105 245,145 245,205 175,245 105,205 105,145" 
-                      fill="none" 
-                      stroke="rgba(255,255,255,0.3)" 
-                      strokeWidth="1"
-                    />
-                    <polygon 
-                      points="175,135 215,165 215,185 175,215 135,185 135,165" 
-                      fill="none" 
-                      stroke="rgba(255,255,255,0.3)" 
-                      strokeWidth="1"
-                    />
-                    
-                    {/* 軸線 - 從中心到六個頂點 */}
-                    <line x1="175" y1="175" x2="175" y2="75" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
-                    <line x1="175" y1="175" x2="275" y2="125" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
-                    <line x1="175" y1="175" x2="275" y2="225" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
-                    <line x1="175" y1="175" x2="175" y2="275" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
-                    <line x1="175" y1="175" x2="75" y2="225" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
-                    <line x1="175" y1="175" x2="75" y2="125" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
-                    
-                    {/* AI評分結果填充區域 - 真正的六邊形 */}
-                    {showResult && (() => {
-                      const scorePoints = getHexagonScorePoints(scores);
-                      const pointsString = scorePoints.map(point => `${point.x},${point.y}`).join(' ');
-                      
-                      return (
-                        <polygon 
-                          key={`fill-${JSON.stringify(scores)}`}
-                          points={pointsString}
-                          fill="rgba(138, 43, 226, 0.6)" 
-                          stroke="rgba(138, 43, 226, 0.8)" 
-                          strokeWidth="2"
-                        />
-                      );
-                    })()}
-                    
-                    {/* 評分點 */}
-                    {showResult && (() => {
-                      const scorePoints = getHexagonScorePoints(scores);
-                      
-                      return (
-                        <>
-                          {scorePoints.map((point, index) => (
-                            <circle 
-                              key={`point-${index}-${JSON.stringify(scores)}`}
-                              cx={point.x} 
-                              cy={point.y} 
-                              r="4" 
-                              fill="#ffd700" 
+                  {/* 正五邊形雷達圖 - 根據您提供的設計 */}
+                  <div className="radar-container">
+                    <svg 
+                      className="radar-svg" 
+                      viewBox="0 0 800 800" 
+                      width="350" 
+                      height="350"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      {/* 正五邊形雷達圖 */}
+                      {(() => {
+                        const values = [
+                          scores.love / 10,
+                          scores.windfall / 10,
+                          scores.social / 10,
+                          scores.career / 10,
+                          scores.health / 10
+                        ];
+                        const R = 300;
+                        const N = 5;
+                        const deg2rad = d => d * Math.PI / 180;
+
+                        // 計算正五邊形外框頂點（白色線框）
+                        const framePts = [];
+                        for (let i = 0; i < N; i++) {
+                          const ang = -90 + i * (360 / N);
+                          const x = R * Math.cos(deg2rad(ang));
+                          const y = R * Math.sin(deg2rad(ang));
+                          framePts.push([x, y]);
+                        }
+
+                        // 計算資料多邊形（紫色填滿）
+                        const dataPts = [];
+                        for (let i = 0; i < N; i++) {
+                          const ang = -90 + i * (360 / N);
+                          // 確保 values[i] 是有效數字，避免 NaN
+                          const value = isNaN(values[i]) ? 0 : (values[i] || 0);
+                          const r = Math.max(0, Math.min(1, value)) * R;
+                          const x = r * Math.cos(deg2rad(ang));
+                          const y = r * Math.sin(deg2rad(ang));
+                          dataPts.push([x, y]);
+                        }
+
+                        const framePointsString = framePts.map(p => p.join(',')).join(' ');
+                        const dataPointsString = dataPts.map(p => p.join(',')).join(' ');
+
+                        return (
+                          <g transform="translate(400,400)">
+                            {/* 等比縮小的五邊形網格線條 */}
+                            {[0.8, 0.6, 0.4, 0.2].map((scale, gridIndex) => {
+                              const gridPts = [];
+                              for (let i = 0; i < N; i++) {
+                                const ang = -90 + i * (360 / N);
+                                const x = R * scale * Math.cos(deg2rad(ang));
+                                const y = R * scale * Math.sin(deg2rad(ang));
+                                gridPts.push([x, y]);
+                              }
+                              const gridPointsString = gridPts.map(p => p.join(',')).join(' ');
+                              
+                              return (
+                                <polygon
+                                  key={`grid-${gridIndex}`}
+                                  points={gridPointsString}
+                                  fill="none"
+                                  stroke="#FFFFFF"
+                                  strokeOpacity="0.3"
+                                  strokeWidth="1"
+                                />
+                              );
+                            })}
+                            
+                            {/* 五條輻射線，低存在感白色 */}
+                            {framePts.map(([x, y], i) => (
+                              <line
+                                key={`ray-${i}`}
+                                x1="0" y1="0"
+                                x2={x} y2={y}
+                                stroke="#FFFFFF"
+                                strokeOpacity="0.25"
+                                strokeWidth="2"
+                              />
+                            ))}
+                            
+                            {/* 資料區域（紫色填滿） */}
+                            <polygon
+                              points={dataPointsString}
+                              fill="rgba(138, 43, 226, 0.6)"
+                              stroke="rgba(138, 43, 226, 0.8)"
+                              strokeWidth="2"
                             />
-                          ))}
-                        </>
-                      );
-                    })()}
+                            
+                            {/* 紫色區域頂點的白點 */}
+                            {dataPts.map(([x, y], index) => (
+                              <circle
+                                key={`data-point-${index}`}
+                                cx={x}
+                                cy={y}
+                                r="8"
+                                fill="#FFFFFF"
+                                stroke="rgba(138, 43, 226, 0.8)"
+                                strokeWidth="2"
+                              />
+                            ))}
+                            
+                            {/* 外框 */}
+                            <polygon
+                              points={framePointsString}
+                              fill="none"
+                              stroke="#FFFFFF"
+                              strokeWidth="3"
+                            />
+                          </g>
+                        );
+                      })()}
+                    </svg>
                     
-                                         {/* 軸線標籤 - 修正評分變數對應關係，與頂點位置完全匹配 */}
-                     <text x="175" y="60" className="axis-label" textAnchor="middle">設計感 ({scores.love})</text>
-                     <text x="290" y="130" className="axis-label" textAnchor="start">愛情 ({scores.love})</text>
-                     <text x="290" y="230" className="axis-label" textAnchor="start">偏財 ({scores.windfall})</text>
-                     <text x="175" y="300" className="axis-label" textAnchor="middle">人際 ({scores.social})</text>
-                     <text x="60" y="230" className="axis-label" textAnchor="end">事業 ({scores.career})</text>
-                     <text x="60" y="130" className="axis-label" textAnchor="end">健康 ({scores.health})</text>
-                  </svg>
+                    {/* 軸線標籤 - 在 SVG 外面用絕對定位 */}
+                    <div className="radar-label top">愛情 ({scores.love})</div>
+                    <div className="radar-label top-right">偏財 ({scores.windfall})</div>
+                    <div className="radar-label bottom-right">人際 ({scores.social})</div>
+                    <div className="radar-label bottom-left">事業 ({scores.career})</div>
+                    <div className="radar-label top-left">健康 ({scores.health})</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1277,7 +1326,7 @@ const BeadRating = () => {
               </button>
               <button className="nav-button" onClick={() => window.location.href = '/guide'}>
                 <div className="nav-icon">
-                  <IconComponent name="book-guide" size={20} />
+                  <IconComponent name="magnifying-glass" size={20} />
                 </div>
                 <div className="nav-text">珠子指南</div>
               </button>

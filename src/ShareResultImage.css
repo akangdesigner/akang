@@ -248,7 +248,7 @@
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
-.radar-svg .axis-label {
+.card-radar-section .radar-svg .axis-label {
   fill: rgba(255, 255, 255, 0.8);
   font-size: 10px;
   font-weight: 500;
