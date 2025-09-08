@@ -26,62 +26,93 @@ function HomePage() {
 
   return (
     <div className="homepage">
+      {/* 星空背景裝飾 */}
+      <div className="stars-background">
+        <div className="star star-1">✨</div>
+        <div className="star star-2">⭐</div>
+        <div className="star star-3">✨</div>
+        <div className="star star-4">⭐</div>
+        <div className="star star-5">✨</div>
+        <div className="star star-6">⭐</div>
+        <div className="star star-7">✨</div>
+        <div className="star star-8">⭐</div>
+      </div>
+      
+      {/* 漂浮的靈性元素 */}
+      <div className="floating-elements">
+        <div className="floating-icon floating-crystal">🔮</div>
+        <div className="floating-icon floating-moon">🌙</div>
+        <div className="floating-icon floating-star">⭐</div>
+        <div className="floating-icon floating-sparkle">✨</div>
+      </div>
+      
       <div className="container">
+        {/* 標題區域 */}
         <div className="header">
-          <h1 className="title">靈性串珠創作 App</h1>
-          <p className="subtitle">
-            探索靈性串珠的奧秘，創造屬於你的獨特作品
-          </p>
-          <p className="hero-description">
-            透過數位化工具，體驗傳統串珠工藝的現代魅力。
-            從基礎技巧到進階創作，讓每一顆珠子都承載著你的靈感與創意。
-          </p>
-        </div>
-
-        {/* 底部按鈕區域 */}
-        <div className="bottom-nav">
-          <div className="nav-title">選擇您的創作領域</div>
-          <div className="nav-grid">
-            <div className="nav-button" onClick={openBeadCabinet}>
-              <div className="nav-icon">
-                <IconComponent name="art-palette" size={32} />
+          <div className="title-section">
+            <div className="title-content">
+              <h1 className="title">
+                <div className="title-line">掌上靈珠</div>
+                <div className="title-line">PalmBeads</div>
+              </h1>
+              <div className="logo-container">
+                <IconComponent name="hand-orb" size={64} />
               </div>
-              <div className="nav-text">數位串珠</div>
-              <div className="nav-description">開始您的數位串珠創作之旅</div>
             </div>
-            
-            <div className="nav-button" onClick={openGuide}>
-              <div className="nav-icon">
-                <IconComponent name="magnifying-glass" size={32} />
-              </div>
-              <div className="nav-text">珠子介紹指南</div>
-              <div className="nav-description">了解各種珠子的特性與用途</div>
-            </div>
-            
-            <div className="nav-button" onClick={openRating}>
-              <div className="nav-icon">
-                <IconComponent name="star-rating" size={32} />
-              </div>
-              <div className="nav-text">串珠評分</div>
-              <div className="nav-description">評估您的作品並獲得建議</div>
-            </div>
-            
-            <div className="nav-button" onClick={openStores}>
-              <div className="nav-icon">
-                <IconComponent name="shopping-bag" size={32} />
-              </div>
-              <div className="nav-text">珠子商店</div>
-              <div className="nav-description">探索優質的珠子與材料</div>
-            </div>
-            
-            <div className="nav-button" onClick={openFortune}>
-              <div className="nav-icon">
-                <IconComponent name="crystal-ball" size={32} />
-              </div>
-              <div className="nav-text">每日運勢</div>
-              <div className="nav-description">查看今日運勢與推薦珠子</div>
+            <button className="start-button" onClick={openBeadCabinet}>
+              開始串珠
+            </button>
+            <div className="mascot-container">
+              <img 
+                src="/psychic-medium-transparent.png" 
+                alt="通靈師" 
+                className="mascot-cat"
+              />
             </div>
           </div>
+        </div>
+
+        {/* 功能卡片區域 */}
+        <div className="feature-cards">
+          {/* 第一列：每日運勢 + 串珠指南 */}
+          <div className="card-row">
+            <div className="feature-card daily-fortune" onClick={openFortune}>
+              <div className="card-icon">
+                <IconComponent name="crystal-ball" size={24} />
+              </div>
+              <div className="card-text">每日運勢</div>
+            </div>
+            
+            <div className="feature-card bead-guide" onClick={openGuide}>
+              <div className="card-icon">
+                <IconComponent name="book-guide" size={24} />
+              </div>
+              <div className="card-text">串珠指南</div>
+            </div>
+          </div>
+          
+          {/* 第二列：串珠評分 + 實體商店 */}
+          <div className="card-row">
+            <div className="feature-card bead-rating" onClick={openRating}>
+              <div className="card-icon">
+                <IconComponent name="star-rating" size={24} />
+              </div>
+              <div className="card-text">串珠評分</div>
+            </div>
+            
+            <div className="feature-card recommended-stores" onClick={openStores}>
+              <div className="card-icon">
+                <IconComponent name="shopping-bag" size={24} />
+              </div>
+              <div className="card-text">實體商店</div>
+            </div>
+          </div>
+        </div>
+
+        {/* 底部標語 */}
+        <div className="footer-slogan">
+          <p>線上打造您的專屬能量手串</p>
+          <p>掌握每日個人運勢♥</p>
         </div>
       </div>
     </div>
