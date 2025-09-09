@@ -164,8 +164,8 @@ const FloatingBead = ({ drawer, drawerId, onClose, onClickToTray }) => {
         transform: 'translateX(-50%)',
         zIndex: 2000,
         pointerEvents: 'auto',
-        width: isMobile ? '300px' : '200px',
-        height: isMobile ? '300px' : '200px',
+        width: isMobile ? 'clamp(250px, 60vw, 350px)' : 'clamp(180px, 20vw, 250px)',
+        height: isMobile ? 'clamp(250px, 60vw, 350px)' : 'clamp(180px, 20vw, 250px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
@@ -200,10 +200,10 @@ const FloatingBead = ({ drawer, drawerId, onClose, onClickToTray }) => {
           position: 'relative',
           zIndex: 2001,
           pointerEvents: 'auto',
-          width: (drawer.type === '過渡珠') ? '20px' : 
-                 (drawer.type === '米珠' || drawer.type === '珍珠') ? '30px' : '80px',
-          height: (drawer.type === '過渡珠') ? '20px' : 
-                  (drawer.type === '米珠' || drawer.type === '珍珠') ? '30px' : '80px',
+          width: (drawer.type === '過渡珠') ? 'clamp(15px, 4vw, 25px)' : 
+                 (drawer.type === '米珠' || drawer.type === '珍珠') ? 'clamp(20px, 5vw, 35px)' : 'clamp(50px, 12vw, 80px)',
+          height: (drawer.type === '過渡珠') ? 'clamp(15px, 4vw, 25px)' : 
+                  (drawer.type === '米珠' || drawer.type === '珍珠') ? 'clamp(20px, 5vw, 35px)' : 'clamp(50px, 12vw, 80px)',
           cursor: 'pointer'
         }}
         title={`點擊 ${drawer.name} 添加到串珠盤`}
@@ -226,15 +226,7 @@ const FloatingBead = ({ drawer, drawerId, onClose, onClickToTray }) => {
           onError={(e) => {
             console.error(`${drawer.name}珠子圖片載入失敗:`, e);
             e.target.style.display = 'none';
-            const fallbackBead = document.createElement('div');
-            fallbackBead.style.cssText = `
-              width: 100%;
-              height: 100%;
-              background-color: ${drawer.color};
-              border-radius: 50%;
-              pointer-events: none;
-            `;
-            e.target.parentNode.appendChild(fallbackBead);
+            e.target.style.display = 'none';
           }}
           onLoad={() => {
             console.log(`${drawer.name}珠子圖片載入成功`);
@@ -994,24 +986,6 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
                 }}
                 onError={(e) => {
                   e.target.style.display = 'none';
-                  const fallbackBead = document.createElement('div');
-                  fallbackBead.style.cssText = `
-                    width: ${(() => {
-                      if (floatingBeads[0].type === '過渡珠') return '18px'; /* 從 15px 增加到 18px */
-                      if (floatingBeads[0].type === '米珠' || floatingBeads[0].type === '珍珠') return '25px'; /* 從 21px 增加到 25px */
-                      if (floatingBeads[0].type === '米珠') return '40px';
-                      return '60px';
-                    })()};
-                    height: ${(() => {
-                      if (floatingBeads[0].type === '過渡珠') return '18px'; /* 從 15px 增加到 18px */
-                      if (floatingBeads[0].type === '米珠' || floatingBeads[0].type === '珍珠') return '25px'; /* 從 21px 增加到 25px */
-                      if (floatingBeads[0].type === '米珠') return '60px';
-                      return '60px';
-                    })()};
-                    background-color: ${floatingBeads[0].color};
-                    border-radius: 50%;
-                  `;
-                  e.target.parentNode.appendChild(fallbackBead);
                 }}
               />
             </div>
@@ -1243,17 +1217,7 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
                       }}
                       onError={(e) => {
                         console.error(`${bead.name}珠子圖片載入失敗:`, e);
-                        // 如果圖片載入失敗，回退到原有樣式
                         e.target.style.display = 'none';
-                        // 顯示備用的顏色珠子
-                        const fallbackBead = document.createElement('div');
-                        fallbackBead.style.cssText = `
-                          width: 100%;
-                          height: 100%;
-                          background-color: ${bead.color};
-                          border-radius: 50%;
-                        `;
-                        e.target.parentNode.appendChild(fallbackBead);
                       }}
                       onLoad={() => {
                         console.log(`${bead.name}珠子圖片載入成功`);
@@ -1712,76 +1676,37 @@ const BeadCabinet = () => {
           </div>
           
                     {/* 簡化的手機版櫃子佈局 */}
-          <div className="mobile-cabinet-grid">
-            {/* 玻璃珠櫃子 */}
-            <div className="cabinet-unit glass-unit mb-4">
-              <div className="cabinet-frame">
-                {glassBeads.map((drawer) => (
-                  <div key={drawer.id} className="drawer-container">
-                    <div 
-                      className={`drawer ${openDrawers[drawer.id] ? 'open' : ''}`}
-                      onClick={() => toggleDrawer(drawer.id)}
-                      style={{ cursor: 'pointer' }}
-                      data-drawer-id={drawer.id}
-                    >
-                      <div className="drawer-front">
-                        <div className="drawer-handle"></div>
+          <div className="mobile-cabinet-grid" style={{ padding: '20px', maxWidth: '100%', margin: '0 auto' }}>
+            {/* 玻璃珠抽屜 */}
+            <div className="glass-drawers mb-4 responsive-drawer-grid">
+              {glassBeads.map((drawer, index) => (
+                <div 
+                  key={drawer.id}
+                  className={`drawer ${openDrawers[drawer.id] ? 'open' : ''} ${index === 0 ? 'first-drawer' : ''} ${index === 3 ? 'fourth-drawer' : ''}`}
+                  onClick={() => toggleDrawer(drawer.id)}
+                  style={{ cursor: 'pointer' }}
+                  data-drawer-id={drawer.id}
+                >
+                    <div className="drawer-front">
+                      <div className="drawer-handle"></div>
+                    </div>
+                    <div className="drawer-content">
+                      <div className="drawer-bead-preview">
+                        <img 
+                          src={`/${drawer.image}`} 
+                          alt={`${drawer.name}`}
+                          style={{
+                            width: 'clamp(20px, 5vw, 35px)',
+                            height: 'clamp(20px, 5vw, 35px)',
+                            objectFit: 'contain',
+                            borderRadius: '50%'
+                          }}
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
+                        />
                       </div>
-                      <div className="drawer-content">
                         <div className="bead-info">
-                          <div className="drawer-header">
-                            <h3>{drawer.name}</h3>
-                            <button 
-                              className="close-drawer-btn"
-                              onClick={(e) => closeDrawer(drawer.id, e)}
-                            >
-                              ✕
-                            </button>
-                          </div>
-                          <p><strong>類型：</strong>{drawer.type}</p>
-                          <p><strong>顏色：</strong>{drawer.color}</p>
-                          <div className="bead-pile" data-type={drawer.type}>
-                            {[...Array(25)].map((_, i) => {
-                              const row = Math.floor(i / 5);
-                              const col = i % 5;
-                              const left = 20 + (col * 12);
-                              const top = 60 + (row * 8);
-                              
-                              return (
-                                <div 
-                                  key={i}
-                                  className="bead"
-                                  data-type={drawer.type}
-                                  style={{ 
-                                    left: `${left}%`,
-                                    top: `${top}%`
-                                  }}
-                                >
-                                  <img 
-                                    src={`/${drawer.image}`} 
-                                    alt={`${drawer.name}${drawer.type}`}
-                                    style={{
-                                      width: '100%',
-                                      height: '100%',
-                                      objectFit: 'contain',
-                                      borderRadius: '50%'
-                                    }}
-                                    onError={(e) => {
-                                      e.target.style.display = 'none';
-                                      const fallback = document.createElement('div');
-                                      fallback.style.cssText = `
-                                        width: 100%;
-                                        height: 100%;
-                                        background-color: ${drawer.color};
-                                        border-radius: 50%;
-                                      `;
-                                      e.target.parentNode.appendChild(fallback);
-                                    }}
-                                  />
-                                </div>
-                              );
-                            })}
-                          </div>
                           <div className="drawer-links">
                             <div className="row g-2">
                               <div className="col-6">
@@ -1811,85 +1736,39 @@ const BeadCabinet = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
                 ))}
               </div>
-              <div className="cabinet-type-label glass-label">
-                <span>玻</span>
-                <span>璃</span>
-                <span>珠</span>
-              </div>
-            </div>
 
-            {/* 水晶珠櫃子 */}
-            <div className="cabinet-unit crystal-unit mb-4">
-              <div className="cabinet-frame">
-                {crystalBeads.map((drawer) => (
-                  <div key={drawer.id} className="drawer-container">
-                    <div 
-                      className={`drawer ${openDrawers[drawer.id] ? 'open' : ''}`}
-                      onClick={() => toggleDrawer(drawer.id)}
-                      style={{ cursor: 'pointer' }}
-                      data-drawer-id={drawer.id}
-                    >
+            {/* 水晶珠抽屜 */}
+            <div className="crystal-drawers mb-4 responsive-drawer-grid">
+              {crystalBeads.map((drawer) => (
+                <div 
+                  key={drawer.id}
+                  className={`drawer ${openDrawers[drawer.id] ? 'open' : ''}`}
+                  onClick={() => toggleDrawer(drawer.id)}
+                  style={{ cursor: 'pointer' }}
+                  data-drawer-id={drawer.id}
+                >
                       <div className="drawer-front">
                         <div className="drawer-handle"></div>
                       </div>
                       <div className="drawer-content">
+                        <div className="drawer-bead-preview">
+                          <img 
+                            src={`/${drawer.image}`} 
+                            alt={`${drawer.name}`}
+                            style={{
+                              width: 'clamp(20px, 5vw, 35px)',
+                              height: 'clamp(20px, 5vw, 35px)',
+                              objectFit: 'contain',
+                              borderRadius: '50%'
+                            }}
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                            }}
+                          />
+                        </div>
                         <div className="bead-info">
-                          <div className="drawer-header">
-                            <h3>{drawer.name}</h3>
-                            <button 
-                              className="close-drawer-btn"
-                              onClick={(e) => closeDrawer(drawer.id, e)}
-                            >
-                              ✕
-                            </button>
-                          </div>
-                          <p><strong>類型：</strong>{drawer.type}</p>
-                          <p><strong>顏色：</strong>{drawer.color}</p>
-                          <div className="bead-pile" data-type={drawer.type}>
-                            {[...Array(25)].map((_, i) => {
-                              const row = Math.floor(i / 5);
-                              const col = i % 5;
-                              const left = 20 + (col * 12);
-                              const top = 60 + (row * 8);
-                              
-                              return (
-                                <div 
-                                  key={i}
-                                  className="bead"
-                                  data-type={drawer.type}
-                                  style={{ 
-                                    left: `${left}%`,
-                                    top: `${top}%`
-                                  }}
-                                >
-                                  <img 
-                                    src={`/${drawer.image}`} 
-                                    alt={`${drawer.name}${drawer.type}`}
-                                    style={{
-                                      width: '100%',
-                                      height: '100%',
-                                      objectFit: 'contain',
-                                      borderRadius: '50%'
-                                    }}
-                                    onError={(e) => {
-                                      e.target.style.display = 'none';
-                                      const fallback = document.createElement('div');
-                                      fallback.style.cssText = `
-                                        width: 100%;
-                                        height: 100%;
-                                        background-color: ${drawer.color};
-                                        border-radius: 50%;
-                                      `;
-                                      e.target.parentNode.appendChild(fallback);
-                                    }}
-                                  />
-                                </div>
-                              );
-                            })}
-                          </div>
                           <div className="drawer-links">
                             <div className="row g-2">
                               <div className="col-6">
@@ -1919,85 +1798,39 @@ const BeadCabinet = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
                 ))}
               </div>
-              <div className="cabinet-type-label crystal-label">
-                <span>水</span>
-                <span>晶</span>
-                <span>珠</span>
-              </div>
-            </div>
 
-            {/* 木珠區櫃子 (木珠 + 天然礦石) */}
-            <div className="cabinet-unit wood-unit mb-4">
-              <div className="cabinet-frame">
-                {woodBeads.map((drawer) => (
-                  <div key={drawer.id} className="drawer-container">
-                    <div 
-                      className={`drawer ${openDrawers[drawer.id] ? 'open' : ''}`}
-                      onClick={() => toggleDrawer(drawer.id)}
-                      style={{ cursor: 'pointer' }}
-                      data-drawer-id={drawer.id}
-                    >
+            {/* 木珠抽屜 (木珠 + 天然礦石) */}
+            <div className="wood-drawers mb-4 responsive-drawer-grid">
+              {woodBeads.map((drawer) => (
+                <div 
+                  key={drawer.id}
+                  className={`drawer ${openDrawers[drawer.id] ? 'open' : ''}`}
+                  onClick={() => toggleDrawer(drawer.id)}
+                  style={{ cursor: 'pointer' }}
+                  data-drawer-id={drawer.id}
+                >
                       <div className="drawer-front">
                         <div className="drawer-handle"></div>
                       </div>
                       <div className="drawer-content">
+                        <div className="drawer-bead-preview">
+                          <img 
+                            src={`/${drawer.image}`} 
+                            alt={`${drawer.name}`}
+                            style={{
+                              width: 'clamp(20px, 5vw, 35px)',
+                              height: 'clamp(20px, 5vw, 35px)',
+                              objectFit: 'contain',
+                              borderRadius: '50%'
+                            }}
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                            }}
+                          />
+                        </div>
                         <div className="bead-info">
-                          <div className="drawer-header">
-                            <h3>{drawer.name}</h3>
-                            <button 
-                              className="close-drawer-btn"
-                              onClick={(e) => closeDrawer(drawer.id, e)}
-                            >
-                              ✕
-                            </button>
-                          </div>
-                          <p><strong>類型：</strong>{drawer.type}</p>
-                          <p><strong>顏色：</strong>{drawer.color}</p>
-                          <div className="bead-pile" data-type={drawer.type}>
-                            {[...Array(25)].map((_, i) => {
-                              const row = Math.floor(i / 5);
-                              const col = i % 5;
-                              const left = 20 + (col * 12);
-                              const top = 60 + (row * 8);
-                              
-                              return (
-                                <div 
-                                  key={i}
-                                  className="bead"
-                                  data-type={drawer.type}
-                                  style={{ 
-                                    left: `${left}%`,
-                                    top: `${top}%`
-                                  }}
-                                >
-                                  <img 
-                                    src={`/${drawer.image}`} 
-                                    alt={`${drawer.name}${drawer.type}`}
-                                    style={{
-                                      width: '100%',
-                                      height: '100%',
-                                      objectFit: 'contain',
-                                      borderRadius: '50%'
-                                    }}
-                                    onError={(e) => {
-                                      e.target.style.display = 'none';
-                                      const fallback = document.createElement('div');
-                                      fallback.style.cssText = `
-                                        width: 100%;
-                                        height: 100%;
-                                        background-color: ${drawer.color};
-                                        border-radius: 50%;
-                                      `;
-                                      e.target.parentNode.appendChild(fallback);
-                                    }}
-                                  />
-                                </div>
-                              );
-                            })}
-                          </div>
                           <div className="drawer-links">
                             <div className="row g-2">
                               <div className="col-6">
@@ -2027,85 +1860,39 @@ const BeadCabinet = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
                 ))}
               </div>
-              <div className="cabinet-type-label wood-label">
-                <span>木</span>
-                <span>珠</span>
-                <span>子</span>
-              </div>
-            </div>
 
-                            {/* 小珠子櫃子 */}
-              <div className="cabinet-unit small-unit mb-4">
-                <div className="cabinet-frame">
-                  {smallBeads.map((drawer) => (
-                    <div key={drawer.id} className="drawer-container">
-                      <div 
-                        className={`drawer ${openDrawers[drawer.id] ? 'open' : ''}`}
-                      onClick={() => toggleDrawer(drawer.id)}
-                        style={{ cursor: 'pointer' }}
-                        data-drawer-id={drawer.id}
-                      >
+            {/* 小珠子抽屜 */}
+            <div className="small-drawers mb-4 responsive-drawer-grid">
+              {smallBeads.map((drawer) => (
+                <div 
+                  key={drawer.id}
+                  className={`drawer ${openDrawers[drawer.id] ? 'open' : ''}`}
+                  onClick={() => toggleDrawer(drawer.id)}
+                  style={{ cursor: 'pointer' }}
+                  data-drawer-id={drawer.id}
+                >
                         <div className="drawer-front">
                           <div className="drawer-handle"></div>
                         </div>
                         <div className="drawer-content">
-                          <div className="bead-info">
-                            <div className="drawer-header">
-                              <h3>{drawer.name}</h3>
-                              <button 
-                                className="close-drawer-btn"
-                                onClick={(e) => closeDrawer(drawer.id, e)}
-                              >
-                                ✕
-                            </button>
-                            </div>
-                            <p><strong>類型：</strong>{drawer.type}</p>
-                            <p><strong>顏色：</strong>{drawer.color}</p>
-                            <div className="bead-pile" data-type={drawer.type}>
-                              {[...Array(25)].map((_, i) => {
-                                const row = Math.floor(i / 5);
-                                const col = i % 5;
-                                const left = 20 + (col * 12);
-                                const top = 60 + (row * 8);
-                              
-                              return (
-                                <div 
-                                  key={i}
-                                  className="bead"
-                                  data-type={drawer.type}
-                                  style={{ 
-                                    left: `${left}%`,
-                                    top: `${top}%`
-                                  }}
-                                >
-                                  <img 
-                                    src={`/${drawer.image}`} 
-                                    alt={`${drawer.name}${drawer.type}`}
-                                    style={{
-                                      width: '100%',
-                                      height: '100%',
-                                      objectFit: 'contain',
-                                      borderRadius: '50%'
-                                    }}
-                                    onError={(e) => {
-                                      e.target.style.display = 'none';
-                                      const fallback = document.createElement('div');
-                                      fallback.style.cssText = `
-                                        width: 100%;
-                                        height: 100%;
-                                        background-color: ${drawer.color};
-                                        border-radius: 50%;
-                                      `;
-                                      e.target.parentNode.appendChild(fallback);
-                                    }}
-                                  />
-                                </div>
-                              );
-                            })}
+                          <div className="drawer-bead-preview">
+                            <img 
+                              src={`/${drawer.image}`} 
+                              alt={`${drawer.name}`}
+                              style={{
+                                width: '30px',
+                                height: '30px',
+                                objectFit: 'contain',
+                                borderRadius: '50%'
+                              }}
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                              }}
+                            />
                           </div>
+                          <div className="bead-info">
                             <div className="drawer-links">
                               <div className="row g-2">
                                 <div className="col-6">
@@ -2135,20 +1922,10 @@ const BeadCabinet = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
                   ))}
                 </div>
-                <div className="cabinet-type-label small-label">
-                  <span>小</span>
-                  <span>珠</span>
-                  <span>子</span>
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 桌面版：原有的收納櫃佈局 */}
-        <div className="d-none d-lg-block cabinet-section">
+              <div className="d-none d-lg-block cabinet-section">
           {/* 櫃子操作說明 */}
           <div className="cabinet-instructions">
             <h3><IconComponent name="book-guide" size={20} /> 櫃子操作說明</h3>
@@ -2161,420 +1938,9 @@ const BeadCabinet = () => {
             </div>
           </div>
           
-          <div className="bead-cabinet">
-            {/* 櫃子上半部分 */}
-            <div className="cabinet-upper-section">
-                          {/* 第一個櫃子：玻璃珠 */}
-            <div className="cabinet-unit glass-unit">
-              <div className="cabinet-frame">
-                  {glassBeads.map((drawer) => (
-                  <div key={drawer.id} className="drawer-container">
-                    <div 
-                      className={`drawer ${openDrawers[drawer.id] ? 'open' : ''}`}
-                        onClick={() => toggleDrawer(drawer.id)}
-                      style={{ cursor: 'pointer' }}
-                      data-drawer-id={drawer.id}
-                    >
-                      <div className="drawer-front">
-                        <div className="drawer-handle"></div>
-                      </div>
-                      <div className="drawer-content">
-                        <div className="bead-info">
-                          <div className="drawer-header">
-                              <h3>{drawer.name}</h3>
-                              <button 
-                                className="close-drawer-btn"
-                                onClick={(e) => closeDrawer(drawer.id, e)}
-                              >
-                                ✕
-                              </button>
-                          </div>
-                            <p><strong>類型：</strong>{drawer.type}</p>
-                            <p><strong>顏色：</strong>{drawer.color}</p>
-                          <div className="bead-pile" data-type={drawer.type}>
-                            {[...Array(25)].map((_, i) => {
-                              const row = Math.floor(i / 5);
-                              const col = i % 5;
-                                const left = 20 + (col * 12);
-                                const top = 60 + (row * 8);
-                              
-                              return (
-                                <div 
-                                  key={i}
-                                  className="bead"
-                                  data-type={drawer.type}
-                                  style={{ 
-                                    left: `${left}%`,
-                                    top: `${top}%`
-                                  }}
-                                >
-                                  <img 
-                                    src={`/${drawer.image}`} 
-                                    alt={`${drawer.name}${drawer.type}`}
-                                    style={{
-                                      width: '100%',
-                                      height: '100%',
-                                      objectFit: 'contain',
-                                      borderRadius: '50%'
-                                    }}
-                                    onError={(e) => {
-                                      e.target.style.display = 'none';
-                                      const fallback = document.createElement('div');
-                                      fallback.style.cssText = `
-                                        width: 100%;
-                                        height: 100%;
-                                        background-color: ${drawer.color};
-                                        border-radius: 50%;
-                                      `;
-                                      e.target.parentNode.appendChild(fallback);
-                                    }}
-                                  />
-                                </div>
-                              );
-                            })}
-                          </div>
-                          <div className="drawer-links">
-                              <button 
-                                className="link-btn external-link"
-                                onClick={() => window.open(drawer.page, '_blank')}
-                              >
-                                查看詳情
-                              </button>
-                              <button 
-                                className="draggable-bead"
-                                onClick={() => onClickToTray(drawer)}
-                                draggable
-                                onDragStart={(e) => {
-                                  e.dataTransfer.setData('text/plain', JSON.stringify(drawer));
-                                  setDraggedBead(drawer);
-                                  setIsDragging(true);
-                                }}
-                              >
-                                取出珠子
-                              </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  ))}
-                            </div>
-                <div className="cabinet-type-label glass-label">
-                  <span>玻</span>
-                  <span>璃</span>
-                  <span>珠</span>
-              </div>
-            </div>
 
-                            {/* 第二個櫃子：水晶珠 */}
-              <div className="cabinet-unit crystal-unit">
-              <div className="cabinet-frame">
-                  {crystalBeads.map((drawer) => (
-                  <div key={drawer.id} className="drawer-container">
-                                          <div 
-                        className={`drawer ${openDrawers[drawer.id] ? 'open' : ''}`}
-                        onClick={() => toggleDrawer(drawer.id)}
-                        style={{ cursor: 'pointer' }}
-                        data-drawer-id={drawer.id}
-                      >
-                      <div className="drawer-front">
-                        <div className="drawer-handle"></div>
-                      </div>
-                      <div className="drawer-content">
-                        <div className="bead-info">
-                          <div className="drawer-header">
-                              <h3>{drawer.name}</h3>
-                              <button 
-                                className="close-drawer-btn"
-                                onClick={(e) => closeDrawer(drawer.id, e)}
-                              >
-                                ✕
-                              </button>
-                          </div>
-                            <p><strong>類型：</strong>{drawer.type}</p>
-                            <p><strong>顏色：</strong>{drawer.color}</p>
-                            <div className="bead-pile" data-type={drawer.type}>
-                              {[...Array(25)].map((_, i) => {
-                                const row = Math.floor(i / 5);
-                                const col = i % 5;
-                                const left = 20 + (col * 12);
-                                const top = 60 + (row * 8);
-                              
-                              return (
-                                <div 
-                                  key={i}
-                                  className="bead"
-                                  data-type={drawer.type}
-                                  style={{ 
-                                    left: `${left}%`,
-                                    top: `${top}%`
-                                  }}
-                                >
-                                  <img 
-                                    src={`/${drawer.image}`} 
-                                    alt={`${drawer.name}${drawer.type}`}
-                                    style={{
-                                            width: '100%',
-                                            height: '100%',
-                                      objectFit: 'contain',
-                                      borderRadius: '50%'
-                                    }}
-                                    onError={(e) => {
-                                      e.target.style.display = 'none';
-                                      const fallback = document.createElement('div');
-                                      fallback.style.cssText = `
-                                              width: 100%;
-                                              height: 100%;
-                                        background-color: ${drawer.color};
-                                        border-radius: 50%;
-                                      `;
-                                      e.target.parentNode.appendChild(fallback);
-                                    }}
-                                  />
-                                </div>
-                              );
-                            })}
-                          </div>
-                          <div className="drawer-links">
-                              <button 
-                                className="link-btn external-link"
-                                onClick={() => window.open(drawer.page, '_blank')}
-                              >
-                                查看詳情
-                              </button>
-                              <button 
-                                className="draggable-bead"
-                                onClick={() => onClickToTray(drawer)}
-                                draggable
-                                onDragStart={(e) => {
-                                  e.dataTransfer.setData('text/plain', JSON.stringify(drawer));
-                                  setDraggedBead(drawer);
-                                  setIsDragging(true);
-                                }}
-                              >
-                                取出珠子
-                              </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  ))}
-                            </div>
-                <div className="cabinet-type-label crystal-label">
-                  <span>水</span>
-                  <span>晶</span>
-                  <span>珠</span>
-                </div>
-              </div>
-            </div>
 
-            {/* 櫃子下半部分 */}
-            <div className="cabinet-lower-section">
-              {/* 第三個櫃子：木珠區 (木珠 + 天然礦石) */}
-              <div className="cabinet-unit wood-unit">
-                <div className="cabinet-frame">
-                  {woodBeads.map((drawer) => (
-                        <div key={drawer.id} className="drawer-container">
-                          <div 
-                            className={`drawer ${openDrawers[drawer.id] ? 'open' : ''}`}
-                        onClick={() => toggleDrawer(drawer.id)}
-                            style={{ cursor: 'pointer' }}
-                            data-drawer-id={drawer.id}
-                          >
-                            <div className="drawer-front">
-                              <div className="drawer-handle"></div>
-                            </div>
-                            <div className="drawer-content">
-                              <div className="bead-info">
-                                <div className="drawer-header">
-                              <h3>{drawer.name}</h3>
-                              <button 
-                                className="close-drawer-btn"
-                                onClick={(e) => closeDrawer(drawer.id, e)}
-                              >
-                                ✕
-                              </button>
-                                </div>
-                            <p><strong>類型：</strong>{drawer.type}</p>
-                            <p><strong>顏色：</strong>{drawer.color}</p>
-                                <div className="bead-pile" data-type={drawer.type}>
-                                  {[...Array(25)].map((_, i) => {
-                                    const row = Math.floor(i / 5);
-                                    const col = i % 5;
-                                const left = 20 + (col * 12);
-                                const top = 60 + (row * 8);
-                                    
-                                    return (
-                                                                              <div 
-                                          key={i}
-                                          className="bead"
-                                          data-type={drawer.type}
-                                          style={{ 
-                                            left: `${left}%`,
-                                            top: `${top}%`
-                                          }}
-                                        >
-                                        <img 
-                                          src={`/${drawer.image}`} 
-                                          alt={`${drawer.name}${drawer.type}`}
-                                          style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            objectFit: 'contain',
-                                            borderRadius: '50%'
-                                          }}
-                                          onError={(e) => {
-                                            e.target.style.display = 'none';
-                                            const fallback = document.createElement('div');
-                                            fallback.style.cssText = `
-                                              width: 100%;
-                                              height: 100%;
-                                              background-color: ${drawer.color};
-                                              border-radius: 50%;
-                                            `;
-                                            e.target.parentNode.appendChild(fallback);
-                                          }}
-                                        />
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                                <div className="drawer-links">
-                              <button 
-                                className="link-btn external-link"
-                                onClick={() => window.open(drawer.page, '_blank')}
-                              >
-                                查看詳情
-                              </button>
-                              <button 
-                                className="draggable-bead"
-                                onClick={() => onClickToTray(drawer)}
-                                draggable
-                                onDragStart={(e) => {
-                                  e.dataTransfer.setData('text/plain', JSON.stringify(drawer));
-                                  setDraggedBead(drawer);
-                                  setIsDragging(true);
-                                }}
-                              >
-                                取出珠子
-                              </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                  ))}
-                            </div>
-                <div className="cabinet-type-label wood-label">
-                  <span>木</span>
-                  <span>珠</span>
-                </div>
-              </div>
 
-              {/* 第四個櫃子：小珠子 */}
-              <div className="cabinet-unit small-unit">
-                <div className="cabinet-frame">
-                  {smallBeads.map((drawer) => (
-                        <div key={drawer.id} className="drawer-container">
-                          <div 
-                            className={`drawer ${openDrawers[drawer.id] ? 'open' : ''}`}
-                        onClick={() => toggleDrawer(drawer.id)}
-                            style={{ cursor: 'pointer' }}
-                            data-drawer-id={drawer.id}
-                          >
-                            <div className="drawer-front">
-                              <div className="drawer-handle"></div>
-                            </div>
-                            <div className="drawer-content">
-                              <div className="bead-info">
-                                <div className="drawer-header">
-                              <h3>{drawer.name}</h3>
-                              <button 
-                                className="close-drawer-btn"
-                                onClick={(e) => closeDrawer(drawer.id, e)}
-                              >
-                                ✕
-                              </button>
-                                </div>
-                            <p><strong>類型：</strong>{drawer.type}</p>
-                            <p><strong>顏色：</strong>{drawer.color}</p>
-                                <div className="bead-pile" data-type={drawer.type}>
-                                  {[...Array(25)].map((_, i) => {
-                                    const row = Math.floor(i / 5);
-                                    const col = i % 5;
-                                const left = 20 + (col * 12);
-                                const top = 60 + (row * 8);
-                                    
-                                    return (
-                                      <div 
-                                        key={i}
-                                        className="bead"
-                                        data-type={drawer.type}
-                                        style={{ 
-                                          left: `${left}%`,
-                                          top: `${top}%`
-                                        }}
-                                      >
-                                        <img 
-                                          src={`/${drawer.image}`} 
-                                          alt={`${drawer.name}${drawer.type}`}
-                                                                                      style={{
-                                              width: '100%',
-                                              height: '100%',
-                                              objectFit: 'contain',
-                                              borderRadius: '50%'
-                                            }}
-                                          onError={(e) => {
-                                            e.target.style.display = 'none';
-                                            const fallback = document.createElement('div');
-                                            fallback.style.cssText = `
-                                              width: 100%;
-                                              height: 100%;
-                                              background-color: ${drawer.color};
-                                              border-radius: 50%;
-                                            `;
-                                            e.target.parentNode.appendChild(fallback);
-                                          }}
-                                        />
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                                <div className="drawer-links">
-                              <button 
-                                className="link-btn external-link"
-                                onClick={() => window.open(drawer.page, '_blank')}
-                              >
-                                查看詳情
-                              </button>
-                              <button 
-                                className="draggable-bead"
-                                onClick={() => onClickToTray(drawer)}
-                                draggable
-                                onDragStart={(e) => {
-                                  e.dataTransfer.setData('text/plain', JSON.stringify(drawer));
-                                  setDraggedBead(drawer);
-                                  setIsDragging(true);
-                                }}
-                              >
-                                取出珠子
-                              </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                  ))}
-                            </div>
-                <div className="cabinet-type-label small-label">
-                  <span>小</span>
-                  <span>珠</span>
-                  <span>子</span>
-                </div>
-              </div>
-            </div>
-          </div>
 
           <div className="cabinet-controls">
             <div className="row g-2">
@@ -2718,8 +2084,8 @@ const BeadCabinet = () => {
         );
       })}
 
-      {/* 底部導航欄 */}
-      <div className="bottom-navigation">
+      {/* 底部導航欄 - 只在手機版本顯示 */}
+      <div className="bottom-navigation d-block d-lg-none">
         <div className="nav-grid">
           <button
             className="nav-button"
@@ -2771,6 +2137,7 @@ const BeadCabinet = () => {
           </button>
         </div>
       </div>
+    </div>
     </div>
   );
 };
