@@ -367,6 +367,90 @@
   line-height: 1.4;
 }
 
+/* 滑動式櫃子樣式 */
+.sliding-cabinets-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.sliding-cabinet {
+  background: linear-gradient(135deg, #2D1B69 0%, #1E1B4B 100%);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cabinet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.cabinet-header h4 {
+  color: #E0E7FF;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.cabinet-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-btn {
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-btn:hover:not(:disabled) {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+.nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cabinet-counter {
+  color: #E0E7FF;
+  font-size: 1rem;
+  font-weight: 500;
+  min-width: 60px;
+  text-align: center;
+}
+
+.cabinet-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.cabinet-grid .drawer-container {
+  aspect-ratio: 1;
+  min-height: 120px;
+}
+
 /* 響應式設計 */
 @media (max-width: 768px) {
   .homepage .container {
