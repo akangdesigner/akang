@@ -1691,7 +1691,8 @@ const BeadCabinet = () => {
                       <div className="drawer-handle"></div>
                     </div>
                     <div className="drawer-content">
-                      </div>
+                      <div className="drawer-handle"></div>
+                    </div>
                     </div>
                 ))}
               </div>
@@ -1710,7 +1711,8 @@ const BeadCabinet = () => {
                         <div className="drawer-handle"></div>
                       </div>
                       <div className="drawer-content">
-                      </div>
+                      <div className="drawer-handle"></div>
+                    </div>
                     </div>
                 ))}
               </div>
@@ -1729,7 +1731,8 @@ const BeadCabinet = () => {
                         <div className="drawer-handle"></div>
                       </div>
                       <div className="drawer-content">
-                      </div>
+                      <div className="drawer-handle"></div>
+                    </div>
                     </div>
                 ))}
               </div>

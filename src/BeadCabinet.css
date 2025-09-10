@@ -269,6 +269,9 @@
   overflow: visible;
   min-width: 0;
   min-height: 0;
+  /* 立體感效果 */
+  transform-style: preserve-3d;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* 抽屜正面 */
@@ -278,7 +281,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: #ffffff;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
   border-radius: clamp(3px, 0.3vw, 6px);
   border: clamp(0.5px, 0.05vw, 1px) solid #ddd;
   display: flex;
@@ -287,6 +290,17 @@
   justify-content: flex-start;
   padding: clamp(6px, 0.8vw, 12px);
   overflow: hidden;
+  /* 增強立體感陰影效果 */
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.15),
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    inset 0 2px 4px rgba(255, 255, 255, 0.9),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  /* 增強 3D 變換 */
+  transform: translateZ(4px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* 綠色抽屜 - 已改為一般樣式 */
@@ -295,10 +309,20 @@
 .drawer-handle {
   width: clamp(8px, 0.8vw, 16px);
   height: clamp(8px, 0.8vw, 16px);
-  background: #8B4513;
+  background: linear-gradient(145deg, #8B4513, #A0522D);
   border-radius: 50%;
   margin-bottom: clamp(6px, 0.8vw, 12px);
   flex-shrink: 0;
+  /* 增強立體感效果 */
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    inset 0 2px 4px rgba(255, 255, 255, 0.4),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(139, 69, 19, 0.9);
+  position: relative;
+  transition: all 0.2s ease;
 }
 
 /* 抽屜內容 */
@@ -308,7 +332,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: #ffffff;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
   border-radius: clamp(3px, 0.3vw, 6px);
   border: clamp(0.5px, 0.05vw, 1px) solid #ddd;
   display: flex;
@@ -318,11 +342,166 @@
   opacity: 0;
   pointer-events: none;
   z-index: 20;
+  /* 立體感效果 - 抽屜內部 */
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.15),
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    inset 0 2px 4px rgba(255, 255, 255, 0.9),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.08);
+  /* 3D 變換 - 向後退 */
+  transform: translateZ(-4px) translateY(2px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .drawer.open .drawer-content {
   opacity: 1;
   pointer-events: auto;
+  /* 打開時的立體效果 - 向前拉出 */
+  transform: translateZ(4px) translateY(-1px) scale(1.01);
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.15),
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.05),
+    inset 0 2px 4px rgba(255, 255, 255, 0.9),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  /* 輕微的光暈效果 */
+  filter: drop-shadow(0 0 4px rgba(102, 126, 234, 0.1));
+}
+
+/* 抽屜懸停效果 */
+.drawer:hover .drawer-front {
+  transform: translateZ(4px) scale(1.02);
+  box-shadow: 
+    0 6px 12px rgba(0, 0, 0, 0.15),
+    0 3px 6px rgba(0, 0, 0, 0.1),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.08);
+}
+
+/* 抽屜打開時的正面效果 */
+.drawer.open .drawer-front {
+  transform: translateZ(-6px) scale(0.95) translateY(1px);
+  opacity: 0.6;
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.15),
+    0 0px 1px rgba(0, 0, 0, 0.1),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.2);
+  /* 添加模糊效果模擬距離感 */
+  filter: blur(0.5px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 抽屜把手懸停效果 */
+.drawer:hover .drawer-handle {
+  box-shadow: 
+    0 3px 6px rgba(0, 0, 0, 0.35),
+    0 1px 2px rgba(0, 0, 0, 0.25),
+    inset 0 1px 2px rgba(255, 255, 255, 0.35),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.45);
+}
+
+/* 抽屜把手點擊效果 */
+.drawer:active .drawer-handle {
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* 抽屜深度感 - 增強側面陰影 */
+.drawer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    rgba(0, 0, 0, 0.2) 0%, 
+    rgba(0, 0, 0, 0.1) 2px,
+    transparent 4px, 
+    transparent calc(100% - 4px), 
+    rgba(0, 0, 0, 0.1) calc(100% - 2px),
+    rgba(0, 0, 0, 0.2) 100%);
+  border-radius: clamp(3px, 0.3vw, 6px);
+  pointer-events: none;
+  z-index: 1;
+  /* 添加額外的深度陰影 */
+  box-shadow: 
+    inset -1px 0 3px rgba(0, 0, 0, 0.15),
+    inset 1px 0 3px rgba(0, 0, 0, 0.15);
+}
+
+/* 抽屜打開時的深度效果 */
+.drawer.open::before {
+  background: linear-gradient(90deg, 
+    rgba(0, 0, 0, 0.3) 0%, 
+    transparent 4px, 
+    transparent calc(100% - 4px), 
+    rgba(0, 0, 0, 0.3) 100%);
+  /* 添加動態陰影變化 */
+  box-shadow: 
+    inset -2px 0 4px rgba(0, 0, 0, 0.2),
+    inset 2px 0 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 抽屜底部陰影 - 增強從櫃子中突出的效果 */
+.drawer::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0px;
+  right: 0px;
+  height: 8px;
+  background: linear-gradient(to bottom, 
+    rgba(0, 0, 0, 0.25), 
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.05),
+    transparent);
+  border-radius: 0 0 clamp(3px, 0.3vw, 6px) clamp(3px, 0.3vw, 6px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 1;
+  transform: translateY(0px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  /* 添加額外的底部陰影 */
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.drawer.open::after {
+  opacity: 1;
+  transform: translateY(0px);
+  /* 添加更強的底部陰影 */
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 抽屜打開時的整體陰影變化 */
+.drawer.open {
+  /* 整體抽屜的陰影變化 - 與關著時更接近 */
+  box-shadow: 
+    0 6px 12px rgba(0, 0, 0, 0.15),
+    0 3px 6px rgba(0, 0, 0, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.05);
+  /* 添加整體的深度感 */
+  transform: translateZ(2px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 抽屜把手在打開時的變化 */
+.drawer.open .drawer-handle {
+  box-shadow: 
+    0 3px 6px rgba(0, 0, 0, 0.35),
+    0 1px 2px rgba(0, 0, 0, 0.25),
+    inset 0 1px 2px rgba(255, 255, 255, 0.35),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.45);
+  /* 輕微的高光效果 */
+  filter: brightness(1.05);
 }
 
 
@@ -497,11 +676,10 @@
 }
 
 .drawer-handle:hover {
-  transform: scale(1.1);
   box-shadow: 
-    0 3px 6px rgba(0, 0, 0, 0.4),
-    inset 0 1px 2px rgba(255, 255, 255, 0.3),
-    inset 0 -1px 2px rgba(0, 0, 0, 0.4);
+    0 3px 6px rgba(0, 0, 0, 0.35),
+    inset 0 1px 2px rgba(255, 255, 255, 0.35),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.45);
 }
 
 /* 珠子預覽 */
@@ -548,42 +726,9 @@
 }
 
 /* 抽屜內容 */
-.drawer-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  box-shadow: 
-    0 8px 25px rgba(0, 0, 0, 0.15),
-    0 4px 12px rgba(0, 0, 0, 0.1),
-    inset 0 2px 4px rgba(255, 255, 255, 0.8),
-    inset 0 -1px 3px rgba(0, 0, 0, 0.08);
-  transform: translateZ(-8px);
-  opacity: 1;
-  transition: all 0.4s ease 0.2s;
-  pointer-events: none;
-  overflow: visible;
-  z-index: 20;
-}
+/* 重複的 .drawer-content 定義已刪除 - 使用上方的統一定義 */
 
-.drawer.open .drawer-content {
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 30;
-  transform: translateZ(-3px);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.9));
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 
-    0 6px 12px rgba(0, 0, 0, 0.15),
-    inset 0 1px 2px rgba(255, 255, 255, 0.7),
-    inset 0 -1px 2px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(15px);
-  overflow: hidden;
-}
+/* 重複的樣式定義已刪除 - 使用上方的統一定義 */
 
 /* 抽屜開啟時顯示關閉按鈕 */
 .drawer.open .close-drawer-btn {
@@ -1315,36 +1460,7 @@
   }
 }
 
-@media (max-width: 768px) {
-  .main-content {
-    flex-direction: row;
-    gap: 15px;
-    flex-wrap: wrap;
-  }
-  
-  .cabinet-section {
-    flex: 1;
-    min-width: 400px;
-  }
-  
-  .tray-section {
-    flex: 1;
-    min-width: 350px;
-  }
-  
-  .cabinet-title h1 {
-    font-size: 2rem;
-  }
-  
-  .cabinet-title p {
-    font-size: 1rem;
-  }
-  
-  .control-btn {
-    padding: 8px 12px;
-    font-size: 10px;
-  }
-}
+/* 已合併到統一響應式設計區塊 */
 
 /* 添加玻璃效果 */
 .cabinet-frame::before {
@@ -2246,197 +2362,16 @@
   }
 }
 
-@media (max-width: 768px) {
-  .wooden-bead-tray {
-    width: 100%;
-    max-width: 400px;
-    height: 350px;
-    overflow: visible;
-  }
-  
-  .tray-controls {
-    flex-direction: column;
-    width: 100%;
-    margin-bottom: 90px; /* 手機版底部間距調整 */
-  }
-  
-
-}
+/* 已合併到統一響應式設計區塊 */
 
 
-/* ===== 手機版浮空珠子響應式樣式 ===== */
-@media (max-width: 768px) {
-  .floating-bead {
-    width: clamp(30px, 3vw, 45px);
-    height: clamp(30px, 3vw, 45px);
-    top: clamp(-25px, -2.5vw, -35px);
-  }
-  
-  .floating-bead-info {
-    top: var(--floating-bead-info-top-mobile);
-    right: var(--floating-bead-info-right-mobile);
-    min-width: clamp(80px, 8vw, 110px);
-    max-width: clamp(100px, 10vw, 130px);
-    padding: clamp(0.4rem, 0.4vw, 0.6rem) clamp(0.6rem, 0.6vw, 0.8rem);
-  }
-  
-  .floating-bead-info h4 {
-    font-size: clamp(0.6rem, 0.6vw, 0.8rem);
-  }
-  
-  .floating-bead-info small {
-    font-size: clamp(0.5rem, 0.5vw, 0.7rem);
-  }
-  
-  .close-floating-btn {
-    min-width: clamp(18px, 1.8vw, 24px);
-    height: clamp(18px, 1.8vw, 24px);
-    padding: clamp(0.2rem, 0.2vw, 0.3rem);
-    font-size: clamp(0.5rem, 0.5vw, 0.7rem);
-  }
-}
+/* 浮空珠子響應式樣式已合併到統一區塊 */
 
-/* 手機版響應式設計優化 */
-@media (max-width: 768px) {
-  .bead-cabinet-container {
-    padding: clamp(10px, 2vw, 20px);
-    min-height: 100vh;
-  }
-  
-  .cabinet-title {
-    margin-bottom: clamp(15px, 3vw, 25px);
-  }
-  
-  .cabinet-title h1 {
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    margin-bottom: clamp(6px, 1.5vw, 10px);
-  }
-  
-  .cabinet-title p {
-    font-size: clamp(0.8rem, 2vw, 1rem);
-  }
-  
-  .title-header {
-    flex-direction: column;
-    gap: clamp(10px, 2vw, 20px);
-    margin-bottom: clamp(10px, 2vw, 20px);
-  }
-  
-  .home-btn,
-  .guide-btn {
-    padding: clamp(10px, 2vw, 15px) clamp(15px, 3vw, 25px);
-    font-size: clamp(0.8rem, 2vw, 1rem);
-    border-radius: clamp(15px, 3vw, 25px);
-    min-height: clamp(40px, 8vw, 50px);
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .main-content {
-    flex-direction: column;
-    gap: clamp(15px, 3vw, 25px);
-    flex-wrap: nowrap;
-  }
-  
-  .cabinet-section {
-    flex: none;
-    min-width: 100%;
-    width: 100%;
-  }
-  
-  .tray-section {
-    flex: none;
-    min-width: 100%;
-    width: 100%;
-  }
-  
-  .bead-cabinet {
-    flex-direction: column;
-    gap: clamp(15px, 3vw, 25px);
-    align-items: center;
-  }
-  
-  .left-unit .cabinet-frame {
-    width: clamp(200px, 25vw, 350px);
-    height: clamp(130px, 16vw, 250px);
-  }
-  
-  .right-unit .cabinet-frame {
-    width: clamp(130px, 16vw, 250px);
-    height: clamp(130px, 16vw, 250px);
-  }
-  
-  .drawer {
-    width: 100%;
-    height: 100%;
-    border-radius: clamp(8px, 1.5vw, 15px);
-  }
-  
-  .drawer-label {
-    font-size: clamp(0.6rem, 1.5vw, 0.8rem);
-    padding: clamp(3px, 0.8vw, 6px) clamp(4px, 1vw, 8px);
-    border-radius: clamp(6px, 1.2vw, 10px);
-  }
-  
-  .wooden-bead-tray {
-    width: 100%;
-    max-width: clamp(280px, 35vw, 400px);
-    height: clamp(200px, 25vw, 300px);
-    border-radius: clamp(10px, 2vw, 20px);
-    overflow: visible;
-  }
-  
-  .tray-controls {
-    flex-direction: column;
-    gap: clamp(8px, 2vw, 15px);
-    width: 100%;
-    margin-bottom: clamp(40px, 8vw, 60px); /* 小螢幕底部間距調整 */
-  }
-  
-  .control-btn {
-    padding: clamp(10px, 2vw, 15px) clamp(12px, 2.5vw, 20px);
-    font-size: clamp(0.8rem, 2vw, 1rem);
-    border-radius: clamp(8px, 1.5vw, 15px);
-    min-height: clamp(40px, 8vw, 50px);
-    width: 100%;
-  }
-  
-
-  
-  .floating-bead-container {
-    position: absolute;
-    z-index: 3000;
-  }
-  
-  .floating-bead-info {
-    background: #ffffff;
-    border-radius: 15px;
-    padding: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px);
-  }
-  
-  .floating-bead-text h4 {
-    font-size: 1.2rem;
-    margin-bottom: 5px;
-  }
-  
-  .floating-bead-text small {
-    font-size: 0.8rem;
-  }
-  
-  .close-floating-btn {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    font-size: 1rem;
-    min-height: 30px;
-  }
-}
+/* 已合併到統一響應式設計區塊 */
 
 @media (max-width: 480px) {
   .bead-cabinet-container {
-    padding: 10px;
+    padding: 10px 15px; /* 小螢幕手機也保持左右間距 */
   }
   
   .cabinet-title h1 {
@@ -2702,10 +2637,10 @@
   }
 }
 
-/* 手機版響應式設計 */
+/* 手機版響應式設計 - 統一區塊 */
 @media (max-width: 768px) {
   .bead-cabinet-container {
-    padding: 15px;
+    padding: 15px 20px; /* 左右增加間距，確保右邊抽屜與手機右邊保留空格 */
     min-height: 100vh;
   }
   
@@ -2809,7 +2744,6 @@
     min-height: 300px;
   }
   
-  
   .drawer {
     width: 100px;
     height: 60px;
@@ -2820,8 +2754,6 @@
     padding: 8px;
     border-radius: 8px;
   }
-  
-  /* 抽屜正面文字樣式 - 已刪除 */
   
   /* 手機版抽屜把手 */
   .drawer-handle {
@@ -2853,37 +2785,53 @@
     border-radius: 8px;
     margin-bottom: 6px;
   }
+  
+  /* 手機版串珠盤 */
+  .wooden-bead-tray {
+    width: 100%;
+    max-width: 400px;
+    height: 350px;
+    overflow: visible;
+  }
+  
+  .tray-controls {
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 90px; /* 手機版底部間距調整 */
+  }
+  
+  /* 手機版浮空珠子 */
+  .floating-bead {
+    width: clamp(30px, 3vw, 45px);
+    height: clamp(30px, 3vw, 45px);
+    top: clamp(-25px, -2.5vw, -35px);
+  }
+  
+  .floating-bead-info {
+    top: var(--floating-bead-info-top-mobile);
+    right: var(--floating-bead-info-right-mobile);
+    min-width: clamp(80px, 8vw, 110px);
+    max-width: clamp(100px, 10vw, 130px);
+    padding: clamp(0.4rem, 0.4vw, 0.6rem) clamp(0.6rem, 0.6vw, 0.8rem);
+  }
+  
+  .floating-bead-info h4 {
+    font-size: clamp(0.6rem, 0.6vw, 0.8rem);
+  }
+  
+  .floating-bead-info small {
+    font-size: clamp(0.5rem, 0.5vw, 0.7rem);
+  }
+  
+  .close-floating-btn {
+    min-width: clamp(18px, 1.8vw, 24px);
+    height: clamp(18px, 1.8vw, 24px);
+    padding: clamp(0.2rem, 0.2vw, 0.3rem);
+    font-size: clamp(0.5rem, 0.5vw, 0.7rem);
+  }
 }
 
-/* 手機版浮空珠子點擊優化 */
-@media (max-width: 768px) {
-  .floating-bead {
-    cursor: pointer;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
-    box-shadow: none;
-    filter: none;
-  }
-  
-  .floating-bead:active {
-    transform: translateX(-50%);
-    box-shadow: none;
-    filter: none;
-  }
-  
-  .floating-bead:hover {
-    transform: translateX(-50%);
-    box-shadow: none;
-    filter: none;
-  }
-  
-  /* 手機版串珠盤點擊優化 */
-  .wooden-bead-tray {
-    cursor: pointer;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
-  }
-}
+/* 已合併到統一響應式設計區塊 */
 
 /* 抽屜正面文字樣式 - 已刪除 */
 
