@@ -1691,49 +1691,6 @@ const BeadCabinet = () => {
                       <div className="drawer-handle"></div>
                     </div>
                     <div className="drawer-content">
-                      <div className="drawer-bead-preview">
-                        <img 
-                          src={`/${drawer.image}`} 
-                          alt={`${drawer.name}`}
-                          style={{
-                            width: 'clamp(20px, 5vw, 35px)',
-                            height: 'clamp(20px, 5vw, 35px)',
-                            objectFit: 'contain',
-                            borderRadius: '50%'
-                          }}
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                          }}
-                        />
-                      </div>
-                        <div className="bead-info">
-                          <div className="drawer-links">
-                            <div className="row g-2">
-                              <div className="col-6">
-                                <button 
-                                  className="btn btn-outline-secondary btn-sm w-100"
-                                  onClick={() => window.open(drawer.page, '_blank')}
-                                >
-                                  📖 查看詳情
-                                </button>
-                              </div>
-                              <div className="col-6">
-                                <button 
-                                  className="btn btn-primary btn-sm w-100"
-                                  onClick={() => onClickToTray(drawer)}
-                                  draggable
-                                  onDragStart={(e) => {
-                                    e.dataTransfer.setData('text/plain', JSON.stringify(drawer));
-                                    setDraggedBead(drawer);
-                                    setIsDragging(true);
-                                  }}
-                                >
-                                  <IconComponent name="sparkle" size={16} /> 取出珠子
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
                       </div>
                     </div>
                 ))}
@@ -1753,49 +1710,6 @@ const BeadCabinet = () => {
                         <div className="drawer-handle"></div>
                       </div>
                       <div className="drawer-content">
-                        <div className="drawer-bead-preview">
-                          <img 
-                            src={`/${drawer.image}`} 
-                            alt={`${drawer.name}`}
-                            style={{
-                              width: 'clamp(20px, 5vw, 35px)',
-                              height: 'clamp(20px, 5vw, 35px)',
-                              objectFit: 'contain',
-                              borderRadius: '50%'
-                            }}
-                            onError={(e) => {
-                              e.target.style.display = 'none';
-                            }}
-                          />
-                        </div>
-                        <div className="bead-info">
-                          <div className="drawer-links">
-                            <div className="row g-2">
-                              <div className="col-6">
-                                <button 
-                                  className="btn btn-outline-secondary btn-sm w-100"
-                                  onClick={() => window.open(drawer.page, '_blank')}
-                                >
-                                  📖 查看詳情
-                                </button>
-                              </div>
-                              <div className="col-6">
-                                <button 
-                                  className="btn btn-primary btn-sm w-100"
-                                  onClick={() => onClickToTray(drawer)}
-                                  draggable
-                                  onDragStart={(e) => {
-                                    e.dataTransfer.setData('text/plain', JSON.stringify(drawer));
-                                    setDraggedBead(drawer);
-                                    setIsDragging(true);
-                                  }}
-                                >
-                                  <IconComponent name="sparkle" size={16} /> 取出珠子
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
                       </div>
                     </div>
                 ))}
@@ -1815,49 +1729,6 @@ const BeadCabinet = () => {
                         <div className="drawer-handle"></div>
                       </div>
                       <div className="drawer-content">
-                        <div className="drawer-bead-preview">
-                          <img 
-                            src={`/${drawer.image}`} 
-                            alt={`${drawer.name}`}
-                            style={{
-                              width: 'clamp(20px, 5vw, 35px)',
-                              height: 'clamp(20px, 5vw, 35px)',
-                              objectFit: 'contain',
-                              borderRadius: '50%'
-                            }}
-                            onError={(e) => {
-                              e.target.style.display = 'none';
-                            }}
-                          />
-                        </div>
-                        <div className="bead-info">
-                          <div className="drawer-links">
-                            <div className="row g-2">
-                              <div className="col-6">
-                                <button 
-                                  className="btn btn-outline-secondary btn-sm w-100"
-                                  onClick={() => window.open(drawer.page, '_blank')}
-                                >
-                                  📖 查看詳情
-                                </button>
-                              </div>
-                              <div className="col-6">
-                                <button 
-                                  className="btn btn-primary btn-sm w-100"
-                                  onClick={() => onClickToTray(drawer)}
-                                  draggable
-                                  onDragStart={(e) => {
-                                    e.dataTransfer.setData('text/plain', JSON.stringify(drawer));
-                                    setDraggedBead(drawer);
-                                    setIsDragging(true);
-                                  }}
-                                >
-                                  <IconComponent name="sparkle" size={16} /> 取出珠子
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
                       </div>
                     </div>
                 ))}
@@ -1877,49 +1748,6 @@ const BeadCabinet = () => {
                           <div className="drawer-handle"></div>
                         </div>
                         <div className="drawer-content">
-                          <div className="drawer-bead-preview">
-                            <img 
-                              src={`/${drawer.image}`} 
-                              alt={`${drawer.name}`}
-                              style={{
-                                width: '30px',
-                                height: '30px',
-                                objectFit: 'contain',
-                                borderRadius: '50%'
-                              }}
-                              onError={(e) => {
-                                e.target.style.display = 'none';
-                              }}
-                            />
-                          </div>
-                          <div className="bead-info">
-                            <div className="drawer-links">
-                              <div className="row g-2">
-                                <div className="col-6">
-                                  <button 
-                                    className="btn btn-outline-secondary btn-sm w-100"
-                                    onClick={() => window.open(drawer.page, '_blank')}
-                                  >
-                                    📖 查看詳情
-                                  </button>
-                                </div>
-                                <div className="col-6">
-                                  <button 
-                                    className="btn btn-primary btn-sm w-100"
-                                    onClick={() => onClickToTray(drawer)}
-                                    draggable
-                                    onDragStart={(e) => {
-                                      e.dataTransfer.setData('text/plain', JSON.stringify(drawer));
-                                      setDraggedBead(drawer);
-                                      setIsDragging(true);
-                                    }}
-                                  >
-                                    <IconComponent name="sparkle" size={16} /> 取出珠子
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
                         </div>
                       </div>
                   ))}
