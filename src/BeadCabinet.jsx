@@ -399,11 +399,11 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
     // 根據串珠長度設定固定半徑（與 SVG 圓形線一致）
     let radius;
     if (stringLength === 'half') {
-      radius = 80; // 半圓：固定半徑 80px
+      radius = 70; // 半圓：固定半徑 70px
     } else if (stringLength === 'four-thirds') {
-      radius = 100; // 4/3圓：固定半徑 100px
+      radius = 85; // 4/3圓：固定半徑 85px
     } else { // full
-      radius = 120; // 全圓：固定半徑 120px
+      radius = 100; // 全圓：固定半徑 100px
     }
     
     const centerX = 0;
@@ -651,17 +651,16 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
     if (totalBeads === 0) return { left: '50%', top: '50%' };
     
     // 串珠盤上的珠子使用與靜態串珠線一致的半徑
-    const radius = 125; // 與靜態串珠線的 r 一致
-    
+    const radius = 130; // 與靜態串珠線的 r 一致
     // 串珠線的圓心座標（與靜態串珠線一致）
-    const centerX = 142; // 與靜態串珠線的 cx 一致
-    const centerY = 140; // 與靜態串珠線的 cy 一致
+    const centerX = 150; // 與靜態串珠線的 cx 一致
+    const centerY = 150; // 與靜態串珠線的 cy 一致
     
     // 判斷當前珠子是否為小珠子
     const isCurrentSmall = beadType === '米珠' || beadType === '珍珠' || beadType === '過渡珠';
     
     // 計算珠子大小
-    const beadSize = isCurrentSmall ? 18 : 40; /* 小珠子從 15 增加到 18，大珠子從 35 增加到 40 */
+    const beadSize = isCurrentSmall ? 14 : 32; /* 小珠子縮小到 14，大珠子縮小到 32 */
     
     // 統一使用20px間距
     // 從12點鐘方向開始，每顆珠子緊接著前一顆
@@ -1062,19 +1061,6 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
             ⭕ 全圓
           </button>
         </div>
-        <div className="stringing-capacity-hint">
-          <span>💡 可串珠子：</span>
-          <span>
-            {(() => {
-              switch (stringLength) {
-                case 'half': return '🌙 半圓可串 10 顆珠子';
-                case 'four-thirds': return '🔄 4/3圓可串 13 顆珠子';
-                case 'full': return '⭕ 全圓可串 16 顆珠子';
-                default: return '⭕ 全圓可串 16 顆珠子';
-              }
-            })()}
-          </span>
-        </div>
         <div className="tray-buttons">
           <button
             className="save-design-btn"
@@ -1129,9 +1115,9 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
             {/* 根據選擇的長度繪製不同長度的圓弧 */}
             <path
               d={(() => {
-                              const cx = 140;
-              const cy = 140;
-                const r = 125;
+                              const cx = 150;
+              const cy = 150;
+                const r = 130;
                 const startAngle = -Math.PI / 2; // 12點鐘方向開始
                 
                 let endAngle;
@@ -1189,12 +1175,6 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
                       left: position.left,
                       top: position.top,
                       transform: 'translate(-50%, -50%)',
-                      width: (bead.type === '過渡珠') ? '18px' : /* 從 15px 增加到 18px */
-                             (bead.type === '米珠' || bead.type === '珍珠') ? '25px' : /* 從 21px 增加到 25px */
-                             (bead.type === '米珠' ? '40px' : '60px'),
-                      height: (bead.type === '過渡珠') ? '18px' : /* 從 15px 增加到 18px */
-                              (bead.type === '米珠' || bead.type === '珍珠') ? '25px' : /* 從 21px 增加到 25px */
-                              (bead.type === '米珠' ? '60px' : '60px'),
                       position: 'absolute',
                       zIndex: 2
                     }}
@@ -1365,6 +1345,7 @@ const BeadCabinet = () => {
     setSelectedBeads(prev => {
       const newBeads = [...prev, { ...bead, id: Date.now() }];
       console.log('更新後的珠子陣列:', newBeads.map((b, i) => `${i + 1}. ${b.name}`));
+      console.log('新珠子陣列長度:', newBeads.length);
       return newBeads;
     });
     
