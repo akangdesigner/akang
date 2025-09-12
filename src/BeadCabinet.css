@@ -13,14 +13,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(to bottom, 
-    rgba(250, 208, 250, 0.15) 0%, 
-    rgba(255, 255, 255, 0.9) 5%, 
-    rgba(255, 255, 255, 0.95) 20%, 
-    rgba(255, 255, 255, 0.95) 80%, 
-    rgba(255, 255, 255, 0.9) 90%, 
-    rgba(255, 213, 255, 0.15) 100%
-  );
+  background: #f8f9fa;
   padding: 20px;
   padding-bottom: 80px; /* 為底部導航欄留出空間 */
   font-family: 'Arial', sans-serif;
@@ -34,18 +27,45 @@
 /* 標題區域 */
 .cabinet-title {
   text-align: center;
-  margin-bottom: 20px;
-  padding: 20px;
-  background: #ffffff;
-  border-radius: 8px;
+  margin-bottom: 10px;
+  padding: 12px 20px;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  border-radius: 12px;
+  border: 2px solid rgba(139, 92, 246, 0.6);
+  box-shadow: 
+    0 15px 35px rgba(139, 92, 246, 0.15),
+    0 8px 20px rgba(139, 92, 246, 0.1),
+    inset 0 2px 4px rgba(255, 255, 255, 0.8),
+    inset 0 -2px 4px rgba(139, 92, 246, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.cabinet-title::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
 }
 
 /* 主標題樣式 */
 .cabinet-title h1 {
-  margin: 0 0 10px 0;
+  margin: 10px 0 10px 0;
   font-size: 2.5rem;
   font-weight: bold;
   color: #2c3e50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 導航按鈕區域 */
@@ -156,16 +176,54 @@
 
 /* 櫃子操作說明 */
 .cabinet-instructions {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.8));
-  border-radius: 15px;
-  padding: 20px;
-  margin-bottom: 20px;
-  width: 100%;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  border-radius: 18px;
+  padding: 25px;
+  margin: 20px 15px;
+  width: calc(100% - 30px);
   max-width: 600px;
-  backdrop-filter: blur(15px);
+  border: 2px solid rgba(139, 92, 246, 0.6);
   box-shadow: 
-    0 10px 25px rgba(0, 0, 0, 0.1),
-    0 5px 15px rgba(0, 0, 0, 0.08);
+    0 20px 40px rgba(139, 92, 246, 0.12),
+    0 12px 25px rgba(139, 92, 246, 0.08),
+    inset 0 2px 6px rgba(255, 255, 255, 0.9),
+    inset 0 -2px 6px rgba(139, 92, 246, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.cabinet-instructions::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.05) 0%, transparent 70%);
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.cabinet-instructions::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(45deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(30px, -30px) rotate(120deg); }
+  66% { transform: translate(-20px, 20px) rotate(240deg); }
 }
 
 .cabinet-instructions h3 {
@@ -177,12 +235,16 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  position: relative;
+  z-index: 2;
 }
 
 .instruction-content {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  position: relative;
+  z-index: 2;
 }
 
 .instruction-content p {
@@ -288,9 +350,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.4), rgba(248, 249, 250, 0.3));
   border-radius: clamp(3px, 0.3vw, 6px);
-  border: clamp(0.5px, 0.05vw, 1px) solid #ddd;
+  border: clamp(0.5px, 0.05vw, 1px) solid rgba(221, 221, 221, 0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -308,6 +370,9 @@
   /* 增強 3D 變換 */
   transform: translateZ(4px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* 添加透明效果 */
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 /* 綠色抽屜 - 已改為一般樣式 */
@@ -359,6 +424,100 @@
   transform: translateZ(-4px) translateY(2px);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* 抽屜文字說明 */
+.drawer-label {
+  position: absolute;
+  top: 65%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+  text-align: left;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.bead-name {
+  display: block;
+  font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2px;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.bead-type {
+  display: block;
+  font-size: clamp(0.5rem, 1.2vw, 0.7rem);
+  font-weight: 400;
+  color: #666;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* 抽屜珠子圖片 */
+.drawer-bead-image {
+  position: absolute;
+  top: 60%;
+  right: 20px;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* 小珠子櫃子的圖片縮小 */
+.small-drawers .drawer-bead-image {
+  width: 20px;
+  height: 20px;
+  right: 25px;
+}
+
+.drawer-bead-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  background: transparent;
+}
+
+/* 小珠子櫃子控制按鈕樣式 */
+.small-drawers-controls {
+  margin-top: 15px;
+  padding: 0 10px;
+}
+
+.small-drawers-controls .btn {
+  font-size: 0.8rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.small-drawers-controls .btn-outline-success {
+  color: #28a745;
+  border-color: #28a745;
+}
+
+.small-drawers-controls .btn-outline-success:hover {
+  background-color: #28a745;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.small-drawers-controls .btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.small-drawers-controls .btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
 
 .drawer.open .drawer-content {
   opacity: 1;
@@ -1862,12 +2021,13 @@
   width: 60vh; /* 減少線條長度，確保不會超出螢幕 */
   transform: translate(-50%, -50%) rotate(45deg);
   transform-origin: center center;
-  z-index: 1;
+  z-index: -1;
 }
 
 .line-segment {
   position: absolute;
   background: #FFFFFF;
+  z-index: -1;
 }
 
 .line-start {
@@ -1898,7 +2058,7 @@
 /* 串珠珠子樣式 - 無浮動效果 */
 .stringing-bead {
   position: absolute;
-  z-index: 2;
+  z-index: 10;
   pointer-events: none;
   /* 完全靜態，無動畫，無浮動效果 */
   filter: none !important;
@@ -1910,7 +2070,7 @@
 /* 已串好珠子樣式 - 無浮動效果 */
 .strung-bead {
   position: absolute;
-  z-index: 999;
+  z-index: 10;
   pointer-events: none;
   /* 完全靜態，無動畫，無浮動效果 */
   filter: none !important;
@@ -2081,7 +2241,7 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1;
+  z-index: -1;
 }
 
 .string-connector line {
