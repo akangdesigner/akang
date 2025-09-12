@@ -786,7 +786,7 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
                 position: 'absolute',
                 left: bead.finalPosition.left,
                 top: bead.finalPosition.top,
-                zIndex: 999,
+                zIndex: 10,
                 transform: 'translate(-50%, -50%)',
                 transition: 'none', // 確保完全靜止
                 animation: 'none',   // 確保沒有動畫
@@ -838,7 +838,7 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
                 top: stringLength === 'half' ? 'calc(50% - 25vh)' : 
                      stringLength === 'four-thirds' ? 'calc(50% - 30vh)' : 
                      'calc(50% - 35vh)',
-                zIndex: 1000,
+                zIndex: 10,
                 transition: 'all 0.5s ease-in-out',
                 transform: 'translate(-50%, -50%)',
                 filter: 'none',
@@ -1109,7 +1109,7 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
               width: '100%', 
               height: '100%',
               pointerEvents: 'none',
-              zIndex: 1
+              zIndex: -1
             }}
           >
             {/* 根據選擇的長度繪製不同長度的圓弧 */}
@@ -1354,35 +1354,35 @@ const BeadCabinet = () => {
 
   // 定義珠子的顏色和類型，以及對應的內部頁面
   const beadColors = [
-    { id: 1, color: '#FF6B9D', name: '米色', type: '玻璃珠', page: '/tutorial', shine: '#FFB6C1', image: 'light-pink-bead-ID1.png' },
-    { id: 2, color: '#4ECDC4', name: '薄荷綠', type: '玻璃珠', page: '/patterns', shine: '#98FB98', image: 'mint-green-bead-ID2.png' },
-    { id: 3, color: '#FFE66D', name: '橘色', type: '玻璃珠', page: '/tutorial', shine: '#FFFFE0', image: 'orange-bead-ID3.png' },
-    { id: 4, color: '#FF6B6B', name: '金棕', type: '玻璃珠', page: '/patterns', shine: '#FFB6C1', image: 'gold-brown-bead-ID4.png' },
-    { id: 5, color: '#4ECDC4', name: '紅色', type: '玻璃珠', page: '/tutorial', shine: '#87CEEB', image: 'red-bead-ID5.png' },
+    { id: 1, color: '#F5F5DC', name: '米色', type: '玻璃珠', page: '/tutorial', shine: '#FFB6C1', image: 'light-pink-bead-ID1.png' },
+    { id: 2, color: '#98FB98', name: '薄荷綠', type: '玻璃珠', page: '/patterns', shine: '#98FB98', image: 'mint-green-bead-ID2.png' },
+    { id: 3, color: '#FFA500', name: '橘色', type: '玻璃珠', page: '/tutorial', shine: '#FFFFE0', image: 'orange-bead-ID3.png' },
+    { id: 4, color: '#DAA520', name: '金棕', type: '玻璃珠', page: '/patterns', shine: '#FFB6C1', image: 'gold-brown-bead-ID4.png' },
+    { id: 5, color: '#DC143C', name: '紅色', type: '玻璃珠', page: '/tutorial', shine: '#87CEEB', image: 'red-bead-ID5.png' },
     { id: 6, color: '#FFD700', name: '黃粉色', type: '玻璃珠', page: '/tutorial', shine: '#FFFACD', image: 'yellow-pink-bead-ID6.png' },
-    { id: 7, color: '#87CEEB', name: '粉色', type: '玻璃珠', page: '/tutorial', shine: '#F0F8FF', image: 'pink-bead-ID7.png' },
-    { id: 10, color: '#98FB98', name: '深紫色', type: '水晶珠', page: '/patterns', shine: '#F0FFF0', image: 'dark-purple-bead-ID8.png' },
+    { id: 7, color: '#FFB6C1', name: '粉色', type: '玻璃珠', page: '/tutorial', shine: '#F0F8FF', image: 'pink-bead-ID7.png' },
+    { id: 10, color: '#8B008B', name: '深紫色', type: '水晶珠', page: '/patterns', shine: '#F0FFF0', image: 'dark-purple-bead-ID8.png' },
     { id: 11, color: '#FFA07A', name: '金棕', type: '水晶珠', page: '/patterns', shine: '#FFD700', image: 'gold-brown-bead-ID9.png' },
-    { id: 12, color: '#FFB6C1', name: '紅色', type: '水晶珠', page: '/patterns', shine: '#FFF0F5', image: 'red-bead-ID10.png' },
-    { id: 13, color: '#F0E68C', name: '粉色', type: '水晶珠', page: '/tutorial', shine: '#FFF8DC', image: 'pink-bead-ID11.png' },
-    { id: 14, color: '#DC143C', name: '淡紫色', type: '水晶珠', page: '/patterns', shine: '#FFF0F5', image: 'light-purple-bead-ID12.png' },
-    { id: 15, color: '#40E0D0', name: '靛色', type: '水晶珠', page: '/tutorial', shine: '#F0FFFF', image: 'indigo-bead-ID13.png' },
-    { id: 16, color: '#98FB98', name: '天空藍', type: '水晶珠', page: '/patterns', shine: '#F0FFF0', image: 'sky-blue-bead-ID14.png' },
-    { id: 17, color: '#DDA0DD', name: '淺藍', type: '水晶珠', page: '/tutorial', shine: '#E6E6FA', image: 'light-blue-bead-ID15.png' },
-    { id: 19, color: '#DDA0DD', name: '紅棕', type: '木珠', page: '/patterns', shine: '#F8F8FF', image: 'red-brown-bead-ID16.png' },
-    { id: 20, color: '#F0E68C', name: '深棕', type: '木珠', page: '/tutorial', shine: '#FFFACD', image: 'dark-brown-bead-ID17.png' },
-    { id: 21, color: '#4682B4', name: '淺棕', type: '木珠', page: '/patterns', shine: '#F0F8FF', image: 'light-brown-bead-ID18.png' },
-    { id: 22, color: '#228B22', name: '黑色', type: '木珠', page: '/tutorial', shine: '#F0FFF0', image: 'black-bead-ID19.png' },
-    { id: 23, color: '#228B22', name: '孔雀石', type: '天然礦石', page: '/patterns', shine: '#32CD32', image: 'malachite-bead-ID23.png' },
+    { id: 12, color: '#DC143C', name: '紅色', type: '水晶珠', page: '/patterns', shine: '#FFF0F5', image: 'red-bead-ID10.png' },
+    { id: 13, color: '#FFB6C1', name: '粉色', type: '水晶珠', page: '/tutorial', shine: '#FFF8DC', image: 'pink-bead-ID11.png' },
+    { id: 14, color: '#DDA0DD', name: '淡紫色', type: '水晶珠', page: '/patterns', shine: '#FFF0F5', image: 'light-purple-bead-ID12.png' },
+    { id: 15, color: '#008B8B', name: '靛色', type: '水晶珠', page: '/tutorial', shine: '#F0FFFF', image: 'indigo-bead-ID13.png' },
+    { id: 16, color: '#87CEEB', name: '天空藍', type: '水晶珠', page: '/patterns', shine: '#F0FFF0', image: 'sky-blue-bead-ID14.png' },
+    { id: 17, color: '#87CEEB', name: '淺藍', type: '水晶珠', page: '/tutorial', shine: '#E6E6FA', image: 'light-blue-bead-ID15.png' },
+    { id: 19, color: '#A0522D', name: '紅棕', type: '木珠', page: '/patterns', shine: '#F8F8FF', image: 'red-brown-bead-ID16.png' },
+    { id: 20, color: '#8B4513', name: '深棕', type: '木珠', page: '/tutorial', shine: '#FFFACD', image: 'dark-brown-bead-ID17.png' },
+    { id: 21, color: '#D2B48C', name: '淺棕', type: '木珠', page: '/patterns', shine: '#F0F8FF', image: 'light-brown-bead-ID18.png' },
+    { id: 22, color: '#000000', name: '黑色', type: '木珠', page: '/tutorial', shine: '#F0FFF0', image: 'black-bead-ID19.png' },
+    { id: 23, color: '#32CD32', name: '孔雀石', type: '天然礦石', page: '/patterns', shine: '#32CD32', image: 'malachite-bead-ID23.png' },
     { id: 24, color: '#C0C0C0', name: '銀耀石', type: '天然礦石', page: '/tutorial', shine: '#E6E6FA', image: 'silver-shine-bead-ID24.png' },
-    { id: 25, color: '#87CEEB', name: '海藍寶', type: '天然礦石', page: '/patterns', shine: '#F0F8FF', image: 'aquamarine-bead-ID25.png' },
-    { id: 26, color: '#F0F8FF', name: '白月光', type: '天然礦石', page: '/tutorial', shine: '#FFFFFF', image: 'moonstone-bead-ID26.png' },
+    { id: 25, color: '#7FFFD4', name: '海藍寶', type: '天然礦石', page: '/patterns', shine: '#F0F8FF', image: 'aquamarine-bead-ID25.png' },
+    { id: 26, color: '#C0C0C0', name: '白月光', type: '天然礦石', page: '/tutorial', shine: '#FFFFFF', image: 'moonstone-bead-ID26.png' },
     { id: 27, color: '#696969', name: '煙水晶', type: '天然礦石', page: '/patterns', shine: '#A9A9A9', image: 'smoky-quartz-bead-ID27.png' },
-    { id: 28, color: '#00CED1', name: '金色', type: '過渡珠', page: '/tutorial', shine: '#F0FFFF', image: 'gold-bead-ID21.png' },
-    { id: 29, color: '#FF4500', name: '銀色', type: '過渡珠', page: '/tutorial', shine: '#FFF5EE', image: 'silver-bead-ID22.png' },
-    { id: 30, color: '#F0F8FF', name: '白色', type: '珍珠', page: '/patterns', shine: '#FFFFFF', image: 'white-pearl-ID20.png' },
-    { id: 31, color: '#32CD32', name: '黑色', type: '米珠', page: '/tutorial', shine: '#F0FFF0', image: 'black-bead-ID23.png' },
-    { id: 32, color: '#9370DB', name: '白色', type: '米珠', page: '/patterns', shine: '#F8F8FF', image: 'white-bead-ID24.png' },
+    { id: 28, color: '#FFD700', name: '金色', type: '過渡珠', page: '/tutorial', shine: '#F0FFFF', image: 'gold-bead-ID21.png' },
+    { id: 29, color: '#C0C0C0', name: '銀色', type: '過渡珠', page: '/tutorial', shine: '#FFF5EE', image: 'silver-bead-ID22.png' },
+    { id: 30, color: '#FFFFFF', name: '白色', type: '珍珠', page: '/patterns', shine: '#FFFFFF', image: 'white-pearl-ID20.png' },
+    { id: 31, color: '#000000', name: '黑色', type: '米珠', page: '/tutorial', shine: '#F0FFF0', image: 'black-bead-ID23.png' },
+    { id: 32, color: '#FFFFFF', name: '白色', type: '米珠', page: '/patterns', shine: '#F8F8FF', image: 'white-bead-ID24.png' },
     { id: 33, color: '#FF6347', name: '酒紅', type: '米珠', page: '/patterns', shine: '#FFF5EE', image: 'tomato-red-bead-ID25.png' }
   ];
   // 保留原有的四個櫃子分類系統
@@ -1635,11 +1635,10 @@ const BeadCabinet = () => {
     <div className="bead-cabinet-container">
       {/* 標題區域 */}
       <div className="cabinet-title">
-        <h1 className="h1 text-center mb-4"><IconComponent name="sparkle" size={32} /> 數位串珠創作區 <IconComponent name="sparkle" size={32} /></h1>
+        <h1 className="h1 text-center mb-4"><IconComponent name="mystic-crystal" size={32} /> 數位串珠創作區 <IconComponent name="mystic-crystal" size={32} /></h1>
         
 
         
-        {showHintText && <p className="text-center text-muted mt-3">點擊抽屜查看珠子</p>}
       </div>
       
       <div className="main-content">
@@ -1667,9 +1666,23 @@ const BeadCabinet = () => {
                   onClick={() => toggleDrawer(drawer.id)}
                   style={{ cursor: 'pointer' }}
                   data-drawer-id={drawer.id}
+                  data-bead-type={drawer.type}
                 >
                     <div className="drawer-front">
                       <div className="drawer-handle"></div>
+                      {/* 抽屜文字說明 */}
+                      <div className="drawer-label">
+                        <span className="bead-name" style={{ 
+                          color: drawer.color, 
+                          fontSize: 'clamp(0.7rem, 1.5vw, 1rem)',
+                          textShadow: (drawer.color === '#F5F5DC' || drawer.color === '#FFFFFF') ? '0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000' : '0 1px 2px rgba(255, 255, 255, 0.8)'
+                        }}>{drawer.name}</span>
+                        <span className="bead-type" style={{ fontSize: 'clamp(0.6rem, 1.3vw, 0.9rem)' }}>{drawer.type}</span>
+                      </div>
+                      {/* 珠子圖片 */}
+                      <div className="drawer-bead-image">
+                        <img src={`/${drawer.image}`} alt={drawer.name} />
+                      </div>
                     </div>
                     <div className="drawer-content">
                       <div className="drawer-handle"></div>
@@ -1687,13 +1700,27 @@ const BeadCabinet = () => {
                   onClick={() => toggleDrawer(drawer.id)}
                   style={{ cursor: 'pointer' }}
                   data-drawer-id={drawer.id}
+                  data-bead-type={drawer.type}
                 >
                       <div className="drawer-front">
                         <div className="drawer-handle"></div>
+                        {/* 抽屜文字說明 */}
+                        <div className="drawer-label">
+                          <span className="bead-name" style={{ 
+                          color: drawer.color, 
+                          fontSize: 'clamp(0.7rem, 1.5vw, 1rem)',
+                          textShadow: (drawer.color === '#F5F5DC' || drawer.color === '#FFFFFF') ? '0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000' : '0 1px 2px rgba(255, 255, 255, 0.8)'
+                        }}>{drawer.name}</span>
+                          <span className="bead-type" style={{ fontSize: 'clamp(0.6rem, 1.3vw, 0.9rem)' }}>{drawer.type}</span>
+                        </div>
+                        {/* 珠子圖片 */}
+                        <div className="drawer-bead-image">
+                          <img src={`/${drawer.image}`} alt={drawer.name} />
+                        </div>
                       </div>
                       <div className="drawer-content">
-                      <div className="drawer-handle"></div>
-                    </div>
+                        <div className="drawer-handle"></div>
+                      </div>
                     </div>
                 ))}
               </div>
@@ -1707,13 +1734,27 @@ const BeadCabinet = () => {
                   onClick={() => toggleDrawer(drawer.id)}
                   style={{ cursor: 'pointer' }}
                   data-drawer-id={drawer.id}
+                  data-bead-type={drawer.type}
                 >
                       <div className="drawer-front">
                         <div className="drawer-handle"></div>
+                        {/* 抽屜文字說明 */}
+                        <div className="drawer-label">
+                          <span className="bead-name" style={{ 
+                          color: drawer.color, 
+                          fontSize: 'clamp(0.7rem, 1.5vw, 1rem)',
+                          textShadow: (drawer.color === '#F5F5DC' || drawer.color === '#FFFFFF') ? '0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000' : '0 1px 2px rgba(255, 255, 255, 0.8)'
+                        }}>{drawer.name}</span>
+                          <span className="bead-type" style={{ fontSize: 'clamp(0.6rem, 1.3vw, 0.9rem)' }}>{drawer.type}</span>
+                        </div>
+                        {/* 珠子圖片 */}
+                        <div className="drawer-bead-image">
+                          <img src={`/${drawer.image}`} alt={drawer.name} />
+                        </div>
                       </div>
                       <div className="drawer-content">
-                      <div className="drawer-handle"></div>
-                    </div>
+                        <div className="drawer-handle"></div>
+                      </div>
                     </div>
                 ))}
               </div>
@@ -1727,14 +1768,73 @@ const BeadCabinet = () => {
                   onClick={() => toggleDrawer(drawer.id)}
                   style={{ cursor: 'pointer' }}
                   data-drawer-id={drawer.id}
+                  data-bead-type={drawer.type}
                 >
-                        <div className="drawer-front">
-                          <div className="drawer-handle"></div>
+                      <div className="drawer-front">
+                        <div className="drawer-handle"></div>
+                        {/* 抽屜文字說明 */}
+                        <div className="drawer-label">
+                          <span className="bead-name" style={{ 
+                          color: drawer.color, 
+                          fontSize: 'clamp(0.7rem, 1.5vw, 1rem)',
+                          textShadow: (drawer.color === '#F5F5DC' || drawer.color === '#FFFFFF') ? '0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000' : '0 1px 2px rgba(255, 255, 255, 0.8)'
+                        }}>{drawer.name}</span>
+                          <span className="bead-type" style={{ fontSize: 'clamp(0.6rem, 1.3vw, 0.9rem)' }}>{drawer.type}</span>
                         </div>
-                        <div className="drawer-content">
+                        {/* 珠子圖片 */}
+                        <div className="drawer-bead-image">
+                          <img src={`/${drawer.image}`} alt={drawer.name} />
                         </div>
                       </div>
+                      <div className="drawer-content">
+                        <div className="drawer-handle"></div>
+                      </div>
+                    </div>
                   ))}
+                </div>
+                
+                {/* 小珠子櫃子控制按鈕 */}
+                <div className="small-drawers-controls mb-3">
+                  <div className="row g-2">
+                    <div className="col-6">
+                      <button 
+                        className="btn btn-outline-success w-100"
+                        onClick={() => {
+                          // 開啟所有抽屜
+                          const allDrawers = {};
+                          [...glassBeads, ...crystalBeads, ...woodBeads, ...smallBeads].forEach(drawer => {
+                            allDrawers[drawer.id] = true;
+                          });
+                          setOpenDrawers(allDrawers);
+                          // 同時顯示所有浮空珠子
+                          const allFloatingBeads = {};
+                          [...glassBeads, ...crystalBeads, ...woodBeads, ...smallBeads].forEach(drawer => {
+                            allFloatingBeads[drawer.id] = true;
+                          });
+                          setFloatingBeads(allFloatingBeads);
+                        }}
+                        title="開啟所有抽屜並顯示浮空珠子"
+                      >
+                        <i className="bi bi-arrow-up-circle"></i> 開啟所有抽屜
+                      </button>
+                    </div>
+                    <div className="col-6">
+                      <button 
+                        className="btn btn-outline-danger w-100"
+                        onClick={() => {
+                          // 關閉所有抽屜
+                          setOpenDrawers({});
+                          // 同時關閉所有浮空珠子
+                          setFloatingBeads({});
+                          // 顯示提示文字
+                          setShowHintText(true);
+                        }}
+                        title="關閉所有抽屜和浮空珠子"
+                      >
+                        <i className="bi bi-x-circle"></i> 關閉所有抽屜
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="d-none d-lg-block cabinet-section">
