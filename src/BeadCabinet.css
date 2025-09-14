@@ -164,21 +164,11 @@
 
 /* 主要內容區域 */
 .main-content {
-  display: flex;
+  display: block;
   width: 100%;
   max-width: 1000px;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 40px;
-}
-
-/* 手機版：垂直佈局 */
-@media (max-width: 768px) {
-  .main-content {
-    display: block;
-    flex-direction: column;
-    gap: 0;
-  }
+  flex-direction: column;
+  gap: 0;
 }
 
 /* 左側收納櫃區域 */
@@ -186,19 +176,19 @@
 /* 櫃子操作說明 */
 .cabinet-instructions {
   background: #ffffff;
-  border-radius: 18px;
-  padding: 25px;
+  border-radius: 8px;
+  padding: 12px 20px;
   margin: 0 auto 10px auto;
-  width: 100%;
-  max-width: 600px;
-  border: 2px solid rgba(139, 92, 246, 0.6);
+  width: auto;
+  max-width: 400px;
+  border: 1px solid rgba(139, 92, 246, 0.3);
   box-shadow: 
-    0 20px 40px rgba(139, 92, 246, 0.12),
-    0 12px 25px rgba(139, 92, 246, 0.08),
-    inset 0 2px 6px rgba(255, 255, 255, 0.9),
-    inset 0 -2px 6px rgba(139, 92, 246, 0.05);
+    0 4px 12px rgba(139, 92, 246, 0.1),
+    0 2px 6px rgba(139, 92, 246, 0.05),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
   position: relative;
   overflow: hidden;
+  display: inline-block;
 }
 
 .cabinet-instructions::before {
@@ -236,14 +226,12 @@
 }
 
 .cabinet-instructions h3 {
-  margin: 0 0 15px 0;
-  color: #333;
-  font-size: 1.3rem;
+  margin: 0 0 8px 0;
+  color: #000000;
+  font-size: 1.2rem;
+  font-weight: bold;
   text-align: center;
-  background: linear-gradient(45deg, #667eea, #764ba2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 2;
 }
@@ -268,17 +256,20 @@
   font-weight: 600;
 }
 
-/* 珠子收納櫃主體 */
+/* -----------------------------
+   櫃子容器
+----------------------------- */
 .bead-cabinet {
+  width: clamp(300px, 35vw, 450px);
+  min-width: 300px;            /* 最小寬度限制 */
+  margin: 0 auto;              /* 水平置中 */
+  padding: 10px;               /* 櫃子內邊距 */
+  box-sizing: border-box;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  justify-content: center;     /* 讓 grid 置中 */
   align-items: center;
-  justify-content: center;
   perspective: 1000px;
-  max-width: 100%;
   overflow: visible;
-  padding: 10px;
 }
 
 
@@ -300,20 +291,25 @@
 
 /* 抽屜容器 - 已移除，抽屜直接放在網格中 */
 
-/* 抽屜 */
+/* -----------------------------
+   單個抽屜
+----------------------------- */
 .drawer {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-  border-radius: clamp(3px, 0.3vw, 6px);
-  overflow: visible;
+  width: 100%;                 /* 填滿 grid 單元格 */
+  height: 100%;                /* 填滿 grid 單元格 */
   min-width: 0;
   min-height: 0;
+  border-radius: clamp(3px, 0.3vw, 6px);
+  overflow: hidden;
+  box-sizing: border-box;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   /* 立體感效果 */
   transform-style: preserve-3d;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* 抽屜尺寸由容器主控，無需額外設定 */
 
 /* 抽屜正面 */
 .drawer-front {
@@ -369,13 +365,13 @@
   transition: all 0.2s ease;
 }
 
+/* 抽屜把手統一設定 */
+
 /* 抽屜內容 */
 .drawer-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
   background: #ffffff;
   border-radius: clamp(3px, 0.3vw, 6px);
   border: clamp(0.5px, 0.05vw, 1px) solid #ddd;
@@ -643,29 +639,32 @@
 }
 
 
-/* 響應式抽屜網格 */
+/* -----------------------------
+   抽屜容器 Grid
+----------------------------- */
 .responsive-drawer-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  width: 100%;
-  max-width: clamp(280px, 30vw, 400px);
-  aspect-ratio: 340/220;
-  gap: clamp(8px, 1.5vw, 20px);
-  padding: clamp(10px, 2vw, 25px);
-  margin: 0 auto;
+  width: 100%;                 /* 填滿櫃子寬度 */
+  height: 100%;                /* 填滿櫃子高度 */
+  min-width: 300px;            /* 最小寬度限制 */
+  aspect-ratio: 340/220;       /* 高度依比例自動 */
+  gap: clamp(4px, 1vw, 8px);   /* 格子間距 */
+  padding: clamp(8px, 1.5vw, 16px); /* 內邊距 */
   box-sizing: border-box;
-  position: relative;
-  /* 櫃子背景 */
   background: linear-gradient(145deg, #fefdf8, #f5f0e8);
   border: 2px solid #e6d7c3;
   border-radius: 12px;
+  overflow: hidden;            /* 避免格子溢出 */
+  position: relative;
   box-shadow: 
     0 8px 16px rgba(0, 0, 0, 0.1),
     0 4px 8px rgba(0, 0, 0, 0.05),
     inset 0 2px 4px rgba(255, 255, 255, 0.8),
     inset 0 -2px 4px rgba(0, 0, 0, 0.1);
 }
+
 
 /* 櫃子門紋理效果 */
 .responsive-drawer-grid::before {
@@ -703,86 +702,18 @@
   z-index: 1;
 }
 
-/* 手機版響應式設計 */
-@media (max-width: 768px) {
-  .mobile-cabinet-grid {
-    padding: clamp(15px, 3vw, 25px);
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
-  .responsive-drawer-grid {
-    width: 100%;
-    max-width: calc(100vw - clamp(30px, 6vw, 50px));
-    aspect-ratio: 340/220;
-    gap: clamp(8px, 2vw, 15px);
-    padding: clamp(10px, 2vw, 20px);
-    box-sizing: border-box;
-    /* 櫃子背景 */
-    background: linear-gradient(145deg, #fefdf8, #f5f0e8);
-    border: 2px solid #e6d7c3;
-    border-radius: 12px;
-    box-shadow: 
-      0 8px 16px rgba(0, 0, 0, 0.1),
-      0 4px 8px rgba(0, 0, 0, 0.05),
-      inset 0 2px 4px rgba(255, 255, 255, 0.8),
-      inset 0 -2px 4px rgba(0, 0, 0, 0.1);
-  }
+/* 統一 cabinet-grid 樣式 */
+.cabinet-grid {
+  padding: clamp(15px, 3vw, 25px);
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
+  
 
-/* 小螢幕響應式設計 */
-@media (max-width: 480px) {
-  .mobile-cabinet-grid {
-    padding: clamp(10px, 2vw, 20px);
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
-  .responsive-drawer-grid {
-    width: 100%;
-    max-width: calc(100vw - clamp(20px, 4vw, 40px));
-    aspect-ratio: 340/220;
-    gap: clamp(6px, 1.5vw, 12px);
-    padding: clamp(8px, 2vw, 15px);
-    box-sizing: border-box;
-    /* 櫃子背景 */
-    background: linear-gradient(145deg, #fefdf8, #f5f0e8);
-    border: 2px solid #e6d7c3;
-    border-radius: 12px;
-    box-shadow: 
-      0 8px 16px rgba(0, 0, 0, 0.1),
-      0 4px 8px rgba(0, 0, 0, 0.05),
-      inset 0 2px 4px rgba(255, 255, 255, 0.8),
-      inset 0 -2px 4px rgba(0, 0, 0, 0.1);
-  }
-}
-
-/* 超小螢幕響應式設計 */
-@media (max-width: 360px) {
-  .mobile-cabinet-grid {
-    padding: clamp(8px, 1.5vw, 15px);
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
-  .responsive-drawer-grid {
-    width: 100%;
-    max-width: calc(100vw - clamp(16px, 3vw, 30px));
-    aspect-ratio: 340/220;
-    gap: clamp(4px, 1vw, 8px);
-    padding: clamp(6px, 1.5vw, 12px);
-    box-sizing: border-box;
-    /* 櫃子背景 */
-    background: linear-gradient(145deg, #fefdf8, #f5f0e8);
-    border: 2px solid #e6d7c3;
-    border-radius: 12px;
-    box-shadow: 
-      0 8px 16px rgba(0, 0, 0, 0.1),
-      0 4px 8px rgba(0, 0, 0, 0.05),
-      inset 0 2px 4px rgba(255, 255, 255, 0.8),
-      inset 0 -2px 4px rgba(0, 0, 0, 0.1);
-  }
-}
+/* 統一響應式設計 - 使用 min-width 保護最小尺寸 */
 
 
 
@@ -1480,7 +1411,7 @@
 }
 
 /* ===== 浮空珠子 - 統一樣式 ===== */
-/* 使用 Bootstrap 5 + Swiper.js 重構，整合手機版和桌面版 */
+/* 使用 Bootstrap 5 + Swiper.js 重構，整合響應式和桌面版 */
 
 /* 基礎浮空珠子樣式 */
 .floating-bead {
@@ -1644,14 +1575,13 @@
 
 /* 右側串珠盤區域 */
 .tray-section {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 45%;
-  overflow: visible;
-  padding: 0 10px;
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+  padding: 20px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* 木質串珠盤容器 */
@@ -1666,27 +1596,63 @@
 }
 
 
-/* 統一使用手機版樣式 - 保持原有手機版尺寸和佈局 */
+/* 統一樣式 - 保持原有尺寸和佈局 */
 
-/* 手機版元件：始終顯示 */
-.mobile-cabinet-section,
-.mobile-tray-section,
+/* 統一元件：始終顯示 */
+.cabinet-section,
+.tray-section,
 .bottom-navigation {
   display: block;
+}
+
+/* 珠子收納櫃標題 */
+.cabinet-section-title {
+  text-align: center;
+  margin: 40px 0 10px 0;
+  padding: 8px 16px;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: 
+    0 4px 12px rgba(139, 92, 246, 0.1),
+    0 2px 6px rgba(139, 92, 246, 0.05),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  display: inline-block;
+  width: auto;
+  max-width: 300px;
+}
+
+.cabinet-section-title h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #000000;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 /* 串珠盤標題 */
 .tray-title {
   text-align: center;
   margin-bottom: 5px;
+  padding: 8px 16px;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: 
+    0 4px 12px rgba(139, 92, 246, 0.1),
+    0 2px 6px rgba(139, 92, 246, 0.05),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  display: inline-block;
+  width: auto;
+  max-width: 300px;
 }
 
 .tray-title h3 {
   margin: 0 0 3px 0;
-  font-size: 0.8rem;
+  font-size: 1.2rem;
   font-weight: bold;
-  color: #ffa500;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: #000000;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .tray-title p {
@@ -1696,32 +1662,39 @@
   font-style: italic;
 }
 
+/* 串珠盤控制按鈕區域 */
+.tray-controls {
+  text-align: center;
+  margin: 8px 0;
+  padding: 0 20px;
+}
+
 /* 串珠線材寬度選擇器 */
 .string-width-selector {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  margin-top: 10px;
-  padding: 10px;
+  gap: 10px;
+  margin-top: 5px;
+  padding: 6px;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
+  border-radius: 15px;
   backdrop-filter: blur(10px);
 }
 
 .string-width-selector span {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: #ffa500;
   font-weight: 500;
 }
 
 .string-width-btn {
   background: rgba(255, 255, 255, 0.2);
-  padding: 8px 16px;
-  border-radius: 20px;
+  padding: 6px 12px;
+  border-radius: 15px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: #ffa500;
   font-weight: 500;
   backdrop-filter: blur(5px);
@@ -1745,27 +1718,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  margin-top: 10px;
-  padding: 10px;
+  gap: 10px;
+  margin-top: 5px;
+  padding: 6px;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
+  border-radius: 15px;
   backdrop-filter: blur(10px);
 }
 
 .string-length-selector span {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: #ffa500;
   font-weight: 500;
 }
 
 .string-length-btn {
   background: rgba(255, 255, 255, 0.2);
-  padding: 8px 16px;
-  border-radius: 20px;
+  padding: 6px 12px;
+  border-radius: 15px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: #ffa500;
   font-weight: 500;
   backdrop-filter: blur(5px);
@@ -2119,8 +2092,9 @@
 /* 木質串珠盤主體 */
 .wooden-bead-tray {
   position: relative;
-  width: 400px;
-  height: 400px;
+  width: 100%;
+  max-width: 350px;
+  height: 350px;
   margin: 0 auto;
   background: linear-gradient(145deg, #2d1b0a, #3d2b1a);
   border-radius: 12px;
@@ -2494,42 +2468,6 @@
 }
 
 
-@media (max-width: 480px) {
-  .bead-cabinet-container {
-    padding: 10px 15px; /* 小螢幕手機也保持左右間距 */
-  }
-  
-  .cabinet-title h1 {
-    font-size: 1.8rem;
-  }
-  
-  .cabinet-title p {
-    font-size: 0.9rem;
-  }
-  
-  .home-btn,
-  .guide-btn {
-    padding: 10px 16px;
-    font-size: 0.85rem;
-    min-height: 40px;
-  }
-  
-  /* 小螢幕櫃子上下分割 */
-  .bead-cabinet {
-    gap: 12px;
-  }
-  
-  
-  
-  
-  
-  .drawer-front {
-    padding: 5px;
-    border-radius: 6px;
-  }
-  
-  /* 抽屜正面文字樣式 - 已刪除 */
-}
 
 @media (max-width: 480px) {
   .bead-cabinet-container {
@@ -2552,11 +2490,7 @@
   }
   
   
-  .drawer {
-    width: 100px;
-    height: 60px;
-    border-radius: 8px;
-  }
+  /* 抽屜大小由統一響應式設計控制 */
   
   .drawer-front {
     padding: 6px;
@@ -2572,37 +2506,13 @@
   }
   
   
+  /* 手機版本串珠盤 */
   .wooden-bead-tray {
     max-width: 100%;
     width: 100%;
-    height: 400px;
-    border-radius: 12px;
+    height: 350px;
+    border-radius: 8px;
     overflow: visible;
-  }
-  
-  /* 小螢幕手機 */
-  @media (max-width: 480px) {
-    .wooden-bead-tray {
-      max-width: 100%;
-      height: 350px;
-      border-radius: 8px;
-    }
-  }
-  
-  /* 超小螢幕手機 */
-  @media (max-width: 360px) {
-    .wooden-bead-tray {
-      height: 300px;
-      border-radius: 8px;
-    }
-  }
-  
-  /* 橫向手機 */
-  @media (max-width: 480px) and (orientation: landscape) {
-    .wooden-bead-tray {
-      height: 250px;
-      max-width: 90%;
-    }
   }
   
   .control-btn {
@@ -2610,8 +2520,22 @@
     font-size: 0.8rem;
     border-radius: 8px;
   }
-  
+}
 
+/* 超小螢幕手機 */
+@media (max-width: 360px) {
+  .wooden-bead-tray {
+    height: 300px;
+    border-radius: 8px;
+  }
+}
+
+/* 橫向手機 */
+@media (max-width: 480px) and (orientation: landscape) {
+  .wooden-bead-tray {
+    height: 250px;
+    max-width: 90%;
+  }
 }
 
 /* 觸控優化 */
@@ -2656,7 +2580,7 @@
     min-height: 44px;
   }
   
-  /* 手機版抽屜觸控優化 */
+  /* 響應式抽屜觸控優化 */
   .drawer {
     touch-action: manipulation;
     -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
@@ -2745,7 +2669,7 @@
   }
 }
 
-/* 手機版響應式設計 - 統一區塊 */
+/* 響應式響應式設計 - 統一區塊 */
 @media (max-width: 768px) {
   .bead-cabinet-container {
     padding: 15px 20px; /* 左右增加間距，確保右邊抽屜與手機右邊保留空格 */
@@ -2778,7 +2702,7 @@
     min-height: 44px;
   }
   
-  /* 手機版櫃子上下分割 */
+  /* 響應式櫃子上下分割 */
   .bead-cabinet {
     flex-direction: column;
     gap: 15px;
@@ -2800,7 +2724,7 @@
     margin-top: 15px;
   }
   
-  /* 手機版櫃子單元 */
+  /* 響應式櫃子單元 */
   .cabinet-unit {
     width: 100%;
     max-width: 100%;
@@ -2812,7 +2736,7 @@
     max-width: 100%;
   }
   
-  /* 手機版玻璃珠櫃子 */
+  /* 響應式玻璃珠櫃子 */
   .glass-unit .cabinet-frame {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -2822,7 +2746,7 @@
     min-height: 300px;
   }
   
-  /* 手機版水晶珠櫃子 */
+  /* 響應式水晶珠櫃子 */
   .crystal-unit .cabinet-frame {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -2832,7 +2756,7 @@
     min-height: 300px;
   }
   
-  /* 手機版木珠櫃子 */
+  /* 響應式木珠櫃子 */
   .wood-unit .cabinet-frame {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -2842,7 +2766,7 @@
     min-height: 300px;
   }
   
-  /* 手機版小珠子櫃子 */
+  /* 響應式小珠子櫃子 */
   .small-unit .cabinet-frame {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -2852,25 +2776,21 @@
     min-height: 300px;
   }
   
-  .drawer {
-    width: 100px;
-    height: 60px;
-    border-radius: 12px;
-  }
+  /* 抽屜大小由統一響應式設計控制 */
   
   .drawer-front {
     padding: 8px;
     border-radius: 8px;
   }
   
-  /* 手機版抽屜把手 */
+  /* 響應式抽屜把手 */
   .drawer-handle {
     width: 12px;
     height: 12px;
     margin-bottom: 12px;
   }
   
-  /* 手機版抽屜內容 */
+  /* 響應式抽屜內容 */
   .drawer-content {
     padding: 12px;
   }
@@ -2885,7 +2805,7 @@
     margin-bottom: 10px;
   }
   
-  /* 手機版抽屜按鈕 */
+  /* 響應式抽屜按鈕 */
   .drawer-links .link-btn,
   .drawer-links .draggable-bead {
     padding: 8px 12px;
@@ -2894,21 +2814,14 @@
     margin-bottom: 6px;
   }
   
-  /* 手機版串珠盤 */
-  .wooden-bead-tray {
-    width: 100%;
-    max-width: 400px;
-    height: 350px;
-    overflow: visible;
-  }
   
   .tray-controls {
     flex-direction: column;
     width: 100%;
-    margin-bottom: 90px; /* 手機版底部間距調整 */
+    margin-bottom: 90px; /* 響應式底部間距調整 */
   }
   
-  /* 手機版浮空珠子 */
+  /* 響應式浮空珠子 */
   .floating-bead {
     width: clamp(30px, 3vw, 45px);
     height: clamp(30px, 3vw, 45px);
@@ -3057,7 +2970,7 @@
   border: 1px solid rgba(233, 30, 99, 0.4);
 }
 
-/* 手機版直式標題 */
+/* 響應式直式標題 */
 @media (max-width: 768px) {
   .cabinet-type-label {
     position: absolute;
@@ -3076,21 +2989,21 @@
   }
 }
 
-/* 手機版 Bootstrap 和 Swiper 樣式 */
+/* 響應式樣式 */
 @media (max-width: 991px) {
-  /* 手機版櫃子區域 */
-  .mobile-cabinet-section {
+  /* 櫃子區域 */
+  .cabinet-section {
     margin-bottom: 10px;
   }
 
-  /* 手機版網格佈局 */
-  .mobile-cabinet-grid {
+  /* 網格佈局 */
+  .cabinet-grid {
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
 
-  .mobile-cabinet-grid .cabinet-unit {
+  .cabinet-grid .cabinet-unit {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 15px;
     padding: 25px;
@@ -3100,7 +3013,7 @@
 
 
 
-  /* 手機版 Swiper 樣式 */
+  /* 響應式 Swiper 樣式 */
   .mobile-cabinet-swiper {
     padding: 20px 0;
   }
@@ -3129,13 +3042,13 @@
     background: #6c757d;
   }
 
-  /* 手機版櫃子樣式調整 */
-  .mobile-cabinet-section .cabinet-unit {
+  /* 響應式櫃子樣式調整 */
+  .cabinet-section .cabinet-unit {
     margin: 0 0 0 -15px;
     max-width: 100%;
   }
 
-  .mobile-cabinet-section .cabinet-frame {
+  .cabinet-section .cabinet-frame {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     width: 300px;
@@ -3148,28 +3061,24 @@
     border: 2px solid rgba(135, 206, 235, 0.3);
   }
 
-  /* 手機版抽屜樣式調整 */
-  .mobile-cabinet-section .drawer {
-    width: 100px;
-    height: 60px;
-  }
+  /* 響應式抽屜樣式調整 - 由統一響應式設計控制 */
 
-  .mobile-cabinet-section .drawer-content {
+  .cabinet-section .drawer-content {
     padding: 10px;
   }
 
-  .mobile-cabinet-section .bead-info h3 {
+  .cabinet-section .bead-info h3 {
     font-size: 1rem;
     margin-bottom: 8px;
   }
 
-  .mobile-cabinet-section .bead-info p {
+  .cabinet-section .bead-info p {
     font-size: 0.85rem;
     margin-bottom: 6px;
   }
 
-  /* 手機版串珠盤區域 */
-  .mobile-tray-section {
+  /* 響應式串珠盤區域 */
+  .tray-section {
     margin-top: 20px;
     padding: 20px 10px;
     background: rgba(255, 255, 255, 0.05);
@@ -3177,20 +3086,20 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  /* 手機版控制按鈕樣式 */
-  .mobile-cabinet-section .cabinet-controls {
+  /* 響應式控制按鈕樣式 */
+  .cabinet-section .cabinet-controls {
     margin-top: 20px;
   }
 
-  .mobile-cabinet-section .cabinet-controls .btn {
+  .cabinet-section .cabinet-controls .btn {
     font-size: 0.9rem;
     padding: 8px 16px;
   }
 
 
 
-  /* 手機版說明文字樣式 */
-  .mobile-cabinet-section .cabinet-instructions {
+  /* 響應式說明文字樣式 */
+  .cabinet-section .cabinet-instructions {
     margin: 0 auto 10px auto;
     padding: 15px;
     background: rgba(255, 255, 255, 0.1);
@@ -3199,53 +3108,53 @@
     max-width: 600px;
   }
 
-  .mobile-cabinet-section .cabinet-instructions h3 {
+  .cabinet-section .cabinet-instructions h3 {
     font-size: 1.1rem;
     margin-bottom: 15px;
   }
 
-  .mobile-cabinet-section .cabinet-instructions p {
+  .cabinet-section .cabinet-instructions p {
     font-size: 0.9rem;
     margin-bottom: 8px;
   }
 
-  /* 手機版抽屜按鈕樣式 */
-  .mobile-cabinet-section .drawer-links .btn {
+  /* 響應式抽屜按鈕樣式 */
+  .cabinet-section .drawer-links .btn {
     font-size: 0.8rem;
     padding: 6px 8px;
     margin: 2px 0;
   }
 
-  /* 手機版珠子堆樣式 */
-  .mobile-cabinet-section .bead-pile {
+  /* 響應式珠子堆樣式 */
+  .cabinet-section .bead-pile {
     margin: 10px 0;
   }
 
-  .mobile-cabinet-section .bead {
+  .cabinet-section .bead {
     width: 10px;
     height: 10px;
   }
 
-  /* 手機版櫃子標籤樣式 */
-  .mobile-cabinet-section .cabinet-type-label {
+  /* 響應式櫃子標籤樣式 */
+  .cabinet-section .cabinet-type-label {
     font-size: 0.9rem;
     padding: 8px;
   }
 
-  .mobile-cabinet-section .cabinet-type-label span {
+  .cabinet-section .cabinet-type-label span {
     font-size: 0.8rem;
     margin: 0 2px;
   }
 }
 
-/* 手機版 Swiper 導航按鈕樣式 */
+/* 響應式 Swiper 導航按鈕樣式 */
 .swiper-button-next:after,
 .swiper-button-prev:after {
   font-size: 18px;
   font-weight: bold;
 }
 
-/* 手機版 Swiper 分頁器樣式 */
+/* 響應式 Swiper 分頁器樣式 */
 .swiper-pagination {
   bottom: 10px;
 }
@@ -3256,64 +3165,64 @@
   margin: 0 4px;
 }
 
-/* 手機版響應式網格調整 */
+/* 響應式響應式網格調整 */
 @media (max-width: 576px) {
-  .mobile-cabinet-section .cabinet-frame {
+  .cabinet-section .cabinet-frame {
     width: 300px;
     height: 200px;
     gap: 1px;
     padding: 4px;
   }
 
-  .mobile-cabinet-section .drawer-content {
+  .cabinet-section .drawer-content {
     padding: 8px;
   }
 
-  .mobile-cabinet-section .bead-info h3 {
+  .cabinet-section .bead-info h3 {
     font-size: 0.9rem;
   }
 
-  .mobile-cabinet-section .bead-info p {
+  .cabinet-section .bead-info p {
     font-size: 0.8rem;
   }
 
-  .mobile-cabinet-section .drawer-links .btn {
+  .cabinet-section .drawer-links .btn {
     font-size: 0.75rem;
     padding: 5px 6px;
   }
 
-  .mobile-cabinet-section .cabinet-type-label {
+  .cabinet-section .cabinet-type-label {
     font-size: 0.8rem;
     padding: 6px;
   }
 
-  .mobile-cabinet-section .cabinet-type-label span {
+  .cabinet-section .cabinet-type-label span {
     font-size: 0.7rem;
     margin: 0 1px;
   }
 }
 
-/* 手機版觸控優化 */
+/* 響應式觸控優化 */
 @media (hover: none) and (pointer: coarse) {
-  .mobile-cabinet-section .drawer {
+  .cabinet-section .drawer {
     -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
     touch-action: manipulation;
   }
 
-  .mobile-cabinet-section .btn {
+  .cabinet-section .btn {
     -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
     touch-action: manipulation;
   }
 
-  .mobile-cabinet-section .swiper-button-next,
-  .mobile-cabinet-section .swiper-button-prev {
+  .cabinet-section .swiper-button-next,
+  .cabinet-section .swiper-button-prev {
     -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
     touch-action: manipulation;
   }
 }
 
 /* ===== 通用浮空珠子組件 ===== */
-/* 支持手機版和桌面版 */
+/* 支持響應式和桌面版 */
 
 /* 基礎浮空珠子容器 */
 .floating-bead-container {
@@ -3328,7 +3237,7 @@
 }
 
 
-/* 手機版浮空珠子 */
+/* 響應式浮空珠子 */
 .floating-bead-container.mobile {
   width: 250px;
   height: 300px;
@@ -3420,7 +3329,7 @@
   transform: none;
 }
 
-/* 手機版特殊樣式 */
+/* 響應式特殊樣式 */
 @media (max-width: 991px) {
   .floating-bead-container.mobile {
     width: 220px;
@@ -3469,29 +3378,6 @@
   }
 }
 
-/* 響應式設計 - 手機 */
-@media (max-width: 480px) {
-  .cabinet-title h1 {
-    font-size: 1.5rem;
-    margin-bottom: 12px;
-  }
-  
-  .navigation-buttons {
-    gap: 8px;
-    margin: 12px 0;
-    flex-wrap: nowrap;
-  }
-  
-  .navigation-buttons .btn {
-    padding: 8px 12px;
-    font-size: 0.8rem;
-    min-width: 100px;
-    max-width: 90px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
 
 /* 響應式設計 - 小手機 */
 @media (max-width: 360px) {
