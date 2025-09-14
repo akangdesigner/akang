@@ -71,7 +71,7 @@
 
 /* 內容區域 */
 .guide-content {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -569,7 +569,7 @@
 }
 
 .recommendations-container {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
