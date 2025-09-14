@@ -227,7 +227,7 @@ const FloatingBead = ({ drawer, drawerId, onClose, onClickToTray }) => {
 };
 
 // 木質串珠盤組件
-const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveFloatingDesign }) => {
+const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign }) => {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [stringWidth, setStringWidth] = useState('medium');
   const [stringLength, setStringLength] = useState('full'); // 串珠線顏色：white 或 yellow
@@ -309,12 +309,12 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
     const actualTotalCount = bigBeads + (smallBeads * 0.5);
     
     if (actualTotalCount > maxBeads) {
-      alert(`當前選擇的珠子總數為 ${actualTotalCount.toFixed(1)} 顆（${bigBeads} 顆大珠子 + ${smallBeads} 顆小珠子×0.5），但${stringLength === 'half' ? '半圓' : stringLength === 'four-thirds' ? '4/3圓' : '全圓'}最多只能串 ${maxBeads} 顆珠子！請減少選擇的珠子數量。`);
+      alert(`當前選擇的珠子總數為 ${actualTotalCount.toFixed(1)} 顆（${bigBeads} 顆大珠子 + ${smallBeads} 顆小珠子×0.5），但${stringLength === 'half' ? '10珠' : stringLength === 'four-thirds' ? '13珠' : '16珠'}最多只能串 ${maxBeads} 顆珠子！請減少選擇的珠子數量。`);
       return;
     }
     
     if (actualTotalCount < maxBeads) {
-      alert(`當前選擇的珠子總數為 ${actualTotalCount.toFixed(1)} 顆（${bigBeads} 顆大珠子 + ${smallBeads} 顆小珠子×0.5），但${stringLength === 'half' ? '半圓' : stringLength === 'four-thirds' ? '4/3圓' : '全圓'}需要串滿 ${maxBeads} 顆珠子才能開始串珠！請繼續選擇珠子。`);
+      alert(`當前選擇的珠子總數為 ${actualTotalCount.toFixed(1)} 顆（${bigBeads} 顆大珠子 + ${smallBeads} 顆小珠子×0.5），但${stringLength === 'half' ? '10珠' : stringLength === 'four-thirds' ? '13珠' : '16珠'}需要串滿 ${maxBeads} 顆珠子才能開始串珠！請繼續選擇珠子。`);
       return;
     }
 
@@ -991,9 +991,9 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
             <button
               className="save-after-animation-btn"
               onClick={() => onSaveFloatingDesign(stringWidth, stringLength)}
-              title="保存設計到推薦搭配"
+              title="保存到串珠評分區"
             >
-              💾 保存設計(阿康用)
+              💾 保存設計
             </button>
 
           </div>
@@ -1036,24 +1036,27 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
           <button 
             className={`string-length-btn ${stringLength === 'half' ? 'active' : ''}`}
             onClick={() => setStringLength('half')}
-            title="半圓串珠"
+            title="10珠串珠"
           >
-            半圓
+            10珠
           </button>
           <button 
             className={`string-length-btn ${stringLength === 'four-thirds' ? 'active' : ''}`}
             onClick={() => setStringLength('four-thirds')}
-            title="4/3圓串珠"
+            title="13珠串珠"
           >
-            4/3圓
+            13珠
           </button>
           <button 
             className={`string-length-btn ${stringLength === 'full' ? 'active' : ''}`}
             onClick={() => setStringLength('full')}
-            title="全圓串珠"
+            title="16珠串珠"
           >
-            全圓
+            16珠
           </button>
+        </div>
+        <div className="bead-count-note">
+          (米珠、過渡珠系列珠子算0.5珠)
         </div>
       </div>
       
@@ -1214,21 +1217,7 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
       
       {/* 操作按鈕 */}
       <div className="tray-controls">
-        <button 
-          className="tray-btn clear-btn"
-          onClick={() => setSelectedBeads([])}
-          disabled={selectedBeads.length === 0}
-        >
-          清空串珠
-        </button>
         <div className="tray-buttons">
-          <button
-            className="save-design-btn"
-            onClick={() => onSaveDesign(stringWidth, stringLength)}
-            title="保存設計至推薦搭配展示區"
-          >
-            保存設計
-          </button>
           <button
             className="start-stringing-btn"
             onClick={() => {
@@ -1238,6 +1227,13 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
             title="開始串珠"
           >
             開始串珠
+          </button>
+          <button 
+            className="tray-btn clear-btn"
+            onClick={() => setSelectedBeads([])}
+            disabled={selectedBeads.length === 0}
+          >
+            清空串珠
           </button>
         </div>
       </div>
@@ -1467,87 +1463,19 @@ const BeadCabinet = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // 保存設計到推薦搭配展示區
-  const handleSaveDesign = (stringWidth, stringLength) => {
-    if (selectedBeads.length === 0) {
-      alert('請先串一些珠子再保存設計！');
-      return;
-    }
+  // 已刪除保存到推薦搭配的功能
 
-    // 創建設計對象
-    const design = {
-      id: Date.now(),
-      name: `設計 ${new Date().toLocaleDateString('zh-TW')}`,
-      beads: selectedBeads.map(bead => ({
-        name: bead.name,
-        type: bead.type,
-        color: bead.color,
-        image: bead.image
-      })),
-      stringWidth: stringWidth,
-      stringLength: stringLength,
-      createdAt: new Date().toISOString()
-    };
-
-    // 從 localStorage 獲取現有設計
-    const existingDesigns = JSON.parse(localStorage.getItem('beadDesigns') || '[]');
-    
-    // 添加新設計
-    const updatedDesigns = [...existingDesigns, design];
-    
-    // 保存到串珠評分區的 localStorage 鍵
-    const ratingDesign = {
-      designName: design.name,
-      timestamp: Date.now(),
-      beads: design.beads
-    };
-    localStorage.setItem('savedBeadDesign', JSON.stringify(ratingDesign));
-
-    alert(`設計已保存！\n\n設計名稱: ${design.name}\n珠子數量: ${design.beads.length} 顆\n\n您可以在串珠評分區的「你的串珠設計」中查看。`);
-  };
-
-  // 保存浮空動畫中的串珠樣式到推薦搭配展示區
+  // 保存設計到串珠評分區
   const handleSaveFloatingDesign = (stringWidth, stringLength) => {
     if (selectedBeads.length === 0) {
       alert('請先串一些珠子再保存設計！');
       return;
     }
 
-    // 檢查是否有浮空動畫的串珠樣式
-    let stringingStyle = null;
-    // 直接檢查 DOM 元素是否存在，不依賴 showFloatingAnimation 變數
-    const stringingLine = document.querySelector('.stringing-line');
-    if (stringingLine) {
-      stringingStyle = {
-        hasStringingLine: true,
-        stringWidth: stringWidth,
-        stringLength: stringLength
-      };
-    }
-
-    // 檢查是否有圓形手鍊
-    let braceletStyle = null;
-    const braceletContainer = document.querySelector('.bracelet-container');
-    if (braceletContainer) {
-      // 獲取圓形手鍊的樣式
-      const svg = braceletContainer.querySelector('svg');
-      if (svg) {
-        const circle = svg.querySelector('circle');
-        if (circle) {
-          braceletStyle = {
-            hasBracelet: true,
-            radius: parseInt(circle.getAttribute('r')),
-            strokeWidth: parseInt(circle.getAttribute('stroke-width')),
-            strokeColor: circle.getAttribute('stroke')
-          };
-        }
-      }
-    }
-
     // 創建設計對象
     const design = {
-      id: Date.now(),
-      name: `浮空動畫設計 ${new Date().toLocaleDateString('zh-TW')}`,
+      designName: `設計 ${new Date().toLocaleDateString('zh-TW')}`,
+      timestamp: Date.now(),
       beads: selectedBeads.map(bead => ({
         name: bead.name,
         type: bead.type,
@@ -1555,44 +1483,13 @@ const BeadCabinet = () => {
         image: bead.image
       })),
       stringWidth: stringWidth,
-      stringLength: stringLength,
-      stringingStyle: stringingStyle, // 串珠線樣式
-      braceletStyle: braceletStyle,   // 圓形手鍊樣式
-      isFloatingDesign: true,         // 標記為浮空動畫設計
-      createdAt: new Date().toISOString()
+      stringLength: stringLength
     };
 
-    // 從 localStorage 獲取現有設計
-    const existingDesigns = JSON.parse(localStorage.getItem('beadDesigns') || '[]');
-    
-    // 添加新設計
-    const updatedDesigns = [...existingDesigns, design];
-    
-    // 保存到串珠指南的推薦搭配頁面
-    localStorage.setItem('beadDesigns', JSON.stringify(updatedDesigns));
-    
-    // 同時保存到串珠評分區的 localStorage 鍵
-    const ratingDesign = {
-      designName: design.name,
-      timestamp: Date.now(),
-      beads: design.beads
-    };
-    localStorage.setItem('savedBeadDesign', JSON.stringify(ratingDesign));
+    // 保存到串珠評分區的 localStorage 鍵
+    localStorage.setItem('savedBeadDesign', JSON.stringify(design));
 
-    // 構建保存訊息
-    let saveMessage = `浮空動畫設計已保存！\n\n設計名稱: ${design.name}\n珠子數量: ${design.beads.length} 顆`;
-    
-    if (stringingStyle) {
-      saveMessage += `\n串珠線樣式: ${stringWidth === 'thin' ? '細線' : stringWidth === 'medium' ? '中等線' : '粗線'}`;
-    }
-    
-    if (braceletStyle) {
-      saveMessage += `\n圓形手鍊: 半徑${braceletStyle.radius}px, 線寬${braceletStyle.strokeWidth}px`;
-    }
-    
-    saveMessage += `\n\n您可以在串珠指南的「推薦搭配」頁面中查看。`;
-
-    alert(saveMessage);
+    alert(`設計已保存到串珠評分區！\n\n設計名稱: ${design.designName}\n珠子數量: ${design.beads.length} 顆\n\n您可以在串珠評分區的「你的串珠設計」中查看。`);
   };
 
   // 創建抽屜陣列 - 按類型分類，每個櫃子都補滿到9個抽屜
@@ -1903,7 +1800,6 @@ const BeadCabinet = () => {
             <WoodenBeadTray
               selectedBeads={selectedBeads}
               setSelectedBeads={setSelectedBeads}
-              onSaveDesign={(stringWidth, stringLength) => handleSaveDesign(stringWidth, stringLength)}
               onSaveFloatingDesign={handleSaveFloatingDesign} />
           </div>
         </div>
