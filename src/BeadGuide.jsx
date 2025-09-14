@@ -281,8 +281,45 @@ const SavedDesigns = () => {
 
   useEffect(() => {
     // 從 localStorage 讀取保存的設計
-    const designs = JSON.parse(localStorage.getItem('beadDesigns') || '[]');
-    setSavedDesigns(designs);
+    // 檢查兩個可能的 localStorage 鍵
+    const beadDesigns = JSON.parse(localStorage.getItem('beadDesigns') || '[]');
+    const savedBeadDesign = JSON.parse(localStorage.getItem('savedBeadDesign') || 'null');
+    
+    let allDesigns = [...beadDesigns];
+    
+    // 如果存在單個保存的設計，將其轉換並添加到列表中
+    if (savedBeadDesign && savedBeadDesign.beads) {
+      const convertedDesign = {
+        id: savedBeadDesign.timestamp || Date.now(),
+        name: savedBeadDesign.designName || '未命名設計',
+        beads: savedBeadDesign.beads,
+        stringWidth: savedBeadDesign.stringWidth,
+        stringLength: savedBeadDesign.stringLength,
+        description: savedBeadDesign.description || '暫無設計描述',
+        timestamp: savedBeadDesign.timestamp || Date.now()
+      };
+      
+      // 檢查是否已存在相同的設計，避免重複
+      const exists = allDesigns.some(design => design.id === convertedDesign.id);
+      if (!exists) {
+        allDesigns.push(convertedDesign);
+      }
+    }
+    
+    // 清理無效的設計數據（沒有 ID 或沒有珠子的設計）
+    const validDesigns = allDesigns.filter(design => 
+      design.id && 
+      design.beads && 
+      Array.isArray(design.beads) && 
+      design.beads.length > 0
+    );
+    
+    setSavedDesigns(validDesigns);
+    
+    // 如果有清理掉的無效設計，更新 localStorage
+    if (validDesigns.length !== allDesigns.length) {
+      localStorage.setItem('beadDesigns', JSON.stringify(validDesigns));
+    }
   }, []);
 
 
@@ -329,7 +366,7 @@ const SavedDesigns = () => {
         </div>
         
         <svg width="240" height="240" viewBox="0 0 240 240" className="bracelet-svg-overlay">
-          {/* 圓形串珠線 - 與圓形手鍊動畫邏輯相同 */}
+          {/* 圓形串珠線 - 始終保持完整圓形 */}
           <circle
             cx={centerX}
             cy={centerY}
@@ -350,6 +387,7 @@ const SavedDesigns = () => {
               }
             })()}
             strokeDasharray="none"
+            strokeLinecap="round"
           />
           {/* 珠子放在圓形線上 - 與圓形手鍊動畫邏輯相同 */}
           {design.beads.map((bead, index) => {
@@ -409,7 +447,7 @@ const SavedDesigns = () => {
       <div className="designs-grid">
         {savedDesigns.map((design) => (
           <div key={design.id} className="design-card">
-            <div className="design-content">
+              <div className="design-content">
               <div className="design-info">
                 <div className="design-header">
                   <h4 className="design-name">
