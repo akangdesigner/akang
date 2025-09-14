@@ -23,7 +23,7 @@ import IconComponent from './IconComponent';
  * ========================================
  */
 
-// 通用浮空珠子組件 - 支持手機版和桌面版
+// 通用浮空珠子組件
 const FloatingBead = ({ drawer, drawerId, onClose, onClickToTray }) => {
   const [position, setPosition] = useState({ top: 0, left: 0 });
   
@@ -40,7 +40,7 @@ const FloatingBead = ({ drawer, drawerId, onClose, onClickToTray }) => {
         
         // 浮空珠子顯示在各自抽屜的正上方，考慮滾動位置
         setPosition({
-          top: rect.top + scrollTop - 200, // 在抽屜上方200px，給說明方塊和珠子留足夠空間
+          top: rect.top + scrollTop - 140, // 在抽屜上方140px，縮短距離
           left: rect.left + scrollLeft + rect.width / 2
         });
       }
@@ -153,8 +153,8 @@ const FloatingBead = ({ drawer, drawerId, onClose, onClickToTray }) => {
         transform: 'translateX(-50%)',
         zIndex: 2000,
         pointerEvents: 'auto',
-        width: 'clamp(180px, 20vw, 250px)',
-        height: 'clamp(180px, 20vw, 250px)',
+        width: 'clamp(220px, 25vw, 300px)',
+        height: 'clamp(220px, 25vw, 300px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
@@ -189,10 +189,10 @@ const FloatingBead = ({ drawer, drawerId, onClose, onClickToTray }) => {
           position: 'relative',
           zIndex: 2001,
           pointerEvents: 'auto',
-          width: (drawer.type === '過渡珠') ? 'clamp(15px, 4vw, 25px)' : 
-                 (drawer.type === '米珠' || drawer.type === '珍珠') ? 'clamp(20px, 5vw, 35px)' : 'clamp(50px, 12vw, 80px)',
-          height: (drawer.type === '過渡珠') ? 'clamp(15px, 4vw, 25px)' : 
-                  (drawer.type === '米珠' || drawer.type === '珍珠') ? 'clamp(20px, 5vw, 35px)' : 'clamp(50px, 12vw, 80px)',
+          width: (drawer.type === '過渡珠') ? 'clamp(20px, 5vw, 30px)' : 
+                 (drawer.type === '米珠' || drawer.type === '珍珠') ? 'clamp(25px, 6vw, 45px)' : 'clamp(60px, 15vw, 100px)',
+          height: (drawer.type === '過渡珠') ? 'clamp(20px, 5vw, 30px)' : 
+                  (drawer.type === '米珠' || drawer.type === '珍珠') ? 'clamp(25px, 6vw, 45px)' : 'clamp(60px, 15vw, 100px)',
           cursor: 'pointer'
         }}
         title={`點擊 ${drawer.name} 添加到串珠盤`}
@@ -1000,8 +1000,13 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
         </div>
       )}
       
+      {/* 串珠盤標題 - 獨立卡片 */}
       <div className="tray-title">
-        <h3>🌳 木質串珠盤</h3>
+        <h3>串珠盤展示區</h3>
+      </div>
+      
+      {/* 串珠盤控制按鈕 */}
+      <div className="tray-controls">
         <div className="string-width-selector">
           <span>線材寬度：</span>
           <button 
@@ -1009,21 +1014,21 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
             onClick={() => setStringWidth('thin')}
             title="細線"
           >
-            🧵 細線
+            細線
           </button>
           <button 
             className={`string-width-btn ${stringWidth === 'medium' ? 'active' : ''}`}
             onClick={() => setStringWidth('medium')}
             title="中等線"
           >
-            🧶 中等
+            中等
           </button>
           <button 
             className={`string-width-btn ${stringWidth === 'thick' ? 'active' : ''}`}
             onClick={() => setStringWidth('thick')}
             title="粗線"
           >
-            🪢 粗線
+            粗線
           </button>
         </div>
         <div className="string-length-selector">
@@ -1033,40 +1038,21 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
             onClick={() => setStringLength('half')}
             title="半圓串珠"
           >
-            🌙 半圓
+            半圓
           </button>
           <button 
             className={`string-length-btn ${stringLength === 'four-thirds' ? 'active' : ''}`}
             onClick={() => setStringLength('four-thirds')}
             title="4/3圓串珠"
           >
-            🔄 4/3圓
+            4/3圓
           </button>
           <button 
             className={`string-length-btn ${stringLength === 'full' ? 'active' : ''}`}
             onClick={() => setStringLength('full')}
             title="全圓串珠"
           >
-            ⭕ 全圓
-          </button>
-        </div>
-        <div className="tray-buttons">
-          <button
-            className="save-design-btn"
-            onClick={() => onSaveDesign(stringWidth, stringLength)}
-            title="保存設計至推薦搭配展示區"
-          >
-            💾 保存設計
-          </button>
-          <button
-            className="start-stringing-btn"
-            onClick={() => {
-              console.log('內聯點擊測試！');
-              startStringingAnimation();
-            }}
-            title="開始串珠"
-          >
-            🧵 開始串珠
+            全圓
           </button>
         </div>
       </div>
@@ -1235,6 +1221,25 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveDesign, onSaveF
         >
           清空串珠
         </button>
+        <div className="tray-buttons">
+          <button
+            className="save-design-btn"
+            onClick={() => onSaveDesign(stringWidth, stringLength)}
+            title="保存設計至推薦搭配展示區"
+          >
+            保存設計
+          </button>
+          <button
+            className="start-stringing-btn"
+            onClick={() => {
+              console.log('內聯點擊測試！');
+              startStringingAnimation();
+            }}
+            title="開始串珠"
+          >
+            開始串珠
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -1267,6 +1272,14 @@ const BeadCabinet = () => {
     console.log('抽屜ID類型:', typeof drawerId);
     console.log('當前抽屜狀態:', openDrawers);
     console.log('當前浮空狀態:', floatingBeads);
+    
+    // 檢查是否為空抽屜
+    const allDrawers = [...glassBeads, ...crystalBeads, ...woodBeads, ...smallBeads];
+    const drawer = allDrawers.find(d => d.id === drawerId);
+    if (drawer && drawer.isEmpty) {
+      console.log('空抽屜，無法打開');
+      return;
+    }
     
     // 如果抽屜已經打開，則觸發浮空展示
     if (openDrawers[drawerId]) {
@@ -1582,11 +1595,11 @@ const BeadCabinet = () => {
     alert(saveMessage);
   };
 
-  // 創建抽屜陣列 - 按類型分類
-  const glassBeads = [];      // 玻璃珠 (7個)
-  const crystalBeads = [];    // 水晶珠 (8個)
-  const woodBeads = [];       // 木珠區：木珠 (4個) + 天然礦石 (5個) = 9個
-  const smallBeads = [];      // 小珠子：米珠、珍珠、過渡珠 (6個)
+  // 創建抽屜陣列 - 按類型分類，每個櫃子都補滿到9個抽屜
+  const glassBeads = [];      // 玻璃珠 (9個)
+  const crystalBeads = [];    // 水晶珠 (9個)
+  const woodBeads = [];       // 木珠區 (9個)
+  const smallBeads = [];      // 小珠子 (9個)
 
   // 分類珠子
   beadColors.forEach((bead, index) => {
@@ -1615,6 +1628,27 @@ const BeadCabinet = () => {
     }
   });
 
+  // 補滿到9個抽屜的函數
+  const fillToNine = (drawers, prefix) => {
+    while (drawers.length < 9) {
+      drawers.push({
+        id: `${prefix}-empty-${drawers.length}`,
+        name: '空抽屜',
+        type: '',
+        color: '#cccccc',
+        image: 'empty-drawer.png',
+        isEmpty: true
+      });
+    }
+    return drawers;
+  };
+
+  // 為每個櫃子補滿到9個抽屜
+  fillToNine(glassBeads, 'glass');
+  fillToNine(crystalBeads, 'crystal');
+  fillToNine(woodBeads, 'wood');
+  fillToNine(smallBeads, 'small');
+
   console.log('玻璃珠數量:', glassBeads.length);
   console.log('水晶珠數量:', crystalBeads.length);
   console.log('木珠區數量 (木珠+天然礦石):', woodBeads.length);
@@ -1624,8 +1658,8 @@ const BeadCabinet = () => {
   return (
     <div className="bead-cabinet-container">
       <div className="main-content">
-        {/* 手機版：使用 Swiper 滑動櫃子 */}
-        <div className="mobile-cabinet-section">
+        {/* 櫃子區域 */}
+        <div className="cabinet-section">
           {/* 標題區域 */}
           <div className="cabinet-title">
             <h1 className="h1 text-center mb-4">
@@ -1644,8 +1678,13 @@ const BeadCabinet = () => {
             </div>
           </div>
 
-          {/* 簡化的手機版櫃子佈局 */}
-          <div className="mobile-cabinet-grid" style={{ padding: '20px', maxWidth: '100%', margin: '0 auto' }}>
+          {/* 珠子收納櫃標題 */}
+          <div className="cabinet-section-title">
+            <h3>珠子收納櫃</h3>
+          </div>
+
+          {/* 櫃子佈局 */}
+          <div className="cabinet-grid">
             {/* 玻璃珠抽屜 */}
             <div className="glass-drawers mb-4 responsive-drawer-grid">
               {glassBeads.map((drawer, index) => (
@@ -1659,19 +1698,38 @@ const BeadCabinet = () => {
                 >
                   <div className="drawer-front">
                     <div className="drawer-handle"></div>
-                    {/* 抽屜文字說明 */}
-                    <div className="drawer-label">
-                      <span className="bead-name" style={{
-                        color: drawer.color,
-                        fontSize: 'clamp(0.7rem, 1.5vw, 1rem)',
-                        textShadow: (drawer.color === '#F5F5DC' || drawer.color === '#FFFFFF') ? '0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000' : '0 1px 2px rgba(255, 255, 255, 0.8)'
-                      }}>{drawer.name}</span>
-                      <span className="bead-type" style={{ fontSize: 'clamp(0.6rem, 1.3vw, 0.9rem)' }}>{drawer.type}</span>
-                    </div>
-                    {/* 珠子圖片 */}
-                    <div className="drawer-bead-image">
-                      <img src={`/${drawer.image}`} alt={drawer.name} />
-                    </div>
+                    {/* 抽屜內容 */}
+                    {drawer.isEmpty ? (
+                      <div className="empty-drawer-content" style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#999999',
+                        fontSize: 'clamp(0.8rem, 2vw, 1.2rem)',
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        whiteSpace: 'nowrap'
+                      }}>
+                        空抽屜
+                      </div>
+                    ) : (
+                      <>
+                        {/* 抽屜文字說明 */}
+                        <div className="drawer-label">
+                          <span className="bead-name" style={{
+                            color: drawer.color,
+                            fontSize: 'clamp(0.7rem, 1.5vw, 1rem)',
+                            textShadow: (drawer.color === '#F5F5DC' || drawer.color === '#FFFFFF') ? '0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000' : '0 1px 2px rgba(255, 255, 255, 0.8)'
+                          }}>{drawer.name}</span>
+                          <span className="bead-type" style={{ fontSize: 'clamp(0.6rem, 1.3vw, 0.9rem)' }}>{drawer.type}</span>
+                        </div>
+                        {/* 珠子圖片 */}
+                        <div className="drawer-bead-image">
+                          <img src={`/${drawer.image}`} alt={drawer.name} />
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className="drawer-content">
                     <div className="drawer-handle"></div>
@@ -1693,19 +1751,38 @@ const BeadCabinet = () => {
                 >
                   <div className="drawer-front">
                     <div className="drawer-handle"></div>
-                    {/* 抽屜文字說明 */}
-                    <div className="drawer-label">
-                      <span className="bead-name" style={{
-                        color: drawer.color,
-                        fontSize: 'clamp(0.7rem, 1.5vw, 1rem)',
-                        textShadow: (drawer.color === '#F5F5DC' || drawer.color === '#FFFFFF') ? '0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000' : '0 1px 2px rgba(255, 255, 255, 0.8)'
-                      }}>{drawer.name}</span>
-                      <span className="bead-type" style={{ fontSize: 'clamp(0.6rem, 1.3vw, 0.9rem)' }}>{drawer.type}</span>
-                    </div>
-                    {/* 珠子圖片 */}
-                    <div className="drawer-bead-image">
-                      <img src={`/${drawer.image}`} alt={drawer.name} />
-                    </div>
+                    {/* 抽屜內容 */}
+                    {drawer.isEmpty ? (
+                      <div className="empty-drawer-content" style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#999999',
+                        fontSize: 'clamp(0.8rem, 2vw, 1.2rem)',
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        whiteSpace: 'nowrap'
+                      }}>
+                        空抽屜
+                      </div>
+                    ) : (
+                      <>
+                        {/* 抽屜文字說明 */}
+                        <div className="drawer-label">
+                          <span className="bead-name" style={{
+                            color: drawer.color,
+                            fontSize: 'clamp(0.7rem, 1.5vw, 1rem)',
+                            textShadow: (drawer.color === '#F5F5DC' || drawer.color === '#FFFFFF') ? '0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000' : '0 1px 2px rgba(255, 255, 255, 0.8)'
+                          }}>{drawer.name}</span>
+                          <span className="bead-type" style={{ fontSize: 'clamp(0.6rem, 1.3vw, 0.9rem)' }}>{drawer.type}</span>
+                        </div>
+                        {/* 珠子圖片 */}
+                        <div className="drawer-bead-image">
+                          <img src={`/${drawer.image}`} alt={drawer.name} />
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className="drawer-content">
                     <div className="drawer-handle"></div>
@@ -1727,19 +1804,38 @@ const BeadCabinet = () => {
                 >
                   <div className="drawer-front">
                     <div className="drawer-handle"></div>
-                    {/* 抽屜文字說明 */}
-                    <div className="drawer-label">
-                      <span className="bead-name" style={{
-                        color: drawer.color,
-                        fontSize: 'clamp(0.7rem, 1.5vw, 1rem)',
-                        textShadow: (drawer.color === '#F5F5DC' || drawer.color === '#FFFFFF') ? '0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000' : '0 1px 2px rgba(255, 255, 255, 0.8)'
-                      }}>{drawer.name}</span>
-                      <span className="bead-type" style={{ fontSize: 'clamp(0.6rem, 1.3vw, 0.9rem)' }}>{drawer.type}</span>
-                    </div>
-                    {/* 珠子圖片 */}
-                    <div className="drawer-bead-image">
-                      <img src={`/${drawer.image}`} alt={drawer.name} />
-                    </div>
+                    {/* 抽屜內容 */}
+                    {drawer.isEmpty ? (
+                      <div className="empty-drawer-content" style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#999999',
+                        fontSize: 'clamp(0.8rem, 2vw, 1.2rem)',
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        whiteSpace: 'nowrap'
+                      }}>
+                        空抽屜
+                      </div>
+                    ) : (
+                      <>
+                        {/* 抽屜文字說明 */}
+                        <div className="drawer-label">
+                          <span className="bead-name" style={{
+                            color: drawer.color,
+                            fontSize: 'clamp(0.7rem, 1.5vw, 1rem)',
+                            textShadow: (drawer.color === '#F5F5DC' || drawer.color === '#FFFFFF') ? '0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000' : '0 1px 2px rgba(255, 255, 255, 0.8)'
+                          }}>{drawer.name}</span>
+                          <span className="bead-type" style={{ fontSize: 'clamp(0.6rem, 1.3vw, 0.9rem)' }}>{drawer.type}</span>
+                        </div>
+                        {/* 珠子圖片 */}
+                        <div className="drawer-bead-image">
+                          <img src={`/${drawer.image}`} alt={drawer.name} />
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className="drawer-content">
                     <div className="drawer-handle"></div>
@@ -1761,19 +1857,38 @@ const BeadCabinet = () => {
                 >
                   <div className="drawer-front">
                     <div className="drawer-handle"></div>
-                    {/* 抽屜文字說明 */}
-                    <div className="drawer-label">
-                      <span className="bead-name" style={{
-                        color: drawer.color,
-                        fontSize: 'clamp(0.7rem, 1.5vw, 1rem)',
-                        textShadow: (drawer.color === '#F5F5DC' || drawer.color === '#FFFFFF') ? '0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000' : '0 1px 2px rgba(255, 255, 255, 0.8)'
-                      }}>{drawer.name}</span>
-                      <span className="bead-type" style={{ fontSize: 'clamp(0.6rem, 1.3vw, 0.9rem)' }}>{drawer.type}</span>
-                    </div>
-                    {/* 珠子圖片 */}
-                    <div className="drawer-bead-image">
-                      <img src={`/${drawer.image}`} alt={drawer.name} />
-                    </div>
+                    {/* 抽屜內容 */}
+                    {drawer.isEmpty ? (
+                      <div className="empty-drawer-content" style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#999999',
+                        fontSize: 'clamp(0.8rem, 2vw, 1.2rem)',
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        whiteSpace: 'nowrap'
+                      }}>
+                        空抽屜
+                      </div>
+                    ) : (
+                      <>
+                        {/* 抽屜文字說明 */}
+                        <div className="drawer-label">
+                          <span className="bead-name" style={{
+                            color: drawer.color,
+                            fontSize: 'clamp(0.7rem, 1.5vw, 1rem)',
+                            textShadow: (drawer.color === '#F5F5DC' || drawer.color === '#FFFFFF') ? '0.5px 0.5px 0 #000, -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000' : '0 1px 2px rgba(255, 255, 255, 0.8)'
+                          }}>{drawer.name}</span>
+                          <span className="bead-type" style={{ fontSize: 'clamp(0.6rem, 1.3vw, 0.9rem)' }}>{drawer.type}</span>
+                        </div>
+                        {/* 珠子圖片 */}
+                        <div className="drawer-bead-image">
+                          <img src={`/${drawer.image}`} alt={drawer.name} />
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className="drawer-content">
                     <div className="drawer-handle"></div>
@@ -1781,54 +1896,10 @@ const BeadCabinet = () => {
                 </div>
               ))}
             </div>
-
-            {/* 小珠子櫃子控制按鈕 */}
-            <div className="small-drawers-controls mb-3">
-              <div className="row g-2">
-                <div className="col-6">
-                  <button
-                    className="btn btn-outline-success w-100"
-                    onClick={() => {
-                      // 開啟所有抽屜
-                      const allDrawers = {};
-                      [...glassBeads, ...crystalBeads, ...woodBeads, ...smallBeads].forEach(drawer => {
-                        allDrawers[drawer.id] = true;
-                      });
-                      setOpenDrawers(allDrawers);
-                      // 同時顯示所有浮空珠子
-                      const allFloatingBeads = {};
-                      [...glassBeads, ...crystalBeads, ...woodBeads, ...smallBeads].forEach(drawer => {
-                        allFloatingBeads[drawer.id] = true;
-                      });
-                      setFloatingBeads(allFloatingBeads);
-                    } }
-                    title="開啟所有抽屜並顯示浮空珠子"
-                  >
-                    <i className="bi bi-arrow-up-circle"></i> 開啟所有抽屜
-                  </button>
-                </div>
-                <div className="col-6">
-                  <button
-                    className="btn btn-outline-danger w-100"
-                    onClick={() => {
-                      // 關閉所有抽屜
-                      setOpenDrawers({});
-                      // 同時關閉所有浮空珠子
-                      setFloatingBeads({});
-                      // 顯示提示文字
-                      setShowHintText(true);
-                    } }
-                    title="關閉所有抽屜和浮空珠子"
-                  >
-                    <i className="bi bi-x-circle"></i> 關閉所有抽屜
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
 
-          {/* 手機版：下方木質串珠盤區域 */}
-          <div className="mobile-tray-section">
+        {/* 木質串珠盤區域 */}
+        <div className="tray-section">
             <WoodenBeadTray
               selectedBeads={selectedBeads}
               setSelectedBeads={setSelectedBeads}
@@ -1925,7 +1996,7 @@ const BeadCabinet = () => {
           );
         })}
 
-        {/* 底部導航欄 - 只在手機版本顯示 */}
+        {/* 底部導航欄 */}
         <div className="bottom-navigation">
           <div className="nav-grid">
             <button
