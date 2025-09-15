@@ -409,6 +409,14 @@
   text-align: center;
 }
 
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
 .action-btn {
   background: linear-gradient(135deg, #8a2be2, #4b0082);
   color: white;
@@ -437,6 +445,26 @@
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* 保存設計按鈕 */
+.save-btn {
+  background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+.save-btn:hover {
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+/* 我的設計專區按鈕 */
+.my-designs-btn {
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
+}
+
+.my-designs-btn:hover {
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
 }
 
 .generate-btn {
@@ -594,6 +622,16 @@
   }
   
   .generated-actions .action-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .action-buttons .action-btn {
     width: 100%;
     max-width: 200px;
   }

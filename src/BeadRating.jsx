@@ -3,6 +3,7 @@ import { Button, Fade, Slide, Grow } from '@mui/material';
 import './BeadRating.css';
 import ShareResultImage from './ShareResultImage';
 import IconComponent from './IconComponent';
+import MyDesigns from './MyDesigns';
 
 const BeadRating = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -18,7 +19,6 @@ const BeadRating = () => {
   });
   const [savedDesign, setSavedDesign] = useState(null);
   const [isExiting, setIsExiting] = useState(false);
-  const [isGlobalLoading, setIsGlobalLoading] = useState(true);
   
   // 分享功能狀態
   const [showShareMenu, setShowShareMenu] = useState(false);
@@ -28,6 +28,9 @@ const BeadRating = () => {
   // 設計名稱編輯功能狀態
   const [isEditingName, setIsEditingName] = useState(false);
   const [editingName, setEditingName] = useState('');
+  
+  // 標籤切換功能狀態
+  const [activeTab, setActiveTab] = useState('design');
 
   // 通靈師的完整建議
   const psychicAdvice = `你的串珠作品展現了獨特的藝術天賦和內在智慧。這件作品不僅是一件美麗的飾品，更是你內心世界的真實寫照。從愛情運勢來看，紅色珠子的點綴象徵著熱情與勇氣，預示著美好的愛情即將到來，在接下來的三個月內，你將遇到一位與你靈魂共鳴的人。在財富方面，藍色珠子的能量與水元素相呼應，預示著流動的財富即將到來，建議你保持開放的心態，留意身邊的投資機會，但切記不要過於貪心，穩健的理財方式會為你帶來意想不到的收穫。事業發展上，串珠的對稱排列反映了你對工作的認真態度，而金色珠子的點綴則象徵著豐厚的回報，你的努力將得到認可，升職加薪的機會就在眼前。從創造力角度來看，綠色珠子的能量與成長相呼應，預示著你的事業將進入快速發展期，新的項目機會將接踵而至。在健康方面，整體能量非常和諧，你的串珠作品散發著平衡與健康的氣息，紫色珠子的能量與靈性相呼應，預示著你的身心狀態將達到最佳狀態。建議你將這份創造力運用到生活的各個方面，相信自己的直覺，勇敢追求夢想，保持規律的作息，多接觸大自然。記住，每個珠子都承載著獨特的能量，就像你人生中的每個選擇都蘊含著無限可能。`;
@@ -45,12 +48,6 @@ const BeadRating = () => {
       }
     }
     
-    // 模擬全局 loading 效果
-    const timer = setTimeout(() => {
-      setIsGlobalLoading(false);
-    }, 2000); // 2秒後隱藏 loading
-    
-    return () => clearTimeout(timer);
   }, []);
 
   // 根據珠子名稱的雙面向評分系統
@@ -620,6 +617,30 @@ const BeadRating = () => {
     setFullMessage('');
   };
 
+  // 暫存設計到我的設計專區
+  const saveDesignToMyDesigns = () => {
+    if (!savedDesign) {
+      alert('請先完成串珠設計！');
+      return;
+    }
+    
+    try {
+      const designId = `beadDesign_${Date.now()}`;
+      const designToSave = {
+        ...savedDesign,
+        id: designId,
+        timestamp: Date.now(),
+        savedAt: new Date().toLocaleString('zh-TW')
+      };
+      
+      localStorage.setItem(designId, JSON.stringify(designToSave));
+      alert('設計已暫存到我的設計專區！');
+    } catch (error) {
+      console.error('保存設計時發生錯誤:', error);
+      alert('保存失敗，請稍後再試。');
+    }
+  };
+
   // 開始編輯設計名稱
   const startEditingName = () => {
     setIsEditingName(true);
@@ -852,26 +873,8 @@ const BeadRating = () => {
 
   return (
     <>
-      {/* 全局 Loading 動畫 */}
-      {isGlobalLoading && (
-        <div className="global-loading-overlay">
-          <div className="loading-content">
-            <div className="psychic-loading-avatar">
-              <img 
-                src="/psychic-medium.jpeg" 
-                alt="神秘通靈師" 
-                className="psychic-loading-image"
-              />
-            </div>
-            <div className="loading-text">
-              <p><IconComponent name="crystal-ball" size={16} /> 正在連接神秘能量...</p>
-              <p><IconComponent name="sparkle" size={16} /> 請稍候，通靈師正在準備...</p>
-            </div>
-          </div>
-        </div>
-      )}
       
-      <Fade in={!isExiting && !isGlobalLoading} timeout={800}>
+      <Fade in={!isExiting} timeout={800}>
         <div className="bead-rating-container bead-rating-page">
           {/* 頁面標題 */}
           <div className="rating-header">
@@ -927,9 +930,28 @@ const BeadRating = () => {
 
             {/* 右側：作品上傳和雷達圖 */}
             <div className="right-panel">
+              {/* 標籤切換按鈕 */}
+              <div className="tab-buttons">
+                 <button 
+                   className={`tab-btn ${activeTab === 'design' ? 'active' : ''}`}
+                   onClick={() => setActiveTab('design')}
+                 >
+                   <IconComponent name="bead-bracelet" size={16} />
+                   串珠分析
+                 </button>
+                <button 
+                  className={`tab-btn ${activeTab === 'myDesigns' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('myDesigns')}
+                >
+                  <IconComponent name="art-palette" size={16} />
+                  我的設計
+                </button>
+              </div>
+
               {/* 串珠設計展示 */}
-              <div className="bead-design-section">
-                <h3>📿 你的串珠設計</h3>
+              {activeTab === 'design' && (
+                <div className="bead-design-section">
+                  <h3>📿 你的串珠設計</h3>
                 {savedDesign ? (
                   <div className="design-display">
                     <div className="design-info">
@@ -967,12 +989,16 @@ const BeadRating = () => {
                           </div>
                         ) : (
                           <div className="display-name-container">
-                            <h4 
-                              className="design-name-display"
-                              onClick={startEditingName}
-                            >
+                            <h4 className="design-name-display">
                               {savedDesign.designName}
                             </h4>
+                            <button 
+                              className="edit-name-btn"
+                              onClick={startEditingName}
+                              title="編輯名稱"
+                            >
+                              ✏️
+                            </button>
                           </div>
                         )}
                       </div>
@@ -1039,7 +1065,10 @@ const BeadRating = () => {
                                 return (
                                   <div 
                                     key={index}
-                                    className={`design-bead-circle ${(bead.type === '米珠' || bead.type === '珍珠' || bead.type === '過渡珠') ? 'small-bead' : ''}`}
+                                    className={`design-bead-circle ${
+                                      bead.type === '珍珠' ? 'pearl-bead' : 
+                                      (bead.type === '米珠' || bead.type === '過渡珠') ? 'small-bead' : ''
+                                    }`}
                                     style={{ 
                                       left: `${x}px`,
                                       top: `${y}px`,
@@ -1081,6 +1110,17 @@ const BeadRating = () => {
                            <IconComponent name="sparkle" size={20} />
                          </div>
                          <div className="button-text">清除設計</div>
+                       </button>
+                       
+                       {/* 暫存設計按鈕 */}
+                       <button 
+                         onClick={saveDesignToMyDesigns}
+                         className="design-button save-design-button"
+                       >
+                         <div className="button-icon">
+                           <IconComponent name="art-palette" size={20} />
+                         </div>
+                         <div className="button-text">暫存設計</div>
                        </button>
                        
                        {/* 分享設計按鈕 */}
@@ -1175,6 +1215,15 @@ const BeadRating = () => {
                   </div>
                 )}
               </div>
+              )}
+
+
+              {/* 我的設計專區標籤 */}
+              {activeTab === 'myDesigns' && (
+                <div className="my-designs-section">
+                  <MyDesigns onClose={() => setActiveTab('design')} isEmbedded={true} />
+                </div>
+              )}
 
               {/* 雷達圖 */}
               <div className="radar-chart-section">
