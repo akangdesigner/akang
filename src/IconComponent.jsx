@@ -498,6 +498,26 @@ const IconComponent = ({ name, size = 24, className = '', style = {} }) => {
         <ellipse cx="36" cy="18" rx="1" ry="2" fill="#FDE047" opacity="0.6"/>
         <ellipse cx="28" cy="18" rx="1" ry="2" fill="#FDE047" opacity="0.6"/>
       </svg>
+    ),
+
+    'hand-pick': (
+      <svg {...iconProps}>
+        {/* 手部輪廓 */}
+        <path d="M20 40 Q20 32 24 28 Q28 24 32 24 Q36 24 40 28 Q44 32 44 40 L44 48 Q44 52 40 52 L32 52 Q28 52 24 48 L20 48 Q16 48 16 44 Q16 40 20 40 Z" 
+              fill="#FBBF24" stroke="#F59E0B" strokeWidth="2"/>
+        {/* 手指 */}
+        <ellipse cx="24" cy="32" rx="3" ry="6" fill="#FBBF24" stroke="#F59E0B" strokeWidth="1"/>
+        <ellipse cx="32" cy="30" rx="4" ry="7" fill="#FBBF24" stroke="#F59E0B" strokeWidth="1"/>
+        <ellipse cx="40" cy="32" rx="3" ry="6" fill="#FBBF24" stroke="#F59E0B" strokeWidth="1"/>
+        {/* 拇指 */}
+        <ellipse cx="18" cy="36" rx="2" ry="4" fill="#FBBF24" stroke="#F59E0B" strokeWidth="1"/>
+        {/* 珠子 */}
+        <circle cx="48" cy="28" r="4" fill="#8B5CF6" stroke="#7C3AED" strokeWidth="2"/>
+        <circle cx="50" cy="26" r="1" fill="#A78BFA"/>
+        <circle cx="46" cy="30" r="1" fill="#A78BFA"/>
+        {/* 選取箭頭/指示 */}
+        <path d="M52 24 L56 20 L56 24 L60 24 L56 28 L52 24 Z" fill="#F59E0B"/>
+      </svg>
     )
   };
 

@@ -242,6 +242,8 @@
   gap: 8px;
   position: relative;
   z-index: 2;
+  text-align: left;
+  align-items: flex-start;
 }
 
 .instruction-content p {
@@ -424,20 +426,21 @@
 /* 抽屜珠子圖片 */
 .drawer-bead-image {
   position: absolute;
-  top: 60%;
-  right: 20px;
-  transform: translateY(-50%);
-  width: 30px;
-  height: 30px;
+  top: 65%;
+  right: 35%;
+  transform: translate(50%, -50%);
+  width: clamp(35px, 4.5vw, 50px);
+  height: clamp(35px, 4.5vw, 50px);
   z-index: 2;
   pointer-events: none;
 }
 
 /* 小珠子櫃子的圖片縮小 */
 .small-drawers .drawer-bead-image {
-  width: 20px;
-  height: 20px;
-  right: 25px;
+  width: clamp(28px, 3.5vw, 35px);
+  height: clamp(28px, 3.5vw, 35px);
+  right: 35%;
+  transform: translate(50%, -50%);
 }
 
 .drawer-bead-image img {
@@ -2054,38 +2057,79 @@
 
 
 
-/* 完成串珠按鈕 */
-.complete-stringing-btn {
+/* 完成串珠按鈕容器 */
+.complete-actions {
   position: absolute;
-  bottom: 15%;
+  bottom: 5%;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 10000;
+}
+
+/* 完成串珠按鈕 */
+.complete-stringing-btn {
+  position: relative;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   color: white;
-  padding: 15px 30px;
-  font-size: 1.2rem;
+  padding: 10px 20px;
+  font-size: 1rem;
   font-weight: bold;
-  border-radius: 30px;
+  border-radius: 25px;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 
-    0 8px 25px rgba(255, 107, 107, 0.4),
-    0 0 20px rgba(255, 107, 107, 0.2);
+    0 6px 20px rgba(40, 167, 69, 0.4),
+    0 0 15px rgba(40, 167, 69, 0.2);
   z-index: 10000;
   opacity: 1;
   pointer-events: auto;
+  margin: 5px 0;
+  /* 固定寬度和高度 */
+  width: 200px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .complete-stringing-btn:hover {
-  transform: translateX(-50%) translateY(-3px);
+  transform: translateY(-3px);
   box-shadow: 
-    0 12px 35px rgba(255, 107, 107, 0.6),
-    0 0 30px rgba(255, 107, 107, 0.4);
-  background: linear-gradient(135deg, #FF8E8E 0%, #FF6B6B 100%);
+    0 10px 30px rgba(40, 167, 69, 0.6),
+    0 0 25px rgba(40, 167, 69, 0.4);
+  background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
 }
 
 .complete-stringing-btn:active {
-  transform: translateX(-50%) translateY(0);
+  transform: translateY(0);
+}
+
+/* 返回串珠區按鈕樣式 */
+.complete-stringing-btn.return-btn {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  box-shadow: 
+    0 6px 20px rgba(220, 53, 69, 0.4),
+    0 0 15px rgba(220, 53, 69, 0.2);
+  /* 確保大小與基本按鈕一致 */
+  width: 200px;
+  height: 50px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.complete-stringing-btn.return-btn:hover {
+  box-shadow: 
+    0 10px 30px rgba(220, 53, 69, 0.6),
+    0 0 25px rgba(220, 53, 69, 0.4);
+  background: linear-gradient(135deg, #c82333 0%, #dc3545 100%);
 }
 
 
@@ -2924,6 +2968,19 @@
 .empty-drawer-front p {
   color: #bbb;
   font-style: italic;
+}
+
+/* 空抽屜內容樣式 */
+.empty-drawer-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+  font-weight: 500;
+  z-index: 2;
+  pointer-events: none;
 }
 
 /* 櫃子類型標籤 - 直式標題 */
