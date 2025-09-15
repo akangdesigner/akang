@@ -1,12 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react';
 import html2canvas from 'html2canvas';
 import './ShareResultImage.css';
+import MyDesigns from './MyDesigns';
 
 const ShareResultImage = ({ design, scores, advice, onClose }) => {
   const resultRef = useRef(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImage, setGeneratedImage] = useState(null);
   const [selectedBackground, setSelectedBackground] = useState('transparent'); // 預設透明背景
+  const [showMyDesigns, setShowMyDesigns] = useState(false);
 
   // 組件掛載時自動生成分享圖
   useEffect(() => {
@@ -877,6 +879,29 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
     link.click();
   };
 
+  // 保存到我的設計專區
+  const saveToMyDesigns = () => {
+    if (!design) return;
+    
+    try {
+      const designId = `beadDesign_${Date.now()}`;
+      const designToSave = {
+        ...design,
+        id: designId,
+        timestamp: Date.now(),
+        savedAt: new Date().toLocaleString('zh-TW')
+      };
+      
+      localStorage.setItem(designId, JSON.stringify(designToSave));
+      
+      // 顯示成功提示
+      alert('設計已保存到我的設計專區！');
+    } catch (error) {
+      console.error('保存設計時發生錯誤:', error);
+      alert('保存失敗，請稍後再試。');
+    }
+  };
+
   // 分享到社群媒體
   const shareToSocial = async () => {
     if (!generatedImage) return;
@@ -1021,6 +1046,34 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
             </div>
           )}
           
+          {/* 操作按鈕 - 始終顯示 */}
+          <div className="action-section">
+            <div className="action-buttons">
+              <button 
+                className="action-btn download-btn"
+                onClick={downloadImage}
+                disabled={!generatedImage}
+              >
+                💾 下載圖片
+              </button>
+              
+              <button 
+                className="action-btn save-btn"
+                onClick={saveToMyDesigns}
+                disabled={!design}
+              >
+                💾 保存設計
+              </button>
+              
+              <button 
+                className="action-btn my-designs-btn"
+                onClick={() => setShowMyDesigns(true)}
+              >
+                🎨 我的設計專區
+              </button>
+            </div>
+          </div>
+
           {/* 生成完成後顯示完整的分享圖 */}
           {!isGenerating && generatedImage && (
             <>
@@ -1041,49 +1094,44 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
                 </div>
               </div>
               
-              {/* 操作按鈕 */}
-              <div className="action-section">
-                <button 
-                  className="action-btn download-btn"
-                  onClick={downloadImage}
-                >
-                  💾 下載圖片
-                </button>
-                
-                {/* 背景選擇按鈕 */}
-                <div className="background-selection">
-                  <h4>🎨 選擇背景</h4>
-                  <div className="background-buttons">
-                    <button 
-                      className={`background-btn ${selectedBackground === 'transparent' ? 'active' : ''}`}
-                      onClick={() => setSelectedBackground('transparent')}
-                    >
-                      <div className="background-preview transparent"></div>
-                      <span>一般背景</span>
-                    </button>
-                    
-                    <button 
-                      className={`background-btn ${selectedBackground === 'wooden' ? 'active' : ''}`}
-                      onClick={() => setSelectedBackground('wooden')}
-                    >
-                      <div className="background-preview wooden"></div>
-                      <span>木紋背景</span>
-                    </button>
-                    
-                    <button 
-                      className={`background-btn ${selectedBackground === 'aura' ? 'active' : ''}`}
-                      onClick={() => setSelectedBackground('aura')}
-                    >
-                      <div className="background-preview aura"></div>
-                      <span>絨布背景</span>
-                    </button>
-                  </div>
+              {/* 背景選擇按鈕 */}
+              <div className="background-selection">
+                <h4>🎨 選擇背景</h4>
+                <div className="background-buttons">
+                  <button 
+                    className={`background-btn ${selectedBackground === 'transparent' ? 'active' : ''}`}
+                    onClick={() => setSelectedBackground('transparent')}
+                  >
+                    <div className="background-preview transparent"></div>
+                    <span>一般背景</span>
+                  </button>
+                  
+                  <button 
+                    className={`background-btn ${selectedBackground === 'wooden' ? 'active' : ''}`}
+                    onClick={() => setSelectedBackground('wooden')}
+                  >
+                    <div className="background-preview wooden"></div>
+                    <span>木紋背景</span>
+                  </button>
+                  
+                  <button 
+                    className={`background-btn ${selectedBackground === 'aura' ? 'active' : ''}`}
+                    onClick={() => setSelectedBackground('aura')}
+                  >
+                    <div className="background-preview aura"></div>
+                    <span>絨布背景</span>
+                  </button>
                 </div>
               </div>
             </>
           )}
         </div>
       </div>
+      
+      {/* 我的設計專區彈窗 */}
+      {showMyDesigns && (
+        <MyDesigns onClose={() => setShowMyDesigns(false)} />
+      )}
     </div>
   );
 };

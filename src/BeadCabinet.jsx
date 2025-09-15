@@ -1952,8 +1952,16 @@ const BeadCabinet = () => {
                     <div className="drawer-handle"></div>
                     {/* 抽屜內容 */}
                     {drawer.isEmpty ? (
-                      <div className="empty-drawer-content">
-                        空抽屜
+                      <div style={{ 
+                        position: 'absolute', 
+                        top: '55%', 
+                        left: '50%', 
+                        transform: 'translate(-50%, -50%)', 
+                        textAlign: 'center',
+                        zIndex: 2,
+                        pointerEvents: 'none'
+                      }}>
+                        <span style={{ color: '#999', fontWeight: 'bold', fontSize: 'clamp(0.9rem, 2.0vw, 1.2rem)' }}>空抽屜</span>
                       </div>
                     ) : (
                       <>
@@ -1995,8 +2003,16 @@ const BeadCabinet = () => {
                     <div className="drawer-handle"></div>
                     {/* 抽屜內容 */}
                     {drawer.isEmpty ? (
-                      <div className="empty-drawer-content">
-                        空抽屜
+                      <div style={{ 
+                        position: 'absolute', 
+                        top: '55%', 
+                        left: '50%', 
+                        transform: 'translate(-50%, -50%)', 
+                        textAlign: 'center',
+                        zIndex: 2,
+                        pointerEvents: 'none'
+                      }}>
+                        <span style={{ color: '#999', fontWeight: 'bold', fontSize: 'clamp(0.9rem, 2.0vw, 1.2rem)' }}>空抽屜</span>
                       </div>
                     ) : (
                       <>
@@ -2038,8 +2054,16 @@ const BeadCabinet = () => {
                     <div className="drawer-handle"></div>
                     {/* 抽屜內容 */}
                     {drawer.isEmpty ? (
-                      <div className="empty-drawer-content">
-                        空抽屜
+                      <div style={{ 
+                        position: 'absolute', 
+                        top: '55%', 
+                        left: '50%', 
+                        transform: 'translate(-50%, -50%)', 
+                        textAlign: 'center',
+                        zIndex: 2,
+                        pointerEvents: 'none'
+                      }}>
+                        <span style={{ color: '#999', fontWeight: 'bold', fontSize: 'clamp(0.9rem, 2.0vw, 1.2rem)' }}>空抽屜</span>
                       </div>
                     ) : (
                       <>
@@ -2081,8 +2105,16 @@ const BeadCabinet = () => {
                     <div className="drawer-handle"></div>
                     {/* 抽屜內容 */}
                     {drawer.isEmpty ? (
-                      <div className="empty-drawer-content">
-                        空抽屜
+                      <div style={{ 
+                        position: 'absolute', 
+                        top: '55%', 
+                        left: '50%', 
+                        transform: 'translate(-50%, -50%)', 
+                        textAlign: 'center',
+                        zIndex: 2,
+                        pointerEvents: 'none'
+                      }}>
+                        <span style={{ color: '#999', fontWeight: 'bold', fontSize: 'clamp(0.9rem, 2.0vw, 1.2rem)' }}>空抽屜</span>
                       </div>
                     ) : (
                       <>
