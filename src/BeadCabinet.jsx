@@ -367,20 +367,8 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
   // 創建圓形手鍊
   const createCircularBracelet = () => {
     console.log('開始創建圓形手鍊');
-    
-    // 建立圓形手鍊容器，放在浮空頁面內
-    const braceletContainer = document.createElement('div');
-    braceletContainer.className = 'bracelet-container';
-    braceletContainer.style.cssText = `
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 1000;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.8s ease-in;
-    `;
+    console.log('selectedBeads 數量:', selectedBeads.length);
+    console.log('stringLength:', stringLength);
     
     // 計算圓形排列
     const totalBeads = selectedBeads.length;
@@ -395,8 +383,32 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
       radius = 100; // 全圓：固定半徑 100px
     }
     
-    const centerX = 0;
-    const centerY = 0;
+    // 建立圓形手鍊容器，放在浮空頁面內
+    const braceletContainer = document.createElement('div');
+    braceletContainer.className = 'bracelet-container';
+    braceletContainer.style.cssText = `
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.8s ease-in;
+      width: ${radius * 2}px;
+      height: ${radius * 2}px;
+    `;
+    
+    // SVG 的圓心座標（相對於 SVG 容器）
+    const centerX = radius;
+    const centerY = radius;
+    
+    // 珠子容器的圓心座標（相對於 braceletContainer 的中心）
+    const beadCenterX = radius;
+    const beadCenterY = radius;
+    
+    console.log('圓心座標 - SVG:', centerX, centerY, '珠子:', beadCenterX, beadCenterY);
+    console.log('半徑:', radius);
 
     // 建立 SVG 元素
     const svgNS = "http://www.w3.org/2000/svg";
@@ -412,8 +424,8 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
 
     // 建立圓形
     const circle = document.createElementNS(svgNS, "circle");
-    circle.setAttribute("cx", `${radius}`);  // 圓心 x = 半徑
-    circle.setAttribute("cy", `${radius}`);  // 圓心 y = 半徑
+    circle.setAttribute("cx", `${centerX}`);  // 圓心 x = 半徑
+    circle.setAttribute("cy", `${centerY}`);  // 圓心 y = 半徑
     circle.setAttribute("r", `${radius}`);   // 半徑
     circle.setAttribute("fill", "transparent");
     circle.setAttribute("stroke", "white");
@@ -429,8 +441,9 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
     
     selectedBeads.forEach((bead, index) => {
       const angle = (2 * Math.PI / totalBeads) * index - Math.PI / 2; // 從12點開始
-      const x = centerX + Math.cos(angle) * radius;
-      const y = centerY + Math.sin(angle) * radius;
+      // 珠子位置相對於 braceletContainer 的圓心
+      const x = beadCenterX + Math.cos(angle) * radius;
+      const y = beadCenterY + Math.sin(angle) * radius;
       
       const beadElement = document.createElement('div');
       beadElement.className = 'bracelet-bead';
@@ -505,8 +518,8 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
       console.log('已清除手鍊線');
     });
     
-    // 顯示完成訊息
-    alert('串珠完成！您的設計已經準備就緒。');
+    // 直接返回，不顯示任何提示文字
+    console.log('返回串珠區');
   };
 
 
@@ -979,23 +992,28 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
             </div>
           )}
 
-          {/* 完成串珠 + 保存設計 + 保存圖片按鈕 */}
+          {/* 保存設計按鈕 */}
           <div className="complete-actions">
             <button
               className="complete-stringing-btn"
-              onClick={completeStringingAnimation}
-              title="完成串珠"
-            >
-              <IconComponent name="sparkle" size={16} /> 完成串珠
-            </button>
-            <button
-              className="save-after-animation-btn"
               onClick={() => onSaveFloatingDesign(stringWidth, stringLength)}
               title="保存到串珠評分區"
             >
-              💾 保存設計
+              <IconComponent name="sparkle" size={16} /> 保存設計
             </button>
-
+            <button
+              className="complete-stringing-btn return-btn"
+              onClick={completeStringingAnimation}
+              title="返回串珠區"
+              style={{
+                backgroundColor: '#dc3545',
+                borderColor: '#dc3545',
+                color: 'white',
+                marginTop: '10px'
+              }}
+            >
+              <IconComponent name="home" size={16} /> 返回串珠區
+            </button>
           </div>
         </div>
       )}
@@ -1208,10 +1226,6 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
               }
             })()}
           </span>
-        </div>
-        <div className="new-stat-item">
-          <span className="new-stat-label">串珠長度:</span>
-          <span className="new-stat-value">{selectedBeads.length * 60}px</span>
         </div>
       </div>
       
@@ -1468,7 +1482,7 @@ const BeadCabinet = () => {
   // 保存設計到串珠評分區
   const handleSaveFloatingDesign = (stringWidth, stringLength) => {
     if (selectedBeads.length === 0) {
-      alert('請先串一些珠子再保存設計！');
+      showCustomAlert('請先串一些珠子再保存設計！', 'warning');
       return;
     }
 
@@ -1489,7 +1503,349 @@ const BeadCabinet = () => {
     // 保存到串珠評分區的 localStorage 鍵
     localStorage.setItem('savedBeadDesign', JSON.stringify(design));
 
-    alert(`設計已保存到串珠評分區！\n\n設計名稱: ${design.designName}\n珠子數量: ${design.beads.length} 顆\n\n您可以在串珠評分區的「你的串珠設計」中查看。`);
+    showCustomAlertWithLink('設計已保存！您可以到', '串珠評分區', '進行串珠手鍊運勢分析。', 'success');
+  };
+
+  // 自定義提示框（帶連結）
+  const showCustomAlertWithLink = (beforeText, linkText, afterText, type = 'info') => {
+    // 創建遮罩層
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease-out;
+    `;
+
+    // 創建提示框
+    const alertBox = document.createElement('div');
+    alertBox.style.cssText = `
+      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+      color: white;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      max-width: 450px;
+      margin: 20px;
+      border: 2px solid ${type === 'success' ? '#27ae60' : type === 'warning' ? '#f39c12' : '#3498db'};
+      animation: slideIn 0.3s ease-out;
+      position: relative;
+      overflow: hidden;
+    `;
+
+    // 添加發光效果
+    const glowEffect = document.createElement('div');
+    glowEffect.style.cssText = `
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, 
+        ${type === 'success' ? '#27ae60' : type === 'warning' ? '#f39c12' : '#3498db'}, 
+        transparent, 
+        ${type === 'success' ? '#27ae60' : type === 'warning' ? '#f39c12' : '#3498db'}
+      );
+      border-radius: 15px;
+      z-index: -1;
+      animation: glow 2s ease-in-out infinite alternate;
+    `;
+
+    // 圖標
+    const icon = document.createElement('div');
+    icon.style.cssText = `
+      font-size: 48px;
+      margin-bottom: 15px;
+      animation: bounce 0.6s ease-out;
+    `;
+    icon.innerHTML = type === 'success' ? '✨' : type === 'warning' ? '⚠️' : 'ℹ️';
+
+    // 訊息文字（包含連結）
+    const messageText = document.createElement('div');
+    messageText.style.cssText = `
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.4;
+      margin-bottom: 25px;
+    `;
+
+    // 創建文字節點和連結
+    const beforeSpan = document.createElement('span');
+    beforeSpan.textContent = beforeText;
+
+    const linkSpan = document.createElement('span');
+    linkSpan.textContent = linkText;
+    linkSpan.style.cssText = `
+      color: #3498db;
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 2px 4px;
+      border-radius: 4px;
+    `;
+    linkSpan.onmouseover = () => {
+      linkSpan.style.backgroundColor = 'rgba(52, 152, 219, 0.2)';
+      linkSpan.style.color = '#5dade2';
+    };
+    linkSpan.onmouseout = () => {
+      linkSpan.style.backgroundColor = 'transparent';
+      linkSpan.style.color = '#3498db';
+    };
+    linkSpan.onclick = () => {
+      window.location.href = '/rating';
+      closeAlert();
+    };
+
+    const afterSpan = document.createElement('span');
+    afterSpan.textContent = afterText;
+
+    messageText.appendChild(beforeSpan);
+    messageText.appendChild(linkSpan);
+    messageText.appendChild(afterSpan);
+
+    // 確定按鈕
+    const confirmBtn = document.createElement('button');
+    confirmBtn.style.cssText = `
+      background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    `;
+    confirmBtn.textContent = '確定';
+    confirmBtn.onmouseover = () => {
+      confirmBtn.style.transform = 'translateY(-2px)';
+      confirmBtn.style.boxShadow = '0 6px 20px rgba(52, 152, 219, 0.4)';
+    };
+    confirmBtn.onmouseout = () => {
+      confirmBtn.style.transform = 'translateY(0)';
+      confirmBtn.style.boxShadow = '0 4px 15px rgba(52, 152, 219, 0.3)';
+    };
+
+    // 組裝提示框
+    alertBox.appendChild(glowEffect);
+    alertBox.appendChild(icon);
+    alertBox.appendChild(messageText);
+    alertBox.appendChild(confirmBtn);
+    overlay.appendChild(alertBox);
+
+    // 添加動畫樣式
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes slideIn {
+        from { transform: translateY(-50px) scale(0.9); opacity: 0; }
+        to { transform: translateY(0) scale(1); opacity: 1; }
+      }
+      @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-10px); }
+        60% { transform: translateY(-5px); }
+      }
+      @keyframes glow {
+        from { opacity: 0.5; }
+        to { opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // 添加到頁面
+    document.body.appendChild(overlay);
+
+    // 點擊確定或遮罩層關閉
+    const closeAlert = () => {
+      overlay.style.animation = 'fadeOut 0.3s ease-out';
+      setTimeout(() => {
+        document.body.removeChild(overlay);
+        document.head.removeChild(style);
+      }, 300);
+    };
+
+    confirmBtn.onclick = closeAlert;
+    overlay.onclick = (e) => {
+      if (e.target === overlay) closeAlert();
+    };
+
+    // 添加淡出動畫
+    const fadeOutStyle = document.createElement('style');
+    fadeOutStyle.textContent = `
+      @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+    `;
+    document.head.appendChild(fadeOutStyle);
+  };
+
+  // 自定義提示框
+  const showCustomAlert = (message, type = 'info') => {
+    // 創建遮罩層
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease-out;
+    `;
+
+    // 創建提示框
+    const alertBox = document.createElement('div');
+    alertBox.style.cssText = `
+      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+      color: white;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      max-width: 400px;
+      margin: 20px;
+      border: 2px solid ${type === 'success' ? '#27ae60' : type === 'warning' ? '#f39c12' : '#3498db'};
+      animation: slideIn 0.3s ease-out;
+      position: relative;
+      overflow: hidden;
+    `;
+
+    // 添加發光效果
+    const glowEffect = document.createElement('div');
+    glowEffect.style.cssText = `
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, 
+        ${type === 'success' ? '#27ae60' : type === 'warning' ? '#f39c12' : '#3498db'}, 
+        transparent, 
+        ${type === 'success' ? '#27ae60' : type === 'warning' ? '#f39c12' : '#3498db'}
+      );
+      border-radius: 15px;
+      z-index: -1;
+      animation: glow 2s ease-in-out infinite alternate;
+    `;
+
+    // 圖標
+    const icon = document.createElement('div');
+    icon.style.cssText = `
+      font-size: 48px;
+      margin-bottom: 15px;
+      animation: bounce 0.6s ease-out;
+    `;
+    icon.innerHTML = type === 'success' ? '✨' : type === 'warning' ? '⚠️' : 'ℹ️';
+
+    // 訊息文字
+    const messageText = document.createElement('div');
+    messageText.style.cssText = `
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.4;
+      margin-bottom: 25px;
+    `;
+    messageText.textContent = message;
+
+    // 確定按鈕
+    const confirmBtn = document.createElement('button');
+    confirmBtn.style.cssText = `
+      background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    `;
+    confirmBtn.textContent = '確定';
+    confirmBtn.onmouseover = () => {
+      confirmBtn.style.transform = 'translateY(-2px)';
+      confirmBtn.style.boxShadow = '0 6px 20px rgba(52, 152, 219, 0.4)';
+    };
+    confirmBtn.onmouseout = () => {
+      confirmBtn.style.transform = 'translateY(0)';
+      confirmBtn.style.boxShadow = '0 4px 15px rgba(52, 152, 219, 0.3)';
+    };
+
+    // 組裝提示框
+    alertBox.appendChild(glowEffect);
+    alertBox.appendChild(icon);
+    alertBox.appendChild(messageText);
+    alertBox.appendChild(confirmBtn);
+    overlay.appendChild(alertBox);
+
+    // 添加動畫樣式
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes slideIn {
+        from { transform: translateY(-50px) scale(0.9); opacity: 0; }
+        to { transform: translateY(0) scale(1); opacity: 1; }
+      }
+      @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-10px); }
+        60% { transform: translateY(-5px); }
+      }
+      @keyframes glow {
+        from { opacity: 0.5; }
+        to { opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // 添加到頁面
+    document.body.appendChild(overlay);
+
+    // 點擊確定或遮罩層關閉
+    const closeAlert = () => {
+      overlay.style.animation = 'fadeOut 0.3s ease-out';
+      setTimeout(() => {
+        document.body.removeChild(overlay);
+        document.head.removeChild(style);
+      }, 300);
+    };
+
+    confirmBtn.onclick = closeAlert;
+    overlay.onclick = (e) => {
+      if (e.target === overlay) closeAlert();
+    };
+
+    // 添加淡出動畫
+    const fadeOutStyle = document.createElement('style');
+    fadeOutStyle.textContent = `
+      @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+    `;
+    document.head.appendChild(fadeOutStyle);
   };
 
   // 創建抽屜陣列 - 按類型分類，每個櫃子都補滿到9個抽屜
@@ -1565,13 +1921,12 @@ const BeadCabinet = () => {
           </div>
           
           <div className="cabinet-instructions mb-3">
-            <h3 className="h5 text-center"><IconComponent name="book-guide" size={20} /> 櫃子操作說明</h3>
+            <h3 className="h5 text-center"><IconComponent name="book-guide" size={20} /> 操作說明</h3>
             <div className="instruction-content">
-              <p className="mb-2"><strong><IconComponent name="magnifying-glass" size={16} /> 查看珠子：</strong>點擊抽屜即可打開查看珠子詳情</p>
-              <p className="mb-2"><strong>🧵 選擇珠子：</strong>點擊珠子即可選擇，選中的珠子會顯示在下方串珠盤</p>
-              <p className="mb-2"><strong>📝 珠子資訊：</strong>每個抽屜顯示珠子名稱、類型和顏色</p>
-              <p className="mb-2"><strong><IconComponent name="target" size={16} /> 快速操作：</strong>使用下方按鈕可快速關閉或打開所有抽屜</p>
-              <p className="mb-2"><strong>📱 手機操作：</strong>點擊浮空珠子即可添加到串珠盤，無需拖曳</p>
+             <p className="mb-2"><strong>📝 珠子資訊：</strong>每個抽屜會顯示珠子的名稱、類型和顏色</p>
+              <p className="mb-2"><strong><IconComponent name="magnifying-glass" size={16} /> 查看珠子：</strong>快速點擊兩下抽屜即可打開抽屜查看珠子樣式</p>
+              <p className="mb-2"><strong><IconComponent name="hand-pick" size={16} /> 選擇珠子：</strong>點擊浮空珠子即可選擇，選中的珠子會顯示在下方串珠盤</p>
+              <p className="mb-2"><strong>🔧 串珠盤使用：</strong>選擇線材寬度和串珠長度，所選珠子數量需對應串珠長度，串完後選擇開始串珠按鈕進入浮空串珠動畫</p>
             </div>
           </div>
 
@@ -1597,17 +1952,7 @@ const BeadCabinet = () => {
                     <div className="drawer-handle"></div>
                     {/* 抽屜內容 */}
                     {drawer.isEmpty ? (
-                      <div className="empty-drawer-content" style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: '#999999',
-                        fontSize: 'clamp(0.8rem, 2vw, 1.2rem)',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        whiteSpace: 'nowrap'
-                      }}>
+                      <div className="empty-drawer-content">
                         空抽屜
                       </div>
                     ) : (
@@ -1650,17 +1995,7 @@ const BeadCabinet = () => {
                     <div className="drawer-handle"></div>
                     {/* 抽屜內容 */}
                     {drawer.isEmpty ? (
-                      <div className="empty-drawer-content" style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: '#999999',
-                        fontSize: 'clamp(0.8rem, 2vw, 1.2rem)',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        whiteSpace: 'nowrap'
-                      }}>
+                      <div className="empty-drawer-content">
                         空抽屜
                       </div>
                     ) : (
@@ -1703,17 +2038,7 @@ const BeadCabinet = () => {
                     <div className="drawer-handle"></div>
                     {/* 抽屜內容 */}
                     {drawer.isEmpty ? (
-                      <div className="empty-drawer-content" style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: '#999999',
-                        fontSize: 'clamp(0.8rem, 2vw, 1.2rem)',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        whiteSpace: 'nowrap'
-                      }}>
+                      <div className="empty-drawer-content">
                         空抽屜
                       </div>
                     ) : (
@@ -1756,17 +2081,7 @@ const BeadCabinet = () => {
                     <div className="drawer-handle"></div>
                     {/* 抽屜內容 */}
                     {drawer.isEmpty ? (
-                      <div className="empty-drawer-content" style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: '#999999',
-                        fontSize: 'clamp(0.8rem, 2vw, 1.2rem)',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        whiteSpace: 'nowrap'
-                      }}>
+                      <div className="empty-drawer-content">
                         空抽屜
                       </div>
                     ) : (

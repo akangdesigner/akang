@@ -68,7 +68,7 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
       tempContainer.style.left = '-9999px';
       tempContainer.style.top = '-9999px';
       tempContainer.style.width = '800px';
-      tempContainer.style.height = '1000px';
+      tempContainer.style.height = '1500px';
       tempContainer.style.backgroundColor = '#1a1a2e';
       tempContainer.style.padding = '40px 40px 10px 40px';
               tempContainer.style.fontFamily = 'Arial, sans-serif';
@@ -284,8 +284,8 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
           const mainSection = document.createElement('div');
           mainSection.style.display = 'flex';
           mainSection.style.gap = '20px';
-          mainSection.style.marginBottom = '0px';
-          mainSection.style.alignItems = 'flex-end';
+          mainSection.style.marginBottom = '40px';
+          mainSection.style.alignItems = 'flex-start';
         
         // 左側雷達圖區域
         const radarSection = document.createElement('div');
@@ -462,7 +462,7 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         textSection.style.flex = '1';
         textSection.style.display = 'flex';
         textSection.style.flexDirection = 'column';
-        textSection.style.justifyContent = 'flex-end';
+        textSection.style.justifyContent = 'flex-start';
         
         // 創建灰字文字框
         const commentContent = document.createElement('div');
@@ -470,8 +470,12 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         commentContent.style.padding = '20px';
         commentContent.style.borderRadius = '15px';
         commentContent.style.border = '2px solid rgba(255, 255, 255, 0.3)';
-        commentContent.style.minHeight = '400px';
-        commentContent.style.margin = '0';
+        commentContent.style.minHeight = '500px';
+        commentContent.style.maxHeight = '600px';
+        commentContent.style.overflowY = 'auto';
+        commentContent.style.margin = '0 0 20px 0';
+        commentContent.style.wordWrap = 'break-word';
+        commentContent.style.overflowWrap = 'break-word';
         
         // 生成通靈師建議，直接使用 BeadRating.jsx 的完整建議並進行篩選
         const generateShortComment = () => {
@@ -488,7 +492,7 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
 
         // 從完整建議中提取精華短評
         const extractShortAdvice = (fullAdvice, scores) => {
-          let shortAdvice = '通靈師建議：';
+          let shortAdvice = '';
           
           // 找出評分最高的面向
           const sortedScores = Object.entries(scores)
@@ -496,7 +500,7 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
             .filter(([, score]) => score > 5);
           
           if (sortedScores.length === 0) {
-            return shortAdvice + '你的串珠設計展現了獨特的藝術天賦和內在智慧，每個珠子的選擇都蘊含著深層的意義。';
+            return '你的串珠設計展現了獨特的藝術天賦和內在智慧，每個珠子的選擇都蘊含著深層的意義。';
           }
 
           // 提取顏色相關建議（從完整建議中找顏色描述）
@@ -512,9 +516,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
           if (predictionAdvice) {
             shortAdvice += ' ' + predictionAdvice;
           }
-
-          // 添加總結語句
-          shortAdvice += ' 記住，每個珠子都承載著獨特的能量，就像你人生中的每個選擇都蘊含著無限可能。';
           
           return shortAdvice;
         };
@@ -743,51 +744,51 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
             advice += '你的設計精簡優雅，這展現了你對品質的追求，精緻的設計往往比複雜的堆砌更有價值。';
           }
           
-          advice += '我預測：';
+          advice += '戴上這串手鍊會：';
           
           // 只給分數超過5分的面向提供運勢預測建議
           // 愛情運勢預測
           if (scores.love > 5) {
             if (scores.love >= 8) {
-              advice += '你的愛情運勢非常旺盛！在接下來的三個月內，你很可能會遇到一位與你靈魂共鳴的人，這段感情將充滿浪漫與激情。';
+              advice += '為你帶來旺盛的愛情運勢！在接下來的三個月內，你很可能會遇到一位與你靈魂共鳴的人，這段感情將充滿浪漫與激情。';
             } else if (scores.love >= 6) {
-              advice += '你的愛情運勢正在上升期，單身的朋友可能在近期遇到心儀對象，已有伴侶的感情會更加穩定甜蜜。';
+              advice += '提升你的愛情運勢，單身的朋友可能在近期遇到心儀對象，已有伴侶的感情會更加穩定甜蜜。';
             }
           }
           
           // 偏財運勢預測
           if (scores.windfall > 5) {
             if (scores.windfall >= 8) {
-              advice += '偏財運勢極佳！你最近很可能會有一筆意外之財，可能是投資獲利、中獎或收到禮物，建議保持理性，不要過於貪心。';
+              advice += '為你帶來極佳的偏財運勢！你最近很可能會有一筆意外之財，可能是投資獲利、中獎或收到禮物，建議保持理性，不要過於貪心。';
             } else if (scores.windfall >= 6) {
-              advice += '偏財運勢不錯，近期可能有額外收入機會，建議留意身邊的投資機會，但切記穩健理財。';
+              advice += '提升你的偏財運勢，近期可能有額外收入機會，建議留意身邊的投資機會，但切記穩健理財。';
             }
           }
           
           // 人際運勢預測
           if (scores.social > 5) {
             if (scores.social >= 8) {
-              advice += '人際運勢非常旺盛！你將在社交圈中大放異彩，新的朋友和合作機會將接踵而至。';
+              advice += '為你帶來旺盛的人際運勢！你將在社交圈中大放異彩，新的朋友和合作機會將接踵而至。';
             } else if (scores.social >= 6) {
-              advice += '人際運勢良好，你的溝通能力和魅力正在提升，建議多參與社交活動。';
+              advice += '提升你的人際運勢，你的溝通能力和魅力正在提升，建議多參與社交活動。';
             }
           }
           
           // 事業運勢預測
           if (scores.career > 5) {
             if (scores.career >= 8) {
-              advice += '事業運勢一片光明！你將在職場上大放異彩，升職加薪的機會就在眼前，新的發展機會將接踵而至。';
+              advice += '為你帶來光明的事業運勢！你將在職場上大放異彩，升職加薪的機會就在眼前，新的發展機會將接踵而至。';
             } else if (scores.career >= 6) {
-              advice += '事業運勢穩步上升，你的專業能力和創造力正在被認可，新的發展機會即將到來。';
+              advice += '提升你的事業運勢，你的專業能力和創造力正在被認可，新的發展機會即將到來。';
             }
           }
           
           // 健康運勢預測
           if (scores.health > 5) {
             if (scores.health >= 8) {
-              advice += '健康運勢非常和諧！你的身心狀態將達到最佳，整體能量非常平衡，建議保持當前的健康習慣。';
+              advice += '為你帶來和諧的健康運勢！你的身心狀態將達到最佳，整體能量非常平衡，建議保持當前的健康習慣。';
             } else if (scores.health >= 6) {
-              advice += '健康運勢良好，建議保持規律的作息，適度的運動會帶來更好的狀態。';
+              advice += '提升你的健康運勢，建議保持規律的作息，適度的運動會帶來更好的狀態。';
             }
           }
           
@@ -820,7 +821,7 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         allowTaint: true,
         logging: false,
         width: 800,
-        height: 1000
+        height: 1100
       });
       
       const imageDataUrl = canvas.toDataURL('image/png', 1.0);
