@@ -3524,6 +3524,43 @@
     inset 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
+/* 珠子數量計數器樣式 */
+.preview-bead-counter {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.counter-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  line-height: 1.1;
+}
+
+.counter-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
+}
+
+.counter-value {
+  color: #ffffff;
+  font-weight: 500;
+  background: rgba(139, 92, 246, 0.3);
+  padding: 1px 4px;
+  border-radius: 3px;
+  min-width: 16px;
+  text-align: center;
+}
+
 .preview-header {
   display: flex;
   justify-content: space-between;
@@ -3734,6 +3771,22 @@
   background-color: transparent;
 }
 
+/* 小珠子系列在預覽串珠中的特殊大小 */
+.preview-bead.circular[data-type="過渡珠"] {
+  width: 12px; /* 過渡珠更小 */
+  height: 12px;
+}
+
+.preview-bead.circular[data-type="珍珠"] {
+  width: 16px; /* 珍珠稍大於過渡珠 */
+  height: 16px;
+}
+
+.preview-bead.circular[data-type="米珠"] {
+  width: 14px; /* 米珠介於過渡珠和珍珠之間 */
+  height: 14px;
+}
+
 .preview-bead:hover {
   transform: scale(1.1);
   box-shadow: 
@@ -3830,6 +3883,21 @@
     height: 150px; /* 從200px減少到150px */
   }
   
+  /* 珠子數量計數器響應式 */
+  .preview-bead-counter {
+    padding: 3px 6px;
+    margin-top: 3px;
+  }
+  
+  .counter-item {
+    font-size: 9px;
+  }
+  
+  .counter-value {
+    padding: 1px 3px;
+    min-width: 14px;
+  }
+  
   .circular-background {
     width: 90px; /* 從120px減少到100px */
     height: 90px; /* 從120px減少到100px */
@@ -3838,6 +3906,22 @@
   .preview-bead.circular {
     width: 22px; /* 從30px減少到22px */
     height: 22px; /* 從30px減少到22px */
+  }
+  
+  /* 平板版小珠子系列在預覽串珠中的特殊大小 */
+  .preview-bead.circular[data-type="過渡珠"] {
+    width: 10px; /* 過渡珠更小 */
+    height: 10px;
+  }
+
+  .preview-bead.circular[data-type="珍珠"] {
+    width: 13px; /* 珍珠稍大於過渡珠 */
+    height: 13px;
+  }
+
+  .preview-bead.circular[data-type="米珠"] {
+    width: 11px; /* 米珠介於過渡珠和珍珠之間 */
+    height: 11px;
   }
   
   .more-beads-indicator.circular {
@@ -3925,6 +4009,21 @@
     height: 130px; /* 從170px減少到130px */
   }
   
+  /* 珠子數量計數器小螢幕響應式 */
+  .preview-bead-counter {
+    padding: 2px 4px;
+    margin-top: 2px;
+  }
+  
+  .counter-item {
+    font-size: 8px;
+  }
+  
+  .counter-value {
+    padding: 1px 2px;
+    min-width: 12px;
+  }
+  
   .circular-background {
     width: 80px; /* 從100px減少到80px */
     height: 80px; /* 從100px減少到80px */
@@ -3933,6 +4032,22 @@
   .preview-bead.circular {
     width: 18px; /* 從25px減少到18px */
     height: 18px; /* 從25px減少到18px */
+  }
+  
+  /* 手機版小珠子系列在預覽串珠中的特殊大小 */
+  .preview-bead.circular[data-type="過渡珠"] {
+    width: 8px; /* 過渡珠更小 */
+    height: 8px;
+  }
+
+  .preview-bead.circular[data-type="珍珠"] {
+    width: 11px; /* 珍珠稍大於過渡珠 */
+    height: 11px;
+  }
+
+  .preview-bead.circular[data-type="米珠"] {
+    width: 9px; /* 米珠介於過渡珠和珍珠之間 */
+    height: 9px;
   }
   
   .more-beads-indicator.circular {

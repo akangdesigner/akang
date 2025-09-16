@@ -285,6 +285,7 @@ const PreviewBeadTray = ({ selectedBeads, isVisible, onToggle }) => {
                   <div 
                     key={bead.id || index} 
                     className="preview-bead circular"
+                    data-type={bead.type}
                     style={{
                       left: position.left,
                       top: position.top
@@ -312,6 +313,21 @@ const PreviewBeadTray = ({ selectedBeads, isVisible, onToggle }) => {
             </div>
           </>
         )}
+      </div>
+      
+      {/* 珠子數量計數器 */}
+      <div className="preview-bead-counter">
+        <div className="counter-item">
+          <span className="counter-label">總數量：</span>
+          <span className="counter-value">
+            {(() => {
+              const bigBeads = selectedBeads.filter(bead => !(bead.type === '米珠' || bead.type === '珍珠' || bead.type === '過渡珠')).length;
+              const smallBeads = selectedBeads.filter(bead => bead.type === '米珠' || bead.type === '珍珠' || bead.type === '過渡珠').length;
+              const totalCount = bigBeads + (smallBeads * 0.5);
+              return totalCount.toFixed(1);
+            })()}
+          </span>
+        </div>
       </div>
     </div>
   );
@@ -469,9 +485,9 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
     if (stringLength === 'half') {
       radius = 70; // 半圓：固定半徑 70px
     } else if (stringLength === 'four-thirds') {
-      radius = 85; // 4/3圓：固定半徑 85px
+      radius = 95; // 4/3圓：依比例放大半徑 95px
     } else { // full
-      radius = 100; // 全圓：固定半徑 100px
+      radius = 120; // 全圓：依比例放大半徑 120px
     }
     
     // 建立圓形手鍊容器，放在浮空頁面內
@@ -685,14 +701,14 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
                                     (nextBead.type === '米珠' || bead.type === '珍珠') ? 25 : /* 從 21 增加到 25 */
                                     60;
                 
-                // 判斷間距：前大後小-35px, 前小後小-20px, 前大後大-50px, 前小後大-40px
+                // 判斷間距：前大後小-35px, 前小後小-24px, 前大後大-44px, 前小後大-40px
                 let spacing;
                 if (beadSize >= 60 && nextBeadSize < 60) {
                   spacing = 35; // 前大後小
                 } else if (beadSize < 60 && nextBeadSize < 60) {
-                  spacing = 20; // 前小後小
+                  spacing = 24; // 前小後小 (24/8 = 3px)
                 } else if (beadSize >= 60 && nextBeadSize >= 60) {
-                  spacing = 50; // 前大後大
+                  spacing = 44; // 前大後大 (44/8 = 5.5px)
                 } else {
                   spacing = 40; // 前小後大
                 }
@@ -702,7 +718,7 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
             }
             
             // 當前珠子位置 = 第一顆終點位置 - 累積偏移量（調整係數讓間距更合理）
-            const currentLineEndDistance = baseLineEndDistance - (totalOffset / 10);
+            const currentLineEndDistance = baseLineEndDistance - (totalOffset / 8);
             
             // 串珠線旋轉45度，珠子沿著線的方向滑動
             endLeft = `calc(50% + ${currentLineEndDistance * 0.707}vh)`; // 向右下方滑動
@@ -719,7 +735,8 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
           
           console.log(`珠子 ${beadIndex} 將滑動到:`, { endLeft, endTop });
           
-          // 觸發滑動動畫 - 無浮動效果
+          // 觸發瞬間掉下來的動畫效果
+          beadElement.style.transition = 'all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
           beadElement.style.left = endLeft;
           beadElement.style.top = endTop;
           // 確保沒有浮動效果
@@ -810,17 +827,17 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
                 return (
                   <>
                     <div className="line-segment line-start" style={{ 
-                      left: '0%',
-                      width: '15%',
+                      left: '-5%',
+                      width: '20%',
                       height: stringWidth === 'thin' ? '2px' : stringWidth === 'medium' ? '3px' : '4px' 
                     }}></div>
                     <div className="line-segment line-middle" style={{ 
                       left: '15%',
-                      width: '50%',
+                      width: '60%',
                       height: stringWidth === 'thin' ? '2px' : stringWidth === 'medium' ? '3px' : '4px' 
                     }}></div>
                     <div className="line-segment line-end" style={{ 
-                      left: '65%',
+                      left: '75%',
                       width: '15%',
                       height: stringWidth === 'thin' ? '2px' : stringWidth === 'medium' ? '3px' : '4px' 
                     }}></div>
@@ -830,17 +847,17 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
                 return (
                   <>
                     <div className="line-segment line-start" style={{ 
-                      left: '0%',
-                      width: '15%',
+                      left: '-8%',
+                      width: '23%',
                       height: stringWidth === 'thin' ? '2px' : stringWidth === 'medium' ? '3px' : '4px' 
                     }}></div>
                     <div className="line-segment line-middle" style={{ 
                       left: '15%',
-                      width: '75%',
+                      width: '88%',
                       height: stringWidth === 'thin' ? '2px' : stringWidth === 'medium' ? '3px' : '4px' 
                     }}></div>
                     <div className="line-segment line-end" style={{ 
-                      left: '90%',
+                      left: '103%',
                       width: '15%',
                       height: stringWidth === 'thin' ? '2px' : stringWidth === 'medium' ? '3px' : '4px' 
                     }}></div>
@@ -850,17 +867,17 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
                 return (
                   <>
                     <div className="line-segment line-start" style={{ 
-                      left: '-10%',
-                      width: '25%',
+                      left: '-18%',
+                      width: '33%',
                       height: stringWidth === 'thin' ? '2px' : stringWidth === 'medium' ? '3px' : '4px' 
                     }}></div>
                     <div className="line-segment line-middle" style={{ 
                       left: '15%',
-                      width: '95%',
+                      width: '103%',
                       height: stringWidth === 'thin' ? '2px' : stringWidth === 'medium' ? '3px' : '4px' 
                     }}></div>
                     <div className="line-segment line-end" style={{ 
-                      left: '110%',
+                      left: '118%',
                       width: '15%',
                       height: stringWidth === 'thin' ? '2px' : stringWidth === 'medium' ? '3px' : '4px' 
                     }}></div>
@@ -897,13 +914,11 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
                   width: (() => {
                     if (bead.type === '過渡珠') return '18px'; /* 從 15px 增加到 18px */
                     if (bead.type === '米珠' || bead.type === '珍珠') return '25px'; /* 從 21px 增加到 25px */
-                    if (bead.type === '米珠') return '40px';
                     return '60px';
                   })(),
                   height: (() => {
                     if (bead.type === '過渡珠') return '18px'; /* 從 15px 增加到 18px */
                     if (bead.type === '米珠' || bead.type === '珍珠') return '25px'; /* 從 21px 增加到 25px */
-                    if (bead.type === '米珠') return '60px';
                     return '60px';
                   })(),
                   objectFit: 'contain',
@@ -926,13 +941,13 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
               style={{
                 position: 'absolute',
                 left: stringLength === 'half' ? 'calc(50% - 25vh)' : 
-                      stringLength === 'four-thirds' ? 'calc(50% - 30vh)' : 
-                      'calc(50% - 35vh)',
+                      stringLength === 'four-thirds' ? 'calc(50% - 32vh)' : 
+                      'calc(50% - 45vh)',
                 top: stringLength === 'half' ? 'calc(50% - 25vh)' : 
-                     stringLength === 'four-thirds' ? 'calc(50% - 30vh)' : 
-                     'calc(50% - 35vh)',
+                     stringLength === 'four-thirds' ? 'calc(50% - 32vh)' : 
+                     'calc(50% - 45vh)',
                 zIndex: 10,
-                transition: 'all 0.5s ease-in-out',
+                transition: 'all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                 transform: 'translate(-50%, -50%)',
                 filter: 'none',
                 boxShadow: 'none',
@@ -976,14 +991,14 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
                                           (nextBead.type === '米珠' || nextBead.type === '珍珠') ? 25 : /* 從 21 增加到 25 */
                                           60;
                       
-                      // 判斷間距：前大後小-35px, 前小後小-20px, 前大後大-50px, 前小後大-40px
+                      // 判斷間距：前大後小-35px, 前小後小-24px, 前大後大-44px, 前小後大-40px
                       let spacing;
                       if (beadSize >= 60 && nextBeadSize < 60) {
                         spacing = 35; // 前大後小
                       } else if (beadSize < 60 && nextBeadSize < 60) {
-                        spacing = 20; // 前小後小
+                        spacing = 24; // 前小後小 (24/8 = 3px)
                       } else if (beadSize >= 60 && nextBeadSize >= 60) {
-                        spacing = 50; // 前大後大
+                        spacing = 44; // 前大後大 (44/8 = 5.5px)
                       } else {
                         spacing = 40; // 前小後大
                       }
@@ -993,7 +1008,7 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
                   }
                   
                   // 當前珠子位置 = 第一顆終點位置 - 累積偏移量（調整係數讓間距更合理）
-                  const currentLineEndDistance = lineEndDistance - (totalOffset / 10);
+                  const currentLineEndDistance = lineEndDistance - (totalOffset / 8);
                   
                   finalPosition = {
                     left: `calc(50% + ${currentLineEndDistance * 0.707}vh)`,
@@ -1016,14 +1031,14 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
                   
                   console.log(`開始下一顆珠子: ${nextBead.name}, 索引: ${nextBeadIndex}`);
                   
-                  // 使用 setTimeout 確保狀態更新不會阻塞
+                  // 使用 setTimeout 確保狀態更新不會阻塞，稍微延遲一點點
                   setTimeout(() => {
                     setFloatingBeads([{
                       ...nextBead,
                       id: `floating-${nextBead.id}`,
                       beadIndex: nextBeadIndex
                     }]);
-                  }, 50);
+                  }, 150);
                 } else {
                   // 所有珠子都串完了
                   console.log('所有珠子串珠完成！開始手鍊成形動畫！');
@@ -1060,13 +1075,11 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
                   width: (() => {
                     if (floatingBeads[0].type === '過渡珠') return '18px'; /* 從 15px 增加到 18px */
                     if (floatingBeads[0].type === '米珠' || floatingBeads[0].type === '珍珠') return '25px'; /* 從 21px 增加到 25px */
-                    if (floatingBeads[0].type === '米珠') return '40px';
                     return '60px';
                   })(),
                   height: (() => {
                     if (floatingBeads[0].type === '過渡珠') return '18px'; /* 從 15px 增加到 18px */
                     if (floatingBeads[0].type === '米珠' || floatingBeads[0].type === '珍珠') return '25px'; /* 從 21px 增加到 25px */
-                    if (floatingBeads[0].type === '米珠') return '60px';
                     return '60px';
                   })(),
                   objectFit: 'contain',
