@@ -207,11 +207,28 @@ const colorCharacteristics = {
 
 // 材質介紹組件
 const MaterialCard = ({ material, data, isActive, onClick }) => {
+  const handleClick = () => {
+    // 先執行原本的 onClick 函數
+    onClick();
+    
+    // 延遲一點時間讓狀態更新完成，然後滾動到詳情卡片
+    setTimeout(() => {
+      const detailElement = document.getElementById('material-detail');
+      if (detailElement) {
+        detailElement.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start',
+          inline: 'nearest'
+        });
+      }
+    }, 100);
+  };
+
   return (
     <div 
       className={`material-card ${isActive ? 'active' : ''}`}
       data-material={material}
-      onClick={onClick}
+      onClick={handleClick}
     >
       <div className="material-header">
         <div className="material-icon">
@@ -231,7 +248,7 @@ const MaterialCard = ({ material, data, isActive, onClick }) => {
 // 材質詳情組件
 const MaterialDetail = ({ material, data }) => {
   return (
-    <div className="material-detail">
+    <div className="material-detail" id="material-detail">
       <div className="detail-header">
         <div className="detail-icon">
           <img src={data.icon} alt={data.name} />

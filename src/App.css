@@ -6,6 +6,11 @@
   overflow-x: hidden;
 }
 
+/* 頁面內容區域 */
+.page-content {
+  min-height: 100vh;
+}
+
 .App-header {
   padding: 20px;
   color: white;

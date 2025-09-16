@@ -343,6 +343,19 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
   const [strungBeads, setStrungBeads] = useState([]); // 保存所有已經串好的珠子
   const animationRef = useRef(null);
 
+  // 播放珠子撞擊音效
+  const playBeadSound = () => {
+    try {
+      const audio = new Audio('/beadcrush.MP3');
+      audio.volume = 0.3; // 設置音量為 30%
+      audio.play().catch(error => {
+        console.log('音效播放失敗:', error);
+      });
+    } catch (error) {
+      console.log('音效載入失敗:', error);
+    }
+  };
+
   // 處理拖曳放置
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -435,8 +448,31 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
     setStrungBeads([]);
     setFloatingBeads([]);
     
-    // 從第一顆珠子開始串珠
-    const firstBead = selectedBeads[0];
+    // 預載入音效檔案
+    console.log('預載入音效檔案...');
+    const audio = new Audio('/beadcrush.MP3');
+    audio.volume = 0.3;
+    audio.preload = 'auto';
+    
+    // 等待音效載入完成後開始動畫
+    audio.addEventListener('canplaythrough', () => {
+      console.log('音效載入完成，開始串珠動畫');
+      startAnimation();
+    });
+    
+    // 如果音效載入失敗，也開始動畫（避免卡住）
+    audio.addEventListener('error', () => {
+      console.log('音效載入失敗，直接開始動畫');
+      startAnimation();
+    });
+    
+    // 載入音效
+    audio.load();
+    
+    // 定義實際的動畫開始函數
+    const startAnimation = () => {
+      // 從第一顆珠子開始串珠
+      const firstBead = selectedBeads[0];
     
     // 創建動畫數據
     console.log('準備創建 beads 數組...');
@@ -469,7 +505,8 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
     }
 
     console.log('第一顆珠子設置完成，等待渲染後開始動畫');
-  };
+    }; // 結束 startAnimation 函數
+  }; // 結束 startStringingAnimation 函數
 
   // 創建圓形手鍊
   const createCircularBracelet = () => {
@@ -955,6 +992,11 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
               }}
               onTransitionEnd={() => {
                 console.log(`珠子 ${floatingBeads[0].beadIndex} 滑動完成，停在終點位置`);
+                
+                // 播放珠子撞擊音效（除了最後一顆珠子）
+                if (floatingBeads[0].beadIndex < selectedBeads.length - 1) {
+                  playBeadSound();
+                }
                 
                 // 當前珠子完成後，將其添加到已串好的珠子列表中
                 let lineEndDistance;
