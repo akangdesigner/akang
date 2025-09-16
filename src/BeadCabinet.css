@@ -3472,6 +3472,530 @@
   }
 }
 
+/* 預覽串珠盤樣式 */
+.preview-tray-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  width: 250px; /* 從320px減少到250px */
+  max-width: calc(100vw - 40px);
+}
+
+.preview-bead-tray {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.9));
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.1),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+/* 圓形預覽盤樣式 - 木質背景 */
+.preview-bead-tray.circular {
+  width: 230px; /* 從300px減少到230px */
+  height: auto; /* 改為自動高度，適應內容 */
+  border-radius: 15px; /* 改為圓角矩形，不是正圓 */
+  padding: 12px; /* 從15px減少到12px */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: linear-gradient(145deg, #2d1b0a, #3d2b1a); /* 使用與現有串珠盤相同的背景色 */
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+  border: 2px solid #2d1b0a;
+}
+
+.preview-bead-tray:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 35px rgba(0, 0, 0, 0.2),
+    0 6px 18px rgba(0, 0, 0, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 8px; /* 添加間距確保按鈕有足夠空間 */
+}
+
+.preview-header h4 {
+  margin: 0;
+  color: white; /* 改為白色字體 */
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0; /* 允許文字縮短 */
+  white-space: nowrap; /* 防止文字換行 */
+  overflow: hidden; /* 隱藏溢出的文字 */
+}
+
+/* 移除圖標 */
+.preview-header h4::before {
+  display: none;
+}
+
+/* 切換按鈕樣式 */
+.toggle-preview-btn {
+  background: #dc3545; /* 紅色背景 */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  min-width: 24px; /* 確保最小寬度 */
+  min-height: 24px; /* 確保最小高度 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+  flex-shrink: 0; /* 防止被壓縮 */
+  padding: 0; /* 移除任何內邊距 */
+}
+
+.toggle-preview-btn:hover {
+  background: #c82333; /* 深紅色懸停 */
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
+}
+
+.toggle-icon {
+  line-height: 1;
+  margin-top: -1px; /* 微調位置 */
+}
+
+/* 最小化狀態樣式 */
+.preview-tray-minimized {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.minimized-indicator {
+  background: #dc3545; /* 紅色背景 */
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+  transition: all 0.3s ease;
+}
+
+.minimized-indicator:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(220, 53, 69, 0.4);
+}
+
+.expand-icon {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1;
+}
+
+/* 珠子計數樣式已移除 */
+
+.preview-beads-container {
+  min-height: 80px;
+}
+
+/* 圓形容器樣式 */
+.preview-beads-container.circular-container {
+  position: relative;
+  width: 190px; /* 從250px減少到190px */
+  height: 190px; /* 從250px減少到190px */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px 0; /* 從10px減少到8px */
+}
+
+.preview-beads-circular {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* 圓形背景線 - 正圓白色線 */
+.circular-background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 115px; /* 從150px減少到120px */
+  height: 115px; /* 從150px減少到120px */
+  border: 2px solid white; /* 改為實線白色 */
+  border-radius: 50%;
+  opacity: 0.8; /* 增加不透明度讓白色線更明顯 */
+  animation: none; /* 移除旋轉動畫 */
+}
+
+@keyframes rotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.empty-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  color: #999;
+  font-size: 0.85rem;
+  font-style: italic;
+  background: rgba(139, 92, 246, 0.05);
+  border-radius: 10px;
+  border: 1px dashed rgba(139, 92, 246, 0.2);
+}
+
+/* 圓形空狀態樣式 */
+.empty-preview.circular {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+  border: 2px dashed rgba(139, 92, 246, 0.3);
+  font-size: 0.8rem;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.preview-beads-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 5px;
+}
+
+.preview-bead {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+/* 圓形排列的珠子樣式 */
+.preview-bead.circular {
+  position: absolute;
+  width: 28px; /* 從35px減少到28px */
+  height: 28px; /* 從35px減少到28px */
+  transform: translate(-50%, -50%);
+  border: none; /* 完全移除邊框 */
+  box-shadow: none; /* 移除陰影外光暈 */
+  background: transparent; /* 確保珠子容器沒有背景色 */
+  background-color: transparent;
+}
+
+.preview-bead:hover {
+  transform: scale(1.1);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  z-index: 10;
+}
+
+/* 圓形珠子的懸停效果 */
+.preview-bead.circular:hover {
+  transform: translate(-50%, -50%) scale(1.2);
+  box-shadow: none; /* 移除懸停時的陰影 */
+  z-index: 20;
+}
+
+.preview-bead img {
+  transition: all 0.3s ease;
+  background: transparent !important; /* 強制確保沒有背景色 */
+  background-color: transparent !important; /* 強制明確設定背景色為透明 */
+  border: none; /* 移除圖片邊框 */
+  outline: none; /* 移除圖片外框 */
+}
+
+.preview-bead:hover img {
+  transform: scale(1.05);
+}
+
+.more-beads-indicator {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffa500, #ff8c00);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: bold;
+  box-shadow: 
+    0 2px 8px rgba(255, 165, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* 圓形排列的更多珠子指示器 */
+.more-beads-indicator.circular {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  transform: translate(-50%, -50%);
+  font-size: 0.6rem;
+  box-shadow: 
+    0 3px 10px rgba(255, 165, 0, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 
+      0 2px 8px rgba(255, 165, 0, 0.3),
+      inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 
+      0 4px 12px rgba(255, 165, 0, 0.4),
+      inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* 響應式預覽串珠盤 */
+@media (max-width: 768px) {
+  .preview-tray-container {
+    top: 15px;
+    right: 15px;
+    width: 200px; /* 從260px減少到200px */
+    max-width: calc(100vw - 30px);
+  }
+  
+  .preview-bead-tray {
+    padding: 12px;
+    border-radius: 12px;
+  }
+  
+  /* 圓形預覽盤響應式 */
+  .preview-bead-tray.circular {
+    width: 180px; /* 從240px減少到180px */
+    padding: 10px; /* 從12px減少到10px */
+  }
+  
+  .preview-beads-container.circular-container {
+    width: 150px; /* 從200px減少到150px */
+    height: 150px; /* 從200px減少到150px */
+  }
+  
+  .circular-background {
+    width: 90px; /* 從120px減少到100px */
+    height: 90px; /* 從120px減少到100px */
+  }
+  
+  .preview-bead.circular {
+    width: 22px; /* 從30px減少到22px */
+    height: 22px; /* 從30px減少到22px */
+  }
+  
+  .more-beads-indicator.circular {
+    width: 30px;
+    height: 30px;
+    font-size: 0.55rem;
+  }
+  
+  .empty-preview.circular {
+    width: 120px;
+    height: 120px;
+    font-size: 0.75rem;
+  }
+  
+  .preview-header h4 {
+    font-size: 0.9rem;
+  }
+  
+  /* 切換按鈕響應式 */
+  .toggle-preview-btn {
+    width: 20px;
+    height: 20px;
+    min-width: 20px; /* 確保最小寬度 */
+    min-height: 20px; /* 確保最小高度 */
+    font-size: 14px;
+  }
+  
+  .preview-tray-minimized {
+    top: 15px;
+    right: 15px;
+  }
+  
+  .minimized-indicator {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .expand-icon {
+    font-size: 1rem;
+  }
+  
+  .preview-beads-list {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  
+  .preview-bead {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .more-beads-indicator {
+    width: 40px;
+    height: 40px;
+    font-size: 0.65rem;
+  }
+  
+  .empty-preview {
+    height: 70px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .preview-tray-container {
+    top: 10px;
+    right: 10px;
+    width: 180px; /* 從220px減少到180px */
+    max-width: calc(100vw - 20px);
+  }
+  
+  .preview-bead-tray {
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  /* 圓形預覽盤手機版響應式 */
+  .preview-bead-tray.circular {
+    width: 160px; /* 從200px減少到160px */
+    padding: 8px; /* 從10px減少到8px */
+  }
+  
+  .preview-beads-container.circular-container {
+    width: 130px; /* 從170px減少到130px */
+    height: 130px; /* 從170px減少到130px */
+  }
+  
+  .circular-background {
+    width: 80px; /* 從100px減少到80px */
+    height: 80px; /* 從100px減少到80px */
+  }
+  
+  .preview-bead.circular {
+    width: 18px; /* 從25px減少到18px */
+    height: 18px; /* 從25px減少到18px */
+  }
+  
+  .more-beads-indicator.circular {
+    width: 25px;
+    height: 25px;
+    font-size: 0.5rem;
+  }
+  
+  .empty-preview.circular {
+    width: 100px;
+    height: 100px;
+    font-size: 0.7rem;
+  }
+  
+  .preview-header h4 {
+    font-size: 0.85rem;
+  }
+  
+  /* 切換按鈕手機版響應式 */
+  .toggle-preview-btn {
+    width: 18px;
+    height: 18px;
+    min-width: 18px; /* 確保最小寬度 */
+    min-height: 18px; /* 確保最小高度 */
+    font-size: 12px;
+  }
+  
+  .preview-tray-minimized {
+    top: 10px;
+    right: 10px;
+  }
+  
+  .minimized-indicator {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .expand-icon {
+    font-size: 0.9rem;
+  }
+  
+  .preview-beads-list {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+  }
+  
+  .preview-bead {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .more-beads-indicator {
+    width: 35px;
+    height: 35px;
+    font-size: 0.6rem;
+  }
+  
+  .empty-preview {
+    height: 60px;
+    font-size: 0.75rem;
+  }
+}
+
 /* 底部導航欄樣式 */
 .bottom-navigation {
   position: fixed;

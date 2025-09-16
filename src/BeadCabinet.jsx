@@ -226,6 +226,97 @@ const FloatingBead = ({ drawer, drawerId, onClose, onClickToTray }) => {
   );
 };
 
+// 預覽串珠盤組件
+const PreviewBeadTray = ({ selectedBeads, isVisible, onToggle }) => {
+  // 計算圓形排列的位置 - 貼近串珠線
+  const calculateCircularPosition = (index, total) => {
+    if (total === 0) return { left: '50%', top: '50%' };
+    
+    const angle = (2 * Math.PI / total) * index - Math.PI / 2; // 從12點開始
+    const radius = 30; // 減少圓形半徑讓珠子貼近串珠線
+    const centerX = 50; // 中心點百分比
+    const centerY = 50; // 中心點百分比
+    
+    const x = centerX + Math.cos(angle) * radius;
+    const y = centerY + Math.sin(angle) * radius;
+    
+    return {
+      left: `${x}%`,
+      top: `${y}%`
+    };
+  };
+
+  if (!isVisible) {
+    return (
+      <div className="preview-tray-minimized" onClick={onToggle}>
+        <div className="minimized-indicator">
+          <span className="expand-icon">+</span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="preview-bead-tray circular">
+      <div className="preview-header">
+        <h4>預覽串珠</h4>
+        <button 
+          className="toggle-preview-btn"
+          onClick={onToggle}
+          title="隱藏預覽"
+        >
+          <span className="toggle-icon">−</span>
+        </button>
+      </div>
+      <div className="preview-beads-container circular-container">
+        {selectedBeads.length === 0 ? (
+          <div className="empty-preview circular">
+            <span>尚未選擇珠子</span>
+          </div>
+        ) : (
+          <>
+            {/* 圓形背景線 */}
+            <div className="circular-background"></div>
+            {/* 珠子圓形排列 */}
+            <div className="preview-beads-circular">
+              {selectedBeads.map((bead, index) => {
+                const position = calculateCircularPosition(index, selectedBeads.length);
+                return (
+                  <div 
+                    key={bead.id || index} 
+                    className="preview-bead circular"
+                    style={{
+                      left: position.left,
+                      top: position.top
+                    }}
+                    title={`${bead.name} (${bead.type})`}
+                  >
+                    <img 
+                      src={`/${bead.image}`} 
+                      alt={bead.name}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                        borderRadius: '50%',
+                        background: 'transparent',
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        outline: 'none'
+                      }}
+                    />
+                  </div>
+                );
+              })}
+              {/* 移除超過12顆珠子的指示器，現在顯示所有珠子 */}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // 木質串珠盤組件
 const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign }) => {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
@@ -1261,6 +1352,7 @@ const BeadCabinet = () => {
   const [draggedBead, setDraggedBead] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [extractingBead, setExtractingBead] = useState(null);
+  const [previewTrayVisible, setPreviewTrayVisible] = useState(true);
   const [extractedBeads, setExtractedBeads] = useState([]);
   const [showExtractionAnimation, setShowExtractionAnimation] = useState(false);
   const [floatingBeads, setFloatingBeads] = useState({});
@@ -1910,6 +2002,15 @@ const BeadCabinet = () => {
 
   return (
     <div className="bead-cabinet-container">
+      {/* 預覽串珠盤 - 右上角 */}
+      <div className="preview-tray-container">
+        <PreviewBeadTray 
+          selectedBeads={selectedBeads} 
+          isVisible={previewTrayVisible}
+          onToggle={() => setPreviewTrayVisible(!previewTrayVisible)}
+        />
+      </div>
+      
       <div className="main-content">
         {/* 櫃子區域 */}
         <div className="cabinet-section">
@@ -1927,6 +2028,7 @@ const BeadCabinet = () => {
               <p className="mb-2"><strong><IconComponent name="magnifying-glass" size={16} /> 查看珠子：</strong>快速點擊兩下抽屜即可打開抽屜查看珠子樣式</p>
               <p className="mb-2"><strong><IconComponent name="hand-pick" size={16} /> 選擇珠子：</strong>點擊浮空珠子即可選擇，選中的珠子會顯示在下方串珠盤</p>
               <p className="mb-2"><strong>🔧 串珠盤使用：</strong>選擇線材寬度和串珠長度，所選珠子數量需對應串珠長度，串完後選擇開始串珠按鈕進入浮空串珠動畫</p>
+              <p className="mb-2"><strong>🗑️ 刪除珠子：</strong>點擊串珠盤上的珠子可以刪除已選珠子</p>
             </div>
           </div>
 
