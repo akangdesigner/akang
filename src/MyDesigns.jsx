@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './MyDesigns.css';
+import { useNavigation } from './hooks/useNavigation';
 
 const MyDesigns = ({ onClose, isEmbedded = false }) => {
+  const { goToRating } = useNavigation();
   const [savedDesigns, setSavedDesigns] = useState([]);
   const [selectedDesign, setSelectedDesign] = useState(null);
   const [editingDesignId, setEditingDesignId] = useState(null);
@@ -13,24 +15,6 @@ const MyDesigns = ({ onClose, isEmbedded = false }) => {
     loadSavedDesigns();
   }, []);
 
-  // 調試：顯示載入的設計信息
-  useEffect(() => {
-    if (savedDesigns.length > 0) {
-      console.log('載入的設計總數:', savedDesigns.length);
-      savedDesigns.forEach((design, index) => {
-        console.log(`設計 ${index + 1}:`, {
-          id: design.id,
-          name: design.designName,
-          beadsCount: design.beads?.length || 0,
-          beads: design.beads?.map(bead => ({
-            name: bead.name,
-            type: bead.type,
-            image: bead.image
-          }))
-        });
-      });
-    }
-  }, [savedDesigns]);
 
   const loadSavedDesigns = () => {
     try {
@@ -52,7 +36,6 @@ const MyDesigns = ({ onClose, isEmbedded = false }) => {
       designs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
       setSavedDesigns(designs);
     } catch (error) {
-      console.error('載入設計時發生錯誤:', error);
     }
   };
 
@@ -63,7 +46,6 @@ const MyDesigns = ({ onClose, isEmbedded = false }) => {
         setSavedDesigns(prev => prev.filter(design => design.id !== designId));
         alert('設計已刪除！');
       } catch (error) {
-        console.error('刪除設計時發生錯誤:', error);
         alert('刪除失敗，請重試');
       }
     }
@@ -92,7 +74,6 @@ const MyDesigns = ({ onClose, isEmbedded = false }) => {
         setEditingDesignId(null);
         setEditingName('');
       } catch (error) {
-        console.error('保存設計名稱時發生錯誤:', error);
         alert('保存失敗，請重試');
       }
     }
@@ -107,7 +88,7 @@ const MyDesigns = ({ onClose, isEmbedded = false }) => {
     // 將選中的設計保存到評分區的 localStorage
     localStorage.setItem('savedBeadDesign', JSON.stringify(design));
     // 跳轉到評分頁面
-    window.location.href = '/rating';
+    goToRating();
   };
 
   const formatDate = (timestamp) => {
@@ -270,14 +251,6 @@ const MyDesigns = ({ onClose, isEmbedded = false }) => {
                       return `${baseSize}px`;
                     };
                     
-                    // 調試信息
-                    console.log(`珠子 ${index + 1}:`, {
-                      name: bead.name,
-                      type: bead.type,
-                      size: getBeadSize(bead.type, design.beads.length),
-                      image: bead.image,
-                      color: bead.color
-                    });
                     
                     return (
                       <img
@@ -297,7 +270,6 @@ const MyDesigns = ({ onClose, isEmbedded = false }) => {
                         }}
                         title={`${bead.name} (${bead.type})`}
                         onError={(e) => {
-                          console.error(`珠子圖片載入失敗: ${bead.image}`);
                           e.target.style.backgroundColor = bead.color || '#ccc';
                           e.target.style.display = 'block';
                         }}

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>快速生成 App Icons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #4a148c;
+            margin-bottom: 30px;
+        }
+        
+        .download-all-btn {
+            background: #4a148c;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .download-all-btn:hover {
+            background: #7b1fa2;
+            transform: translateY(-2px);
+        }
+        
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .instructions h3 {
+            margin-top: 0;
+            color: #4a148c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔮 掌上靈珠 PalmBeads</h1>
+        <h2>快速生成 App Icons</h2>
+        
+        <div class="instructions">
+            <h3>📱 使用您的掌上靈珠圖片生成所有尺寸的 App Icons</h3>
+            <p>點擊下方按鈕，系統會自動使用您的 logo 圖片生成所有 6 個尺寸的 App Icons。</p>
+        </div>
+        
+        <button class="download-all-btn" onclick="downloadAllIcons()">
+            🚀 一鍵生成所有 App Icons
+        </button>
+        
+        <div class="instructions">
+            <h3>📁 生成的檔案會自動命名為：</h3>
+            <ul>
+                <li>ldpi.png (36x36px)</li>
+                <li>mdpi.png (48x48px)</li>
+                <li>hdpi.png (72x72px)</li>
+                <li>xhdpi.png (96x96px)</li>
+                <li>xxhdpi.png (144x144px)</li>
+                <li>xxxhdpi.png (192x192px)</li>
+            </ul>
+            
+            <h3>📋 使用步驟：</h3>
+            <ol>
+                <li>點擊上方按鈕下載所有檔案</li>
+                <li>將下載的檔案放入 <code>plambeads/res/icon/android/</code> 目錄</li>
+                <li>執行 <code>cordova build android</code></li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        // Android icon 尺寸規格
+        const iconSizes = [
+            { name: 'ldpi', width: 36, height: 36 },
+            { name: 'mdpi', width: 48, height: 48 },
+            { name: 'hdpi', width: 72, height: 72 },
+            { name: 'xhdpi', width: 96, height: 96 },
+            { name: 'xxhdpi', width: 144, height: 144 },
+            { name: 'xxxhdpi', width: 192, height: 192 }
+        ];
+        
+        function downloadAllIcons() {
+            console.log('開始生成圖示...');
+            
+            // 先載入圖片
+            const logo = new Image();
+            logo.crossOrigin = 'anonymous'; // 允許跨域
+            
+            logo.onload = function() {
+                console.log('圖片載入成功，開始生成圖示...');
+                iconSizes.forEach((size, index) => {
+                    setTimeout(() => {
+                        generateAndDownloadIcon(size, logo);
+                    }, index * 200); // 延遲下載避免瀏覽器阻擋
+                });
+            };
+            
+            logo.onerror = function() {
+                console.error('圖片載入失敗，嘗試使用預設圖示...');
+                // 如果圖片載入失敗，使用預設圖示
+                iconSizes.forEach((size, index) => {
+                    setTimeout(() => {
+                        generateDefaultIcon(size);
+                    }, index * 200);
+                });
+            };
+            
+            // 嘗試載入圖片
+            logo.src = 'www/74559e4c-3a36-4268-8486-ed99ce2a1abf.png';
+        }
+        
+        function generateAndDownloadIcon(size, logo) {
+            console.log(`生成 ${size.name} 圖示...`);
+            
+            // 建立 canvas
+            const canvas = document.createElement('canvas');
+            canvas.width = size.width;
+            canvas.height = size.height;
+            const ctx = canvas.getContext('2d');
+            
+            // 背景漸層
+            const gradient = ctx.createLinearGradient(0, 0, size.width, size.height);
+            gradient.addColorStop(0, '#4a148c');
+            gradient.addColorStop(1, '#7b1fa2');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size.width, size.height);
+            
+            // 圓角效果
+            ctx.globalCompositeOperation = 'destination-in';
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size.width, size.height, size.width * 0.2);
+            ctx.fill();
+            
+            // 重置合成模式
+            ctx.globalCompositeOperation = 'source-over';
+            
+            // 計算 logo 尺寸 (圖示的 60%)
+            const logoSize = size.width * 0.6;
+            const logoX = (size.width - logoSize) / 2;
+            const logoY = (size.height - logoSize) / 2;
+            
+            // 繪製白色圓形背景
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.beginPath();
+            ctx.arc(size.width / 2, size.height / 2, logoSize / 2 + size.width * 0.05, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // 繪製 logo
+            ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
+            
+            // 下載檔案
+            const link = document.createElement('a');
+            link.download = `${size.name}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+            
+            console.log(`${size.name}.png 已下載`);
+        }
+        
+        function generateDefaultIcon(size) {
+            console.log(`生成預設 ${size.name} 圖示...`);
+            
+            // 建立 canvas
+            const canvas = document.createElement('canvas');
+            canvas.width = size.width;
+            canvas.height = size.height;
+            const ctx = canvas.getContext('2d');
+            
+            // 背景漸層
+            const gradient = ctx.createLinearGradient(0, 0, size.width, size.height);
+            gradient.addColorStop(0, '#4a148c');
+            gradient.addColorStop(1, '#7b1fa2');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size.width, size.height);
+            
+            // 圓角效果
+            ctx.globalCompositeOperation = 'destination-in';
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size.width, size.height, size.width * 0.2);
+            ctx.fill();
+            
+            // 重置合成模式
+            ctx.globalCompositeOperation = 'source-over';
+            
+            // 繪製文字 "PB"
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size.width * 0.4}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('PB', size.width / 2, size.height / 2);
+            
+            // 下載檔案
+            const link = document.createElement('a');
+            link.download = `${size.name}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+            
+            console.log(`預設 ${size.name}.png 已下載`);
+        }
+        
+        // 為 CanvasRenderingContext2D 添加 roundRect 方法
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, width, height, radius) {
+                this.beginPath();
+                this.moveTo(x + radius, y);
+                this.lineTo(x + width - radius, y);
+                this.quadraticCurveTo(x + width, y, x + width, y + radius);
+                this.lineTo(x + width, y + height - radius);
+                this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                this.lineTo(x + radius, y + height);
+                this.quadraticCurveTo(x, y + height, x, y + height - radius);
+                this.lineTo(x, y + radius);
+                this.quadraticCurveTo(x, y, x + radius, y);
+                this.closePath();
+            };
+        }
+    </script>
+</body>
+</html>

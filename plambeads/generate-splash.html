@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>生成 Cordova Splash Screen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #4a148c;
+            margin-bottom: 30px;
+        }
+        
+        canvas {
+            border: 1px solid #ddd;
+            margin: 20px auto;
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .download-btn {
+            background: #4a148c;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            background: #7b1fa2;
+            transform: translateY(-2px);
+        }
+        
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .instructions h3 {
+            margin-top: 0;
+            color: #4a148c;
+        }
+        
+        .file-structure {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            text-align: left;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔮 掌上靈珠 PalmBeads</h1>
+        <h2>Android Splash Screen 生成器</h2>
+        
+        <div class="instructions">
+            <h3>📱 Android Splash Screen 規格：</h3>
+            <ul>
+                <li><strong>尺寸：</strong> 1080 x 1920px (9:16 比例)</li>
+                <li><strong>格式：</strong> PNG</li>
+                <li><strong>背景色：</strong> 深紫色 (#4a148c)</li>
+                <li><strong>內容：</strong> 您的 logo 居中顯示</li>
+            </ul>
+            
+            <h3>📁 檔案放置位置：</h3>
+            <div class="file-structure">
+plambeads/
+└── res/
+    └── screen/
+        └── android/
+            └── splash.png
+            </div>
+        </div>
+        
+        <canvas id="splashCanvas" width="1080" height="1920"></canvas>
+        
+        <button class="download-btn" onclick="downloadSplash()">
+            下載 Splash Screen
+        </button>
+        
+        <div class="instructions">
+            <h3>🚀 使用步驟：</h3>
+            <ol>
+                <li>點擊「下載 Splash Screen」按鈕</li>
+                <li>將下載的檔案命名為 <code>splash.png</code></li>
+                <li>放入 <code>plambeads/res/screen/android/</code> 目錄</li>
+                <li>執行 <code>cordova build android</code></li>
+                <li>安裝 APK 即可看到新的啟動畫面！</li>
+            </ol>
+            
+            <h3>💡 注意事項：</h3>
+            <ul>
+                <li>這個 Splash Screen 只會在應用程式啟動時短暫顯示</li>
+                <li>之後會自動切換到我們的 React LoadingScreen 動畫</li>
+                <li>確保目錄結構正確，檔案名稱必須是 <code>splash.png</code></li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        const canvas = document.getElementById('splashCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // 繪製背景
+        const gradient = ctx.createLinearGradient(0, 0, 1080, 1920);
+        gradient.addColorStop(0, '#4a148c');
+        gradient.addColorStop(1, '#7b1fa2');
+        
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 1080, 1920);
+        
+        // 載入並繪製 logo
+        const logo = new Image();
+        logo.onload = function() {
+            // 計算 logo 尺寸（螢幕寬度的 30%）
+            const logoSize = 1080 * 0.3;
+            const logoX = (1080 - logoSize) / 2;
+            const logoY = (1920 - logoSize) / 2;
+            
+            // 繪製白色圓形背景
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.beginPath();
+            ctx.arc(1080 / 2, 1920 / 2, logoSize / 2 + 50, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // 繪製 logo
+            ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
+        };
+        logo.src = '../74559e4c-3a36-4268-8486-ed99ce2a1abf.png';
+        
+        function downloadSplash() {
+            const link = document.createElement('a');
+            link.download = 'splash.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+    </script>
+</body>
+</html>

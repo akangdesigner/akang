@@ -1292,74 +1292,6 @@
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
-.social-share-buttons {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.social-share-btn {
-  background: white;
-  border: 1px solid #e0e0e0;
-  padding: 6px 10px;
-  border-radius: 10px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-}
-
-.social-share-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-}
-
-.social-share-btn.facebook {
-  color: #1877f2;
-  border-color: #1877f2;
-}
-
-.social-share-btn.facebook:hover {
-  background: #1877f2;
-  color: white;
-}
-
-.social-share-btn.twitter {
-  color: #1da1f2;
-  border-color: #1da1f2;
-}
-
-.social-share-btn.twitter:hover {
-  background: #1da1f2;
-  color: white;
-}
-
-.social-share-btn.line {
-  color: #00b900;
-  border-color: #00b900;
-}
-
-.social-share-btn.line:hover {
-  background: #00b900;
-  color: white;
-}
-
-.social-share-btn.instagram {
-  color: #e4405f;
-  border-color: #e4405f;
-}
-
-.social-share-btn.instagram:hover {
-  background: #e4405f;
-  color: white;
-}
 
 /* 手機版分享按鈕響應式設計 */
 @media (max-width: 768px) {
@@ -1387,17 +1319,6 @@
     margin-bottom: 6px;
   }
   
-  .social-share-buttons {
-    gap: 6px;
-    margin-top: 8px;
-    padding-top: 8px;
-  }
-  
-  .social-share-btn {
-    padding: 5px 8px;
-    font-size: 0.7rem;
-    border-radius: 8px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -1425,15 +1346,4 @@
     margin-bottom: 5px;
   }
   
-  .social-share-buttons {
-    gap: 5px;
-    margin-top: 6px;
-    padding-top: 6px;
-  }
-  
-  .social-share-btn {
-    padding: 4px 6px;
-    font-size: 0.65rem;
-    border-radius: 6px;
-  }
 }

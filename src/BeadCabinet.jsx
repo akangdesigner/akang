@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { StatCard } from './SharedBeadComponents';
+import { useNavigation } from './hooks/useNavigation';
 import './BeadCabinet.css';
 import IconComponent from './IconComponent';
 
@@ -213,12 +214,10 @@ const FloatingBead = ({ drawer, drawerId, onClose, onClickToTray }) => {
             pointerEvents: 'none'
           }}
           onError={(e) => {
-            console.error(`${drawer.name}珠子圖片載入失敗:`, e);
             e.target.style.display = 'none';
             e.target.style.display = 'none';
           }}
           onLoad={() => {
-            console.log(`${drawer.name}珠子圖片載入成功`);
           }}
         />
       </div>
@@ -349,10 +348,8 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
       const audio = new Audio('/beadcrush.MP3');
       audio.volume = 0.3; // 設置音量為 30%
       audio.play().catch(error => {
-        console.log('音效播放失敗:', error);
       });
     } catch (error) {
-      console.log('音效載入失敗:', error);
     }
   };
 
@@ -371,31 +368,23 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
     e.preventDefault();
     setIsDraggingOver(false);
     
-    console.log('接收到拖曳放置事件');
-    console.log('可用的數據類型:', e.dataTransfer.types);
     
     try {
       let beadData = e.dataTransfer.getData('application/json');
-      console.log('接收到的珠子數據 (application/json):', beadData);
       
       if (!beadData) {
         beadData = e.dataTransfer.getData('text/plain');
-        console.log('接收到的珠子數據 (text/plain):', beadData);
       }
       
              if (beadData) {
          const bead = JSON.parse(beadData);
-         console.log('解析後的珠子:', bead);
          setSelectedBeads(prev => {
            const newBeads = [...prev, { ...bead, id: Date.now() }];
-           console.log('新的珠子陣列:', newBeads.map((b, i) => `${i + 1}. ${b.name}`));
            return newBeads;
          });
        } else {
-        console.log('沒有接收到珠子數據');
       }
     } catch (error) {
-      console.log('拖曳數據解析失敗:', error);
     }
   };
 
@@ -406,7 +395,6 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
 
   // 開始串珠動畫
   const startStringingAnimation = () => {
-    console.log('按鈕被點擊了！'); // 測試按鈕是否工作
     
     if (selectedBeads.length === 0) {
       alert('請先選擇一些珠子再開始串珠！');
@@ -438,31 +426,23 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
       return;
     }
 
-    console.log('開始串珠動畫，當前設置：', {
-      stringWidth,
-      stringLength,
-      selectedBeadsCount: selectedBeads.length
-    });
 
     // 清空之前的動畫狀態
     setStrungBeads([]);
     setFloatingBeads([]);
     
     // 預載入音效檔案
-    console.log('預載入音效檔案...');
     const audio = new Audio('/beadcrush.MP3');
     audio.volume = 0.3;
     audio.preload = 'auto';
     
     // 等待音效載入完成後開始動畫
     audio.addEventListener('canplaythrough', () => {
-      console.log('音效載入完成，開始串珠動畫');
       startAnimation();
     });
     
     // 如果音效載入失敗，也開始動畫（避免卡住）
     audio.addEventListener('error', () => {
-      console.log('音效載入失敗，直接開始動畫');
       startAnimation();
     });
     
@@ -475,9 +455,6 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
       const firstBead = selectedBeads[0];
     
     // 創建動畫數據
-    console.log('準備創建 beads 數組...');
-    console.log('firstBead:', firstBead);
-    console.log('總共要串的珠子數量:', selectedBeads.length);
     
     const beads = [{
       ...firstBead,
@@ -485,34 +462,20 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
       beadIndex: 0  // 第一顆珠子的索引
     }];
     
-    console.log('beads 數組創建完成:', beads);
-    console.log('動畫珠子數據：', beads);
-
-    console.log('準備設置 floatingBeads state...');
     try {
       setFloatingBeads(beads);
-      console.log('floatingBeads state 已設置');
     } catch (error) {
-      console.error('設置 floatingBeads 時出錯:', error);
     }
 
-    console.log('準備設置 showFloatingAnimation state...');
     try {
       setShowFloatingAnimation(true);
-      console.log('showFloatingAnimation state 已設置');
     } catch (error) {
-      console.error('設置 showFloatingAnimation 時出錯:', error);
     }
-
-    console.log('第一顆珠子設置完成，等待渲染後開始動畫');
     }; // 結束 startAnimation 函數
   }; // 結束 startStringingAnimation 函數
 
   // 創建圓形手鍊
   const createCircularBracelet = () => {
-    console.log('開始創建圓形手鍊');
-    console.log('selectedBeads 數量:', selectedBeads.length);
-    console.log('stringLength:', stringLength);
     
     // 計算圓形排列
     const totalBeads = selectedBeads.length;
@@ -551,8 +514,6 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
     const beadCenterX = radius;
     const beadCenterY = radius;
     
-    console.log('圓心座標 - SVG:', centerX, centerY, '珠子:', beadCenterX, beadCenterY);
-    console.log('半徑:', radius);
 
     // 建立 SVG 元素
     const svgNS = "http://www.w3.org/2000/svg";
@@ -616,7 +577,6 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
     const floatingContainer = document.querySelector('.floating-beads-animation');
     if (floatingContainer) {
       floatingContainer.appendChild(braceletContainer);
-      console.log('圓形手鍊已添加到浮空頁面內');
       
       // 觸發淡入效果 - 串珠線和珠子一起淡入
       setTimeout(() => {
@@ -624,12 +584,9 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
         
 
       }, 100);
-    } else {
-      console.error('找不到浮空頁面容器');
     }
     
     // 圓形手鍊創建完成後，不自動關閉，等待用戶主動完成
-    console.log('圓形手鍊創建完成，等待用戶完成串珠');
   };
 
   // 完成串珠動畫
@@ -645,25 +602,21 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
     const existingBracelets = document.querySelectorAll('.bracelet-container');
     existingBracelets.forEach(bracelet => {
       bracelet.remove();
-      console.log('已清除手鍊');
     });
     
     // 清除可能殘留的手鍊珠子
     const existingBraceletBeads = document.querySelectorAll('.bracelet-bead');
     existingBraceletBeads.forEach(bead => {
       bead.remove();
-      console.log('已清除手鍊珠子');
     });
     
     // 清除可能殘留的手鍊線
     const existingBraceletLines = document.querySelectorAll('.bracelet-line');
     existingBraceletLines.forEach(line => {
       line.remove();
-      console.log('已清除手鍊線');
     });
     
     // 直接返回，不顯示任何提示文字
-    console.log('返回串珠區');
   };
 
 
@@ -671,14 +624,12 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
   // 監聽 floatingBeads 變化，自動觸發動畫
   useEffect(() => {
     if (floatingBeads.length > 0 && showFloatingAnimation) {
-      console.log('useEffect 觸發，準備為珠子', floatingBeads[0].beadIndex, '設置動畫');
       
       // 等待 DOM 渲染完成後觸發動畫
       const timer = setTimeout(() => {
         // 只查找當前正在串的珠子，避免影響已串好的珠子
         const beadElement = document.querySelector(`[data-bead-id="${floatingBeads[0].id}"]`);
         if (beadElement) {
-          console.log('找到珠子元素，開始觸發動畫');
           
           // 計算當前珠子的終點位置
           const beadIndex = floatingBeads[0].beadIndex || 0;
@@ -686,7 +637,6 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
           
           // 添加額外的檢查，確保珠子狀態正確
           if (beadIndex >= selectedBeads.length) {
-            console.error('珠子索引超出範圍:', beadIndex, selectedBeads.length);
             return;
           }
           
@@ -761,16 +711,8 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
             endLeft = `calc(50% + ${currentLineEndDistance * 0.707}vh)`; // 向右下方滑動
             endTop = `calc(50% + ${currentLineEndDistance * 0.707}vh)`;  // 向右下方滑動
             
-            console.log(`珠子 ${beadIndex} 的終點計算:`, {
-              prevBeadSize,
-              baseLineEndDistance,
-              currentLineEndDistance,
-              finalLeft: endLeft,
-              finalTop: endTop
-            });
           }
           
-          console.log(`珠子 ${beadIndex} 將滑動到:`, { endLeft, endTop });
           
           // 觸發瞬間掉下來的動畫效果
           beadElement.style.transition = 'all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
@@ -783,9 +725,6 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
           beadElement.style.transform = 'translate(-50%, -50%)';
           
           // 添加動畫完成檢查
-          console.log(`珠子 ${beadIndex} 動畫已觸發，目標位置:`, { endLeft, endTop });
-        } else {
-          console.error('找不到珠子元素');
         }
       }, 67); // 等待 67ms 確保 DOM 渲染完成
       
@@ -834,15 +773,6 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
     const x = centerX + Math.cos(angle) * radius;
     const y = centerY + Math.sin(angle) * radius;
     
-    // 調試信息
-    const angleDegrees = (angle * 180 / Math.PI).toFixed(1);
-    let position = '';
-    if (angleDegrees >= -45 && angleDegrees < 45) position = '12點鐘方向（上方）';
-    else if (angleDegrees >= 45 && angleDegrees < 135) position = '3點鐘方向（右側）';
-    else if (angleDegrees >= 135 || angleDegrees < -135) position = '6點鐘方向（下方）';
-    else position = '9點鐘方向（左側）';
-    
-    console.log(`珠子 ${index + 1}/${totalBeads} (${beadType}): ${position} (${angleDegrees}°), x=${x.toFixed(1)}, y=${y.toFixed(1)}, 間距=20px, 大小=${beadSize}px, 類型=${isCurrentSmall ? '小' : '大'}`);
     
     return {
       left: `${x}px`,
@@ -858,7 +788,6 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
           {/* 中央串珠線 - 根據用戶選擇動態生成 */}
           <div className="stringing-line">
             {(() => {
-              console.log('渲染串珠線，當前設置：', { stringLength, stringWidth });
               
               if (stringLength === 'half') {
                 return (
@@ -1338,11 +1267,9 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
                         textShadow: 'none'
                       }}
                       onError={(e) => {
-                        console.error(`${bead.name}珠子圖片載入失敗:`, e);
                         e.target.style.display = 'none';
                       }}
                       onLoad={() => {
-                        console.log(`${bead.name}珠子圖片載入成功`);
                       }}
                     />
                   </div>
@@ -1381,7 +1308,6 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
           <button
             className="start-stringing-btn"
             onClick={() => {
-              console.log('內聯點擊測試！');
               startStringingAnimation();
             }}
             title="開始串珠"
@@ -1402,6 +1328,7 @@ const WoodenBeadTray = ({ selectedBeads, setSelectedBeads, onSaveFloatingDesign 
 };
 
 const BeadCabinet = () => {
+  const { goToHome, goToGuide, goToRating, goToFortune } = useNavigation();
   const [openDrawers, setOpenDrawers] = useState({});
   const [selectedDrawer, setSelectedDrawer] = useState(null);
   const [draggedBead, setDraggedBead] = useState(null);
@@ -1419,47 +1346,37 @@ const BeadCabinet = () => {
     // 檢查是否有數字鍵值，如果有則清除
     const hasNumericKeys = Object.keys(floatingBeads).some(key => !isNaN(key));
     if (hasNumericKeys) {
-      console.log('檢測到數字鍵值，清除浮空狀態');
       setFloatingBeads({});
     }
   }, []);
 
   const toggleDrawer = (drawerId) => {
-    console.log('點擊抽屜:', drawerId);
-    console.log('抽屜ID類型:', typeof drawerId);
-    console.log('當前抽屜狀態:', openDrawers);
-    console.log('當前浮空狀態:', floatingBeads);
     
     // 檢查是否為空抽屜
     const allDrawers = [...glassBeads, ...crystalBeads, ...woodBeads, ...smallBeads];
     const drawer = allDrawers.find(d => d.id === drawerId);
     if (drawer && drawer.isEmpty) {
-      console.log('空抽屜，無法打開');
       return;
     }
     
     // 如果抽屜已經打開，則觸發浮空展示
     if (openDrawers[drawerId]) {
-      console.log('抽屜已打開，觸發浮空展示');
       setFloatingBeads(prev => {
         const newFloatingState = {
           ...prev,
           [drawerId]: !prev[drawerId]
         };
-        console.log('新的浮空狀態:', newFloatingState);
         return newFloatingState;
       });
       return;
     }
     
     // 否則打開抽屜
-    console.log('打開抽屜');
     setOpenDrawers(prev => {
       const newDrawerState = {
         ...prev,
         [drawerId]: true
       };
-      console.log('新的抽屜狀態:', newDrawerState);
       return newDrawerState;
     });
     setSelectedDrawer(drawerId);
@@ -1470,7 +1387,6 @@ const BeadCabinet = () => {
   // 關閉抽屜
   const closeDrawer = (drawerId, event) => {
     event.stopPropagation();
-    console.log('關閉抽屜:', drawerId);
     setOpenDrawers(prev => {
       const newDrawerState = {
         ...prev,
@@ -1497,18 +1413,11 @@ const BeadCabinet = () => {
 
   // 點擊珠子添加到串珠盤
   const onClickToTray = (bead) => {
-    console.log('=== 主組件 onClickToTray 函數被調用 ===');
-    console.log('接收到的珠子數據:', bead);
-    console.log('當前 selectedBeads:', selectedBeads);
     
     setSelectedBeads(prev => {
       const newBeads = [...prev, { ...bead, id: Date.now() }];
-      console.log('更新後的珠子陣列:', newBeads.map((b, i) => `${i + 1}. ${b.name}`));
-      console.log('新珠子陣列長度:', newBeads.length);
       return newBeads;
     });
-    
-    console.log('珠子添加完成，新的 selectedBeads 長度:', selectedBeads.length + 1);
   };
 
   // 定義珠子的顏色和類型，以及對應的內部頁面
@@ -1549,20 +1458,25 @@ const BeadCabinet = () => {
   // 處理內部頁面導航
   const handleInternalNavigation = (page, event) => {
     event.stopPropagation();
-    window.location.href = page;
+    // 使用 React Router 導航
+    if (page === '/rating') {
+      goToRating();
+    } else if (page === '/guide') {
+      goToGuide();
+    } else if (page === '/fortune') {
+      goToFortune();
+    } else {
+      goToHome();
+    }
   };
 
   // 處理詳細資訊
   const handleDetailInfo = (drawerId, event) => {
     event.stopPropagation();
-    console.log(`查看抽屜 ${drawerId} 的詳細資訊`);
   };
 
   // 開始拖曳珠子
   const handleDragStart = (bead, event) => {
-    console.log('開始拖曳珠子:', bead);
-    console.log('拖曳事件:', event);
-    console.log('事件目標:', event.target);
     
     setDraggedBead(bead);
     setIsDragging(true);
@@ -1570,31 +1484,24 @@ const BeadCabinet = () => {
     
     // 設置拖曳數據
     const beadData = JSON.stringify(bead);
-    console.log('準備設置的珠子數據:', beadData);
     
     try {
       event.dataTransfer.setData('text/plain', beadData);
       event.dataTransfer.setData('application/json', beadData);
-      console.log('拖曳數據已設置成功');
-      console.log('設置的數據類型:', event.dataTransfer.types);
     } catch (error) {
-      console.error('設置拖曳數據失敗:', error);
     }
     
     // 設置拖曳圖像
     if (event.target) {
       try {
         event.dataTransfer.setDragImage(event.target, 30, 30);
-        console.log('拖曳圖像已設置');
       } catch (error) {
-        console.error('設置拖曳圖像失敗:', error);
       }
     }
   };
 
   // 拖曳結束
   const handleDragEnd = () => {
-    console.log('拖曳結束');
     setIsDragging(false);
     setDraggedBead(null);
   };
@@ -1748,7 +1655,7 @@ const BeadCabinet = () => {
       linkSpan.style.color = '#3498db';
     };
     linkSpan.onclick = () => {
-      window.location.href = '/rating';
+      goToRating();
       closeAlert();
     };
 
@@ -2049,10 +1956,6 @@ const BeadCabinet = () => {
   fillToNine(woodBeads, 'wood');
   fillToNine(smallBeads, 'small');
 
-  console.log('玻璃珠數量:', glassBeads.length);
-  console.log('水晶珠數量:', crystalBeads.length);
-  console.log('木珠區數量 (木珠+天然礦石):', woodBeads.length);
-  console.log('小珠子數量:', smallBeads.length);
 
 
   return (
@@ -2341,17 +2244,11 @@ const BeadCabinet = () => {
 
         {/* 浮空展示的珠子 */}
         {Object.entries(floatingBeads).map(([drawerId, isFloating]) => {
-          console.log('渲染浮空珠子:', drawerId, isFloating);
-          console.log('抽屜ID類型:', typeof drawerId);
           if (!isFloating) return null;
 
           const allDrawers = [...glassBeads, ...crystalBeads, ...woodBeads, ...smallBeads];
-          console.log('所有抽屜ID:', allDrawers.map(d => d.id));
           const drawer = allDrawers.find(d => d.id === drawerId);
-          console.log('找到抽屜:', drawer);
           if (!drawer) {
-            console.log('未找到抽屜，drawerId:', drawerId);
-            console.log('可用的抽屜ID:', allDrawers.map(d => d.id));
             return null;
           }
 
@@ -2361,7 +2258,6 @@ const BeadCabinet = () => {
               drawer={drawer}
               drawerId={drawerId}
               onClose={() => {
-                console.log('關閉浮空展示:', drawerId);
                 setFloatingBeads(prev => ({ ...prev, [drawerId]: false }));
                 // 同時關閉對應的抽屜
                 setOpenDrawers(prev => {
@@ -2380,18 +2276,10 @@ const BeadCabinet = () => {
                 });
               } }
               onClickToTray={(bead) => {
-                console.log('=== 主組件 onClickToTray 函數被調用 ===');
-                console.log('接收到的珠子數據:', bead);
-                console.log('當前 selectedBeads:', selectedBeads);
-                console.log('setSelectedBeads 函數:', setSelectedBeads);
-
                 setSelectedBeads(prev => {
                   const newBeads = [...prev, { ...bead, id: Date.now() }];
-                  console.log('更新後的珠子陣列:', newBeads.map((b, i) => `${i + 1}. ${b.name}`));
                   return newBeads;
                 });
-
-                console.log('珠子添加完成，新的 selectedBeads 長度:', selectedBeads.length + 1);
               } } />
           );
         })}
@@ -2401,10 +2289,7 @@ const BeadCabinet = () => {
           <div className="nav-grid">
             <button
               className="nav-button"
-              onClick={() => {
-                console.log('返回首頁按鈕被點擊');
-                window.location.href = '/home';
-              } }
+              onClick={goToHome}
               title="返回首頁"
             >
               <div className="nav-icon">
@@ -2416,8 +2301,7 @@ const BeadCabinet = () => {
             <button
               className="nav-button"
               onClick={() => {
-                console.log('珠子指南按鈕被點擊');
-                window.location.href = '/guide';
+                goToGuide();
               } }
               title="珠子介紹指南"
             >
@@ -2429,7 +2313,7 @@ const BeadCabinet = () => {
 
             <button
               className="nav-button"
-              onClick={() => window.location.href = '/rating'}
+              onClick={goToRating}
               title="串珠評分"
             >
               <div className="nav-icon">
@@ -2439,7 +2323,7 @@ const BeadCabinet = () => {
             </button>
             <button
               className="nav-button"
-              onClick={() => window.location.href = '/fortune'}
+              onClick={goToFortune}
               title="每日運勢"
             >
               <div className="nav-icon">

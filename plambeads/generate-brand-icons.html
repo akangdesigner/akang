@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>掌上靈珠 - 品牌圖標生成器</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .upload-area {
+            border: 3px dashed rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .upload-area.dragover {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.7;
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        .preview-section {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            margin: 20px 0;
+        }
+        
+        .sizes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .size-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .size-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .size-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            margin: 0 auto 10px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .size-preview img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 4px;
+        }
+        
+        .size-info {
+            font-size: 12px;
+            margin-bottom: 5px;
+            opacity: 0.8;
+        }
+        
+        .size-name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .generate-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+        
+        .generate-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .download-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .download-btn {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+        }
+        
+        .status {
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .error {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid #ff6b6b;
+        }
+        
+        .success {
+            background: rgba(78, 205, 196, 0.2);
+            border: 1px solid #4ecdc4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔮 掌上靈珠 - 品牌圖標生成器</h1>
+        
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📁</div>
+            <h3>點擊或拖拽上傳您的品牌標誌</h3>
+            <p>支援 PNG、JPG、SVG 格式<br>建議尺寸：512x512 或更高</p>
+            <input type="file" id="fileInput" accept="image/*">
+        </div>
+        
+        <div class="preview-section" id="previewSection" style="display: none;">
+            <h3>預覽您的標誌</h3>
+            <img id="previewImage" class="preview-image" alt="預覽">
+        </div>
+        
+        <div class="sizes-grid" id="sizesGrid" style="display: none;">
+            <div class="size-item">
+                <div class="size-preview" id="preview-ldpi">
+                    <span style="color: #666; font-size: 12px;">36x36</span>
+                </div>
+                <div class="size-info">36 x 36 px</div>
+                <div class="size-name">ldpi</div>
+            </div>
+            
+            <div class="size-item">
+                <div class="size-preview" id="preview-mdpi">
+                    <span style="color: #666; font-size: 12px;">48x48</span>
+                </div>
+                <div class="size-info">48 x 48 px</div>
+                <div class="size-name">mdpi</div>
+            </div>
+            
+            <div class="size-item">
+                <div class="size-preview" id="preview-hdpi">
+                    <span style="color: #666; font-size: 12px;">72x72</span>
+                </div>
+                <div class="size-info">72 x 72 px</div>
+                <div class="size-name">hdpi</div>
+            </div>
+            
+            <div class="size-item">
+                <div class="size-preview" id="preview-xhdpi">
+                    <span style="color: #666; font-size: 12px;">96x96</span>
+                </div>
+                <div class="size-info">96 x 96 px</div>
+                <div class="size-name">xhdpi</div>
+            </div>
+            
+            <div class="size-item">
+                <div class="size-preview" id="preview-xxhdpi">
+                    <span style="color: #666; font-size: 12px;">144x144</span>
+                </div>
+                <div class="size-info">144 x 144 px</div>
+                <div class="size-name">xxhdpi</div>
+            </div>
+            
+            <div class="size-item">
+                <div class="size-preview" id="preview-xxxhdpi">
+                    <span style="color: #666; font-size: 12px;">192x192</span>
+                </div>
+                <div class="size-info">192 x 192 px</div>
+                <div class="size-name">xxxhdpi</div>
+            </div>
+        </div>
+        
+        <button class="generate-btn" id="generateBtn" disabled>生成所有尺寸圖標</button>
+        
+        <div class="status" id="status" style="display: none;"></div>
+        
+        <div class="download-section" id="downloadSection" style="display: none;">
+            <h3>下載生成的圖標</h3>
+            <div id="downloadButtons"></div>
+        </div>
+    </div>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const previewSection = document.getElementById('previewSection');
+        const previewImage = document.getElementById('previewImage');
+        const sizesGrid = document.getElementById('sizesGrid');
+        const generateBtn = document.getElementById('generateBtn');
+        const status = document.getElementById('status');
+        const downloadSection = document.getElementById('downloadSection');
+        const downloadButtons = document.getElementById('downloadButtons');
+        
+        let originalImage = null;
+        let generatedIcons = {};
+        
+        // 圖標尺寸配置
+        const iconSizes = {
+            ldpi: 36,
+            mdpi: 48,
+            hdpi: 72,
+            xhdpi: 96,
+            xxhdpi: 144,
+            xxxhdpi: 192
+        };
+        
+        // 上傳區域事件
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        uploadArea.addEventListener('drop', handleDrop);
+        fileInput.addEventListener('change', handleFileSelect);
+        
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        }
+        
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        }
+        
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        }
+        
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        }
+        
+        function processFile(file) {
+            if (!file.type.startsWith('image/')) {
+                showStatus('請選擇圖片檔案', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                originalImage = e.target.result;
+                previewImage.src = originalImage;
+                previewSection.style.display = 'block';
+                sizesGrid.style.display = 'grid';
+                generateBtn.disabled = false;
+                
+                // 生成預覽
+                generatePreviews();
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function generatePreviews() {
+            Object.entries(iconSizes).forEach(([name, size]) => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = size;
+                canvas.height = size;
+                
+                const img = new Image();
+                img.onload = () => {
+                    // 繪製圓角矩形背景
+                    ctx.fillStyle = '#4a148c';
+                    ctx.fillRect(0, 0, size, size);
+                    
+                    // 計算圖片尺寸（留邊距）
+                    const margin = Math.floor(size * 0.1);
+                    const imageSize = size - (margin * 2);
+                    
+                    // 繪製圖片
+                    ctx.drawImage(img, margin, margin, imageSize, imageSize);
+                    
+                    // 更新預覽
+                    const preview = document.getElementById(`preview-${name}`);
+                    preview.innerHTML = `<img src="${canvas.toDataURL()}" alt="${name}">`;
+                };
+                img.src = originalImage;
+            });
+        }
+        
+        generateBtn.addEventListener('click', generateAllIcons);
+        
+        function generateAllIcons() {
+            generateBtn.disabled = true;
+            showStatus('正在生成圖標...', 'success');
+            
+            generatedIcons = {};
+            let completed = 0;
+            const total = Object.keys(iconSizes).length;
+            
+            Object.entries(iconSizes).forEach(([name, size]) => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = size;
+                canvas.height = size;
+                
+                const img = new Image();
+                img.onload = () => {
+                    // 繪製深紫色背景
+                    ctx.fillStyle = '#4a148c';
+                    ctx.fillRect(0, 0, size, size);
+                    
+                    // 計算圖片尺寸（留邊距）
+                    const margin = Math.floor(size * 0.1);
+                    const imageSize = size - (margin * 2);
+                    
+                    // 繪製圖片
+                    ctx.drawImage(img, margin, margin, imageSize, imageSize);
+                    
+                    // 儲存生成的圖標
+                    generatedIcons[name] = {
+                        dataUrl: canvas.toDataURL(),
+                        filename: `${name}.png`
+                    };
+                    
+                    completed++;
+                    if (completed === total) {
+                        showDownloadButtons();
+                        showStatus('所有圖標生成完成！', 'success');
+                        generateBtn.disabled = false;
+                    }
+                };
+                img.src = originalImage;
+            });
+        }
+        
+        function showDownloadButtons() {
+            downloadButtons.innerHTML = '';
+            
+            Object.entries(generatedIcons).forEach(([name, icon]) => {
+                const btn = document.createElement('button');
+                btn.className = 'download-btn';
+                btn.textContent = `下載 ${name.toUpperCase()} (${iconSizes[name]}x${iconSizes[name]})`;
+                btn.onclick = () => downloadIcon(icon.dataUrl, icon.filename);
+                downloadButtons.appendChild(btn);
+            });
+            
+            // 添加打包下載按鈕
+            const zipBtn = document.createElement('button');
+            zipBtn.className = 'download-btn';
+            zipBtn.textContent = '📦 打包下載所有圖標';
+            zipBtn.onclick = downloadAllIcons;
+            downloadButtons.appendChild(zipBtn);
+            
+            downloadSection.style.display = 'block';
+        }
+        
+        function downloadIcon(dataUrl, filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = dataUrl;
+            link.click();
+        }
+        
+        function downloadAllIcons() {
+            Object.entries(generatedIcons).forEach(([name, icon]) => {
+                setTimeout(() => {
+                    downloadIcon(icon.dataUrl, icon.filename);
+                }, name === 'ldpi' ? 0 : Object.keys(iconSizes).indexOf(name) * 200);
+            });
+        }
+        
+        function showStatus(message, type) {
+            status.textContent = message;
+            status.className = `status ${type}`;
+            status.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    status.style.display = 'none';
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './BeadGuide.css';
 import IconComponent from './IconComponent';
+import { useNavigation } from './hooks/useNavigation';
 
 
 // 珠子材質數據
@@ -605,6 +606,7 @@ const ColorCard = ({ color, data }) => {
 
 // 主組件
 const BeadGuide = () => {
+  const { goToHome, goToRating, goToFortune } = useNavigation();
   const [activeTab, setActiveTab] = useState('materials');
   const [selectedMaterial, setSelectedMaterial] = useState('glass');
 
@@ -684,25 +686,25 @@ const BeadGuide = () => {
       {/* 底部導航欄 */}
       <div className="bottom-navigation">
         <div className="nav-grid">
-                  <button className="nav-button" onClick={() => window.location.href = '/home'}>
+                  <button className="nav-button" onClick={goToHome}>
           <div className="nav-icon">
             <IconComponent name="home" size={20} />
           </div>
           <div className="nav-text">返回首頁</div>
         </button>
-          <button className="nav-button" onClick={() => window.location.href = '/'}>
+          <button className="nav-button" onClick={goToHome}>
             <div className="nav-icon">
               <IconComponent name="art-palette" size={20} />
             </div>
             <div className="nav-text">數位串珠</div>
           </button>
-          <button className="nav-button" onClick={() => window.location.href = '/rating'}>
+          <button className="nav-button" onClick={goToRating}>
             <div className="nav-icon">
               <IconComponent name="star-rating" size={20} />
             </div>
             <div className="nav-text">串珠評分</div>
           </button>
-          <button className="nav-button" onClick={() => window.location.href = '/fortune'}>
+          <button className="nav-button" onClick={goToFortune}>
             <div className="nav-icon">
               <IconComponent name="crystal-ball" size={20} />
             </div>

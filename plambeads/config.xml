@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="io.cordova.hellocordova" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>掌上靈珠 PalmBeads</name>
+    <description>線上打造您的專屬能量手串，掌握每日個人運勢</description>
+    <author email="your-email@example.com" href="https://your-website.com">
+        您的名字
+    </author>
+    <content src="index.html" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-navigation href="*" />
+    
+    <!-- 新版 Android SplashScreen API 設定 -->
+    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screen/android/splash.png" />
+    <preference name="AndroidWindowSplashScreenBackground" value="#4a148c" />
+    <preference name="AndroidWindowSplashScreenFadeOutDuration" value="300" />
+    <preference name="AndroidWindowSplashScreenIconBackgroundColor" value="#4a148c" />
+    
+    <!-- Android Icon 設定 -->
+    <platform name="android">
+        <!-- App Icon - 不同密度的圖示 -->
+        <icon src="res/icon/android/ldpi.png" density="ldpi"/>
+        <icon src="res/icon/android/mdpi.png" density="mdpi"/>
+        <icon src="res/icon/android/hdpi.png" density="hdpi"/>
+        <icon src="res/icon/android/xhdpi.png" density="xhdpi"/>
+        <icon src="res/icon/android/xxhdpi.png" density="xxhdpi"/>
+        <icon src="res/icon/android/xxxhdpi.png" density="xxxhdpi"/>
+    </platform>
+    
+    <!-- 其他設定 -->
+    <preference name="WebViewBounce" value="false" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="BackupWebStorage" value="none" />
+    <preference name="Orientation" value="portrait" />
+    <preference name="Fullscreen" value="false" />
+</widget>

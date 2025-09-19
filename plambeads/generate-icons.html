@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>生成 Cordova App Icons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #4a148c;
+            margin-bottom: 30px;
+        }
+        
+        .icon-preview {
+            width: 128px;
+            height: 128px;
+            border-radius: 20px;
+            margin: 20px auto;
+            background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            box-shadow: 0 10px 30px rgba(74, 20, 140, 0.3);
+        }
+        
+        canvas {
+            border: 1px solid #ddd;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .size-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .download-btn {
+            background: #4a148c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            background: #7b1fa2;
+            transform: translateY(-2px);
+        }
+        
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .instructions h3 {
+            margin-top: 0;
+            color: #4a148c;
+        }
+        
+        .instructions ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin: 8px 0;
+            color: #666;
+        }
+        
+        .file-structure {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            text-align: left;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔮 掌上靈珠 PalmBeads</h1>
+        <h2>App Icon 生成器</h2>
+        
+        <div class="icon-preview">🔮</div>
+        
+        <div class="instructions">
+            <h3>📱 Android App Icon 尺寸規格：</h3>
+            <ul>
+                <li><strong>ldpi:</strong> 36 x 36px</li>
+                <li><strong>mdpi:</strong> 48 x 48px</li>
+                <li><strong>hdpi:</strong> 72 x 72px</li>
+                <li><strong>xhdpi:</strong> 96 x 96px</li>
+                <li><strong>xxhdpi:</strong> 144 x 144px</li>
+                <li><strong>xxxhdpi:</strong> 192 x 192px</li>
+            </ul>
+            
+            <h3>📁 檔案放置位置：</h3>
+            <div class="file-structure">
+plambeads/
+└── res/
+    └── icon/
+        └── android/
+            ├── ldpi.png
+            ├── mdpi.png
+            ├── hdpi.png
+            ├── xhdpi.png
+            ├── xxhdpi.png
+            └── xxxhdpi.png
+            </div>
+        </div>
+        
+        <div id="canvases"></div>
+        
+        <script>
+            // Android icon 尺寸規格
+            const iconSizes = [
+                { name: 'ldpi', width: 36, height: 36 },
+                { name: 'mdpi', width: 48, height: 48 },
+                { name: 'hdpi', width: 72, height: 72 },
+                { name: 'xhdpi', width: 96, height: 96 },
+                { name: 'xxhdpi', width: 144, height: 144 },
+                { name: 'xxxhdpi', width: 192, height: 192 }
+            ];
+            
+            const container = document.getElementById('canvases');
+            
+            iconSizes.forEach(size => {
+                const div = document.createElement('div');
+                div.style.margin = '20px 0';
+                div.innerHTML = `
+                    <div class="size-label">${size.name.toUpperCase()} (${size.width}x${size.height})</div>
+                    <canvas id="canvas-${size.name}" width="${size.width}" height="${size.height}"></canvas>
+                    <br>
+                    <button class="download-btn" onclick="downloadCanvas('canvas-${size.name}', '${size.name}.png')">
+                        下載 ${size.name} 圖示
+                    </button>
+                `;
+                container.appendChild(div);
+                
+                // 繪製圖示
+                const canvas = document.getElementById(`canvas-${size.name}`);
+                const ctx = canvas.getContext('2d');
+                
+                // 背景漸層
+                const gradient = ctx.createLinearGradient(0, 0, size.width, size.height);
+                gradient.addColorStop(0, '#4a148c');
+                gradient.addColorStop(1, '#7b1fa2');
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, size.width, size.height);
+                
+                // 圓角效果
+                ctx.globalCompositeOperation = 'destination-in';
+                ctx.beginPath();
+                ctx.roundRect(0, 0, size.width, size.height, size.width * 0.2);
+                ctx.fill();
+                
+                // 重置合成模式
+                ctx.globalCompositeOperation = 'source-over';
+                
+                // 載入並繪製 logo
+                const logo = new Image();
+                logo.onload = function() {
+                    // 計算 logo 尺寸 (圖示的 60%)
+                    const logoSize = size.width * 0.6;
+                    const logoX = (size.width - logoSize) / 2;
+                    const logoY = (size.height - logoSize) / 2;
+                    
+                    // 繪製白色圓形背景
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                    ctx.beginPath();
+                    ctx.arc(size.width / 2, size.height / 2, logoSize / 2 + size.width * 0.05, 0, 2 * Math.PI);
+                    ctx.fill();
+                    
+                    // 繪製 logo
+                    ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
+                };
+                logo.src = '../74559e4c-3a36-4268-8486-ed99ce2a1abf.png';
+            });
+            
+            function downloadCanvas(canvasId, filename) {
+                const canvas = document.getElementById(canvasId);
+                const link = document.createElement('a');
+                link.download = filename;
+                link.href = canvas.toDataURL();
+                link.click();
+            }
+            
+            // 為 CanvasRenderingContext2D 添加 roundRect 方法（如果不存在）
+            if (!CanvasRenderingContext2D.prototype.roundRect) {
+                CanvasRenderingContext2D.prototype.roundRect = function(x, y, width, height, radius) {
+                    this.beginPath();
+                    this.moveTo(x + radius, y);
+                    this.lineTo(x + width - radius, y);
+                    this.quadraticCurveTo(x + width, y, x + width, y + radius);
+                    this.lineTo(x + width, y + height - radius);
+                    this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                    this.lineTo(x + radius, y + height);
+                    this.quadraticCurveTo(x, y + height, x, y + height - radius);
+                    this.lineTo(x, y + radius);
+                    this.quadraticCurveTo(x, y, x + radius, y);
+                    this.closePath();
+                };
+            }
+        </script>
+        
+        <div class="instructions">
+            <h3>🚀 使用步驟：</h3>
+            <ol>
+                <li>點擊每個尺寸的「下載」按鈕</li>
+                <li>將下載的 PNG 檔案放入對應的資料夾</li>
+                <li>執行 <code>cordova build android</code></li>
+                <li>安裝 APK 即可看到新的圖示！</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './DailyFortune.css';
 import IconComponent from './IconComponent';
+import { useNavigation } from './hooks/useNavigation';
 
 // 運勢資料庫 - 五個面向，每個面向有多個不同星級的選項
 const getFortuneData = () => {
@@ -584,7 +585,6 @@ const TwoAspectFortuneDisplay = ({ zodiacInfo, userInfo, onFortuneDataChange }) 
       userInfo.gender
     );
   } catch (error) {
-    console.error('運勢計算錯誤:', error);
     // 如果計算失敗，使用默認值
     fortuneResult = {
       high: {
@@ -847,6 +847,7 @@ const PersonalizedFortuneAnalysis = ({ zodiacSign, gender, fortuneData }) => {
 
 // 主組件
 const DailyFortune = () => {
+  const { goToHome, goToGuide, goToRating } = useNavigation();
   const [userInfo, setUserInfo] = useState({
     gender: '',
     birthDate: '',
@@ -898,20 +899,19 @@ const DailyFortune = () => {
       alert('請先計算星座信息');
       return;
     }
-    console.log('顯示運勢分析，當前狀態:', { showFortune, zodiacInfo });
     setShowFortune(true);
   };
 
   const openBeadCabinet = () => {
-    window.location.href = '/';
+    goToHome();
   };
 
   const openGuide = () => {
-    window.location.href = '/guide';
+    goToGuide();
   };
 
   const openRating = () => {
-    window.location.href = '/rating';
+    goToRating();
   };
 
   return (
@@ -1068,7 +1068,7 @@ const DailyFortune = () => {
       {/* 底部導航欄 */}
       <div className="bottom-navigation">
         <div className="nav-grid">
-          <button className="nav-button" onClick={() => window.location.href = '/home'}>
+          <button className="nav-button" onClick={goToHome}>
             <div className="nav-icon">
               <IconComponent name="home" size={24} />
             </div>

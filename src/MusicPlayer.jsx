@@ -57,7 +57,7 @@ const MusicPlayer = () => {
   // 自動開始播放音樂
   useEffect(() => {
     if (audioRef.current && isPlaying) {
-      audioRef.current.play().catch(console.log);
+      audioRef.current.play().catch(() => {});
     }
   }, [isPlaying]);
 
@@ -73,7 +73,6 @@ const MusicPlayer = () => {
           setIsPlaying(true);
         }
       } catch (error) {
-        console.log('播放被中斷，這是正常的');
         setIsPlaying(false);
       }
     }
@@ -89,7 +88,6 @@ const MusicPlayer = () => {
         audioRef.current.load();
         await audioRef.current.play();
       } catch (error) {
-        console.log('播放被中斷，這是正常的');
         setIsPlaying(false);
       }
     }
@@ -105,7 +103,6 @@ const MusicPlayer = () => {
         audioRef.current.load();
         await audioRef.current.play();
       } catch (error) {
-        console.log('播放被中斷，這是正常的');
         setIsPlaying(false);
       }
     }
@@ -120,7 +117,6 @@ const MusicPlayer = () => {
         audioRef.current.load();
         await audioRef.current.play();
       } catch (error) {
-        console.log('播放被中斷，這是正常的');
         setIsPlaying(false);
       }
     }
@@ -143,13 +139,11 @@ const MusicPlayer = () => {
 
   // 處理音頻錯誤
   const handleError = (e) => {
-    console.log('音頻載入錯誤:', e);
     setIsPlaying(false);
   };
 
   // 處理音頻載入完成
   const handleLoadedData = () => {
-    console.log('音頻載入完成');
   };
 
   return (

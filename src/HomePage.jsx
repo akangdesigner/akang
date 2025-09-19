@@ -1,19 +1,21 @@
 import React from 'react';
 import './HomePage.css';
 import IconComponent from './IconComponent';
+import { useNavigation } from './hooks/useNavigation';
 
 function HomePage() {
+  const { goToCabinet, goToGuide, goToRating, goToStores, goToFortune } = useNavigation();
+
   const openBeadCabinet = () => {
-    window.location.href = '/';
+    goToCabinet();
   };
 
-
   const openGuide = () => {
-    window.location.href = '/guide';
+    goToGuide();
   };
 
   const openRating = () => {
-    window.location.href = '/rating';
+    goToRating();
   };
 
   const openStores = () => {
@@ -21,7 +23,7 @@ function HomePage() {
   };
 
   const openFortune = () => {
-    window.location.href = '/fortune';
+    goToFortune();
   };
 
   return (

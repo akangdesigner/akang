@@ -14,19 +14,16 @@ const DebugFloatingBeads = () => {
   };
 
   const toggleFloatingBeads = () => {
-    console.log('切換浮空珠子狀態');
     setFloatingBeads(prev => {
       const newState = {
         ...prev,
         [testDrawerId]: !prev[testDrawerId]
       };
-      console.log('新的浮空狀態:', newState);
       return newState;
     });
   };
 
   const clearFloatingBeads = () => {
-    console.log('清除所有浮空珠子');
     setFloatingBeads({});
   };
 
@@ -50,7 +47,6 @@ const DebugFloatingBeads = () => {
 
       {/* 浮空展示的珠子 */}
       {Object.entries(floatingBeads).map(([drawerId, isFloating]) => {
-        console.log('調試頁面渲染浮空珠子:', drawerId, isFloating);
         if (!isFloating) return null;
         
         return (
@@ -61,7 +57,6 @@ const DebugFloatingBeads = () => {
               <button 
                 className="close-floating-btn"
                 onClick={() => {
-                  console.log('關閉浮空展示:', drawerId);
                   setFloatingBeads(prev => ({ ...prev, [drawerId]: false }));
                 }}
               >

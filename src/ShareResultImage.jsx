@@ -28,13 +28,9 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
   const generateShareImage = async () => {
     setIsGenerating(true);
     
-    // 添加調試信息
-    console.log('開始生成分享圖...');
-    console.log('設計數據:', design);
     
     // 設置總超時，避免無限等待
     const timeoutId = setTimeout(() => {
-      console.warn('分享圖生成超時，使用備用方案');
       setIsGenerating(false);
       // 創建一個簡單的備用圖片
       const canvas = document.createElement('canvas');
@@ -201,7 +197,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
             
             // 設置超時機制，避免無限等待
             const timeout = setTimeout(() => {
-              console.warn(`珠子圖片載入超時: ${imagePath}`);
               // 繪製一個替代的圓形珠子
               ctx.save();
               ctx.fillStyle = bead.type === '過渡珠' ? '#C0C0C0' : 
@@ -242,7 +237,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
             
             image.onerror = () => {
               clearTimeout(timeout);
-              console.warn(`珠子圖片載入失敗: ${imagePath}`);
               // 繪製一個替代的圓形珠子
               ctx.save();
               ctx.fillStyle = bead.type === '過渡珠' ? '#C0C0C0' : 
@@ -269,9 +263,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
           new Promise((resolve) => setTimeout(resolve, 10000)) // 10秒總超時
         ]);
         
-        // 添加調試信息
-        console.log(`已繪製 ${design.beads.length} 顆珠子到 Canvas`);
-        console.log('Canvas 尺寸:', canvas.width, 'x', canvas.height);
         
         braceletContainer.appendChild(canvas);
         braceletSection.appendChild(braceletContainer);
@@ -384,7 +375,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
             safeScores.health / 10
           ];
           
-          console.log('分享圖評分數據:', safeScores, 'values:', values);
           
           const points = [];
           for (let i = 0; i < N; i++) {
@@ -401,8 +391,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         const scorePoints = getScorePoints();
         const pointsString = scorePoints.map(point => `${point[0]},${point[1]}`).join(' ');
         
-        console.log('分享圖評分點:', scorePoints);
-        console.log('分享圖點位字符串:', pointsString);
         
         // 繪製評分填充區域
         const fillArea = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
@@ -412,7 +400,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         fillArea.setAttribute('stroke-width', '2');
         radarSvg.appendChild(fillArea);
         
-        console.log('分享圖紫色區域已添加，點位:', pointsString);
         
         // 繪製評分點 - 白色圓點
         scorePoints.forEach(point => {
@@ -836,7 +823,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
       clearTimeout(timeoutId);
       
     } catch (error) {
-      console.error('生成分享圖片失敗:', error);
       clearTimeout(timeoutId);
       
       // 使用備用方案
@@ -897,7 +883,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
       // 顯示成功提示
       alert('設計已保存到我的設計專區！');
     } catch (error) {
-      console.error('保存設計時發生錯誤:', error);
       alert('保存失敗，請稍後再試。');
     }
   };
@@ -920,7 +905,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
           });
           return; // 成功分享，直接返回
         } catch (shareError) {
-          console.log('Web Share API 失敗，嘗試其他方法:', shareError);
         }
       }
       
@@ -937,7 +921,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
           return;
         }
       } catch (clipboardError) {
-        console.log('剪貼簿 API 失敗，嘗試其他方法:', clipboardError);
       }
       
       // 備用方案 2：提供下載連結和手動分享說明
@@ -949,8 +932,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
       alert('📱 圖片已下載！\n\n💡 分享建議：\n1. 將圖片儲存到手機相簿\n2. 在社群媒體 App 中選擇「從相簿分享」\n3. 選擇剛下載的圖片進行分享');
       
     } catch (error) {
-      console.error('分享失敗:', error);
-      
       // 最後的備用方案：強制下載
       try {
         const downloadLink = document.createElement('a');
@@ -959,7 +940,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         downloadLink.click();
         alert('⚠️ 分享功能暫時無法使用，但圖片已下載到您的裝置。請手動分享圖片。');
       } catch (downloadError) {
-        console.error('下載也失敗:', downloadError);
         alert('❌ 分享和下載都失敗，請稍後再試或截圖分享。');
       }
     }
@@ -996,7 +976,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
           document.execCommand('copy');
           alert('✅ 連結已複製到剪貼簿！');
         } catch (execError) {
-          console.error('execCommand 複製失敗:', execError);
           // 最後備用方案：顯示連結讓用戶手動複製
           alert(`📋 無法自動複製，請手動複製以下連結：\n\n${shareUrl}`);
         } finally {
@@ -1004,8 +983,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         }
       }
     } catch (error) {
-      console.error('複製失敗:', error);
-      
       // 顯示連結讓用戶手動複製
       const shareUrl = `${window.location.origin}${window.location.pathname}?design=${encodeURIComponent(JSON.stringify({
         name: design?.designName || '串珠設計',

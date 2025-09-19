@@ -69,57 +69,39 @@ const ModernBeadRating = () => {
       health: 1       // 基礎分1分
     };
 
-    console.log('開始分析珠子設計，總共', design.beads ? design.beads.length : 0, '顆珠子');
-    console.log('初始評分（基礎分1分 + 設計感額外獎勵3分）:', scores);
 
     // 分析每顆珠子的能量屬性
     if (design.beads && Array.isArray(design.beads)) {
       design.beads.forEach((bead, index) => {
         const { id, name, type, color } = bead;
         
-        console.log(`珠子${index + 1}: ID=${id}, 名稱=${name}, 類型=${type}, 顏色=${color}`);
-        
         // 根據珠子類型和顏色來評分
         const beadInfo = getBeadDualCategoryAndScore(name || type || color);
-        console.log(`珠子${index + 1}:`, { 
-          id, 
-          name, 
-          type,
-          color,
-          primary: beadInfo.primary, 
-          secondary: beadInfo.secondary 
-        });
         
         // 主要面向評分 - 加0.5分
         if (beadInfo.primary.category !== 'unknown') {
           switch (beadInfo.primary.category) {
             case 'love':
               scores.love = Math.min(10, Math.round((scores.love + 0.5) * 10) / 10);
-              console.log('愛情加上主要面向分數: +0.5, 總分:', scores.love);
               break;
               
             case 'windfall':
               scores.windfall = Math.min(10, Math.round((scores.windfall + 0.5) * 10) / 10);
-              console.log('偏財加上主要面向分數: +0.5, 總分:', scores.windfall);
               break;
               
             case 'regularIncome':
               scores.regularIncome = Math.min(10, Math.round((scores.regularIncome + 0.5) * 10) / 10);
-              console.log('正財加上主要面向分數: +0.5, 總分:', scores.regularIncome);
               break;
               
             case 'career':
               scores.career = Math.min(10, Math.round((scores.career + 0.5) * 10) / 10);
-              console.log('事業加上主要面向分數: +0.5, 總分:', scores.career);
               break;
               
             case 'health':
               scores.health = Math.min(10, Math.round((scores.health + 0.5) * 10) / 10);
-              console.log('健康加上主要面向分數: +0.5, 總分:', scores.health);
               break;
               
             default:
-              console.log('未知珠子主要類型:', beadInfo.primary);
               break;
           }
         }
@@ -129,41 +111,32 @@ const ModernBeadRating = () => {
           switch (beadInfo.secondary.category) {
             case 'love':
               scores.love = Math.min(10, Math.round((scores.love + 0.25) * 10) / 10);
-              console.log('愛情加上第二面向分數: +0.25, 總分:', scores.love);
               break;
               
             case 'windfall':
               scores.windfall = Math.min(10, Math.round((scores.windfall + 0.25) * 10) / 10);
-              console.log('偏財加上第二面向分數: +0.25, 總分:', scores.windfall);
               break;
               
             case 'regularIncome':
               scores.regularIncome = Math.min(10, Math.round((scores.regularIncome + 0.25) * 10) / 10);
-              console.log('正財加上第二面向分數: +0.25, 總分:', scores.regularIncome);
               break;
               
             case 'career':
               scores.career = Math.min(10, Math.round((scores.career + 0.25) * 10) / 10);
-              console.log('事業加上第二面向分數: +0.25, 總分:', scores.career);
               break;
               
             case 'health':
               scores.health = Math.min(10, Math.round((scores.health + 0.25) * 10) / 10);
-              console.log('健康加上第二面向分數: +0.25, 總分:', scores.health);
               break;
               
             default:
-              console.log('未知珠子第二面向類型:', beadInfo.secondary);
               break;
           }
         }
         
-        console.log(`珠子${index + 1}評分完成 - 主要:+0.5, 第二:+0.25`);
-        console.log('當前累計評分:', scores);
       });
     }
     
-    console.log('最終評分:', scores);
     return scores;
   };
 
@@ -467,7 +440,7 @@ const ModernBeadRating = () => {
                   />
                   <Box>
                     <Typography variant="h5" className="text-purple-200 font-bold">
-                      星象大師: 小乖
+                      BY: 星象大師: 小乖
                     </Typography>
                     <Typography variant="body2" className="text-purple-300">
                       ✨ 能量分析專家 ✨

@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Button, Fade, Slide, Grow } from '@mui/material';
+import { Button } from '@mui/material';
 import './BeadRating.css';
 import ShareResultImage from './ShareResultImage';
 import IconComponent from './IconComponent';
 import MyDesigns from './MyDesigns';
+import { useNavigation } from './hooks/useNavigation';
 
 const BeadRating = () => {
+  const { goToHome, goToGuide, goToFortune } = useNavigation();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [currentMessage, setCurrentMessage] = useState('');
@@ -18,7 +20,6 @@ const BeadRating = () => {
     health: 0
   });
   const [savedDesign, setSavedDesign] = useState(null);
-  const [isExiting, setIsExiting] = useState(false);
   
   // 分享功能狀態
   const [showShareMenu, setShowShareMenu] = useState(false);
@@ -42,9 +43,7 @@ const BeadRating = () => {
       try {
         const design = JSON.parse(savedDesignData);
         setSavedDesign(design);
-        console.log('載入保存的串珠設計:', design);
       } catch (error) {
-        console.error('解析保存的設計數據失敗:', error);
       }
     }
     
@@ -168,27 +167,17 @@ const BeadRating = () => {
       health: 3       // 基礎分3分
     };
 
-    console.log('開始分析珠子設計，總共', beads.length, '顆珠子');
-    console.log('初始評分（基礎分3分）:', scores);
 
     // 分析每顆珠子的能量屬性 - 根據珠子名稱評分
     beads.forEach((bead, index) => {
       const { id, name } = bead;
       
-      console.log(`珠子${index + 1}: ID=${id}, 名稱=${name}`);
       
       // 根據珠子名稱來評分，不再限制ID範圍
       const beadInfo = getBeadDualCategoryAndScore(name);
-      console.log(`珠子${index + 1}:`, { 
-        id, 
-        name, 
-        primary: beadInfo.primary, 
-        secondary: beadInfo.secondary 
-      });
       
       // 檢查 beadInfo 是否有效
       if (!beadInfo || !beadInfo.primary || !beadInfo.secondary) {
-        console.warn(`珠子 ${name} 的評分信息無效，跳過此珠子`);
         return;
       }
       
@@ -196,31 +185,25 @@ const BeadRating = () => {
       switch (beadInfo.primary.category) {
         case 'love':
           scores.love = Math.min(10, Math.round((scores.love + 0.5) * 10) / 10);
-          console.log('愛情加上主要面向分數: +0.5, 總分:', scores.love);
           break;
           
         case 'windfall':
           scores.windfall = Math.min(10, Math.round((scores.windfall + 0.5) * 10) / 10);
-          console.log('偏財加上主要面向分數: +0.5, 總分:', scores.windfall);
           break;
           
         case 'social':
           scores.social = Math.min(10, Math.round((scores.social + 0.5) * 10) / 10);
-          console.log('人際加上主要面向分數: +0.5, 總分:', scores.social);
           break;
           
         case 'career':
           scores.career = Math.min(10, Math.round((scores.career + 0.5) * 10) / 10);
-          console.log('事業加上主要面向分數: +0.5, 總分:', scores.career);
           break;
           
         case 'health':
           scores.health = Math.min(10, Math.round((scores.health + 0.5) * 10) / 10);
-          console.log('健康加上主要面向分數: +0.5, 總分:', scores.health);
           break;
           
         default:
-          console.log('未知珠子主要類型:', beadInfo.primary);
           break;
       }
       
@@ -228,39 +211,30 @@ const BeadRating = () => {
       switch (beadInfo.secondary.category) {
         case 'love':
           scores.love = Math.min(10, Math.round((scores.love + 0.25) * 10) / 10);
-          console.log('愛情加上第二面向分數: +0.25, 總分:', scores.love);
           break;
           
         case 'windfall':
           scores.windfall = Math.min(10, Math.round((scores.windfall + 0.25) * 10) / 10);
-          console.log('偏財加上第二面向分數: +0.25, 總分:', scores.windfall);
           break;
           
         case 'social':
           scores.social = Math.min(10, Math.round((scores.social + 0.25) * 10) / 10);
-          console.log('人際加上第二面向分數: +0.25, 總分:', scores.social);
           break;
           
         case 'career':
           scores.career = Math.min(10, Math.round((scores.career + 0.25) * 10) / 10);
-          console.log('事業加上第二面向分數: +0.25, 總分:', scores.career);
           break;
           
         case 'health':
           scores.health = Math.min(10, Math.round((scores.health + 0.25) * 10) / 10);
-          console.log('健康加上第二面向分數: +0.25, 總分:', scores.health);
           break;
           
         default:
-          console.log('未知珠子第二面向類型:', beadInfo.secondary);
           break;
       }
       
-      console.log(`珠子${index + 1}評分完成 - 主要:+0.5, 第二:+0.25`);
-      console.log('當前累計評分:', scores);
     });
     
-    console.log('最終評分:', scores);
     return scores;
   };
 
@@ -351,12 +325,6 @@ const BeadRating = () => {
       name.includes('金色') && !name.includes('金棕')
     );
     
-    // 調試：顯示檢測到的顏色（開發時使用）
-    console.log('珠子名稱:', beadNames);
-    console.log('檢測到的顏色:', {
-      hasPink, hasPurple, hasYellow, hasGreen, hasBlue, 
-      hasRed, hasOrange, hasBrown, hasWhite, hasBlack, hasSilver, hasGold
-    });
     
     // 根據珠子搭配給出專業點評，融入整體描述
     // 只分析實際存在的顏色組合，避免虛假描述
@@ -572,7 +540,6 @@ const BeadRating = () => {
       return;
     }
 
-    console.log('開始分析，保存的設計:', savedDesign); // 調試用
 
     setIsAnalyzing(true);
     setCurrentMessage('');
@@ -582,7 +549,6 @@ const BeadRating = () => {
     setTimeout(() => {
       // 根據實際珠子設計分析評分
       const newScores = analyzeBeadDesign(savedDesign);
-      console.log('分析完成，新評分:', newScores); // 調試用
       
       // 強制更新評分狀態
       setScores(newScores);
@@ -601,7 +567,6 @@ const BeadRating = () => {
         } else {
           setShowResult(true);
           setIsAnalyzing(false);
-          console.log('分析完成，顯示結果，評分:', newScores); // 調試用
         }
       };
       typeWriter();
@@ -636,7 +601,6 @@ const BeadRating = () => {
       localStorage.setItem(designId, JSON.stringify(designToSave));
       alert('設計已暫存到我的設計專區！');
     } catch (error) {
-      console.error('保存設計時發生錯誤:', error);
       alert('保存失敗，請稍後再試。');
     }
   };
@@ -738,16 +702,12 @@ const BeadRating = () => {
 
   // 前往數位串珠創作區創建新設計
   const goToBeadCabinet = () => {
-    window.location.href = '/';
+    goToHome();
   };
 
   // 返回主頁
   const goHome = () => {
-    setIsExiting(true);
-    // 延遲跳轉，讓動畫有時間播放
-    setTimeout(() => {
-      window.location.href = '/home';
-    }, 800); // 800ms 後跳轉，配合動畫時長
+    goToHome();
   };
 
 
@@ -767,94 +727,11 @@ const BeadRating = () => {
       setShareMessage('連結已複製到剪貼簿！');
       setTimeout(() => setShareMessage(''), 3000);
     } catch (error) {
-      console.error('複製失敗:', error);
       setShareMessage('複製失敗，請手動複製');
       setTimeout(() => setShareMessage(''), 3000);
     }
   };
 
-  const shareToSocial = (platform) => {
-    try {
-      const designData = {
-        name: savedDesign?.designName || '串珠設計',
-        beads: savedDesign?.beads || [],
-        timestamp: savedDesign?.timestamp || new Date().toISOString(),
-        scores: scores
-      };
-      
-      const shareUrl = `${window.location.origin}${window.location.pathname}?design=${encodeURIComponent(JSON.stringify(designData))}`;
-      const shareText = `看看我的串珠設計「${savedDesign?.designName || '串珠設計'}」的評分結果！`;
-      
-      let shareLink = '';
-      
-      switch (platform) {
-        case 'facebook':
-          shareLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`;
-          break;
-        case 'twitter':
-          shareLink = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
-          break;
-        case 'line':
-          shareLink = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
-          break;
-        case 'instagram':
-          setShareMessage('Instagram 不支援直接分享連結，請手動截圖分享');
-          setTimeout(() => setShareMessage(''), 5000);
-          return;
-        default:
-          return;
-      }
-      
-      // 嘗試使用 Web Share API（如果支援）
-      if (navigator.share && platform !== 'instagram') {
-        navigator.share({
-          title: `串珠設計「${savedDesign?.designName || '串珠設計'}」評分結果`,
-          text: shareText,
-          url: shareUrl
-        }).catch((error) => {
-          console.log('Web Share API 失敗，使用彈出視窗:', error);
-          openShareWindow(shareLink);
-        });
-      } else {
-        // 備用方案：彈出視窗
-        openShareWindow(shareLink);
-      }
-    } catch (error) {
-      console.error('分享失敗:', error);
-      setShareMessage('分享失敗，請稍後再試');
-      setTimeout(() => setShareMessage(''), 3000);
-    }
-  };
-
-  // 開啟分享視窗的輔助函數
-  const openShareWindow = (shareLink) => {
-    try {
-      const popup = window.open(shareLink, '_blank', 'width=600,height=400,scrollbars=yes,resizable=yes');
-      
-      if (!popup || popup.closed || typeof popup.closed === 'undefined') {
-        // 彈出視窗被阻擋，提供備用方案
-        setShareMessage('彈出視窗被阻擋，已複製連結到剪貼簿');
-        
-        // 複製連結到剪貼簿作為備用
-        navigator.clipboard.writeText(shareLink).then(() => {
-          console.log('連結已複製到剪貼簿');
-        }).catch(() => {
-          // 如果剪貼簿 API 失敗，顯示連結讓用戶手動複製
-          setShareMessage(`彈出視窗被阻擋，請手動複製連結：${shareLink}`);
-        });
-        
-        setTimeout(() => setShareMessage(''), 5000);
-      } else {
-        // 彈出視窗成功開啟
-        setShareMessage('分享視窗已開啟');
-        setTimeout(() => setShareMessage(''), 2000);
-      }
-    } catch (error) {
-      console.error('開啟分享視窗失敗:', error);
-      setShareMessage('無法開啟分享視窗，請手動複製連結');
-      setTimeout(() => setShareMessage(''), 3000);
-    }
-  };
 
   // 計算安全的評分點位置，確保在格線內
   const getSafeScorePosition = (score, baseX, baseY) => {
@@ -874,8 +751,7 @@ const BeadRating = () => {
   return (
     <>
       
-      <Fade in={!isExiting} timeout={800}>
-        <div className="bead-rating-container bead-rating-page">
+      <div className="bead-rating-container bead-rating-page">
           {/* 頁面標題 */}
           <div className="rating-header">
             <h1><IconComponent name="star-rating" size={32} /> 串珠評分區 <IconComponent name="star-rating" size={32} /></h1>
@@ -923,7 +799,7 @@ const BeadRating = () => {
                     alt="神秘通靈師" 
                     className="psychic-image-full"
                   />
-                  <div className="psychic-title-small">星象大師:小乖</div>
+                  <div className="psychic-title-small">BY: 星象大師:小乖</div>
                 </div>
               </div>
             </div>
@@ -1151,39 +1027,6 @@ const BeadRating = () => {
                                🔗 複製連結
                              </button>
                              
-                             <div className="social-share-buttons">
-                               <button 
-                                 className="social-share-btn facebook"
-                                 onClick={() => shareToSocial('facebook')}
-                                 title="分享到 Facebook"
-                               >
-                                 📘 Facebook
-                               </button>
-                               
-                               <button 
-                                 className="social-share-btn twitter"
-                                 onClick={() => shareToSocial('twitter')}
-                                 title="分享到 Twitter"
-                               >
-                                 🐦 Twitter
-                               </button>
-                               
-                               <button 
-                                 className="social-share-btn line"
-                                 onClick={() => shareToSocial('line')}
-                                 title="分享到 Line"
-                               >
-                                 💬 Line
-                               </button>
-                               
-                               <button 
-                                 className="social-share-btn instagram"
-                                 onClick={() => shareToSocial('instagram')}
-                                 title="分享到 Instagram"
-                               >
-                                 📷 Instagram
-                               </button>
-                             </div>
                            </div>
                          )}
                        </div>
@@ -1373,13 +1216,13 @@ const BeadRating = () => {
                 </div>
                 <div className="nav-text">數位串珠</div>
               </button>
-              <button className="nav-button" onClick={() => window.location.href = '/guide'}>
+              <button className="nav-button" onClick={goToGuide}>
                 <div className="nav-icon">
                   <IconComponent name="magnifying-glass" size={20} />
                 </div>
                 <div className="nav-text">珠子指南</div>
               </button>
-              <button className="nav-button" onClick={() => window.location.href = '/fortune'}>
+              <button className="nav-button" onClick={goToFortune}>
                 <div className="nav-icon">
                   <IconComponent name="crystal-ball" size={20} />
                 </div>
@@ -1388,7 +1231,6 @@ const BeadRating = () => {
             </div>
           </div>
         </div>
-      </Fade>
       
       {/* 分享結果圖生成組件 */}
       {showShareResultImage && (
