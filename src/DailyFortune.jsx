@@ -195,7 +195,7 @@ const chooseTodaySuggestions = (sunSign, ascSign, dateStr, suggestionPool, gende
 
 // 推薦珠子數據 - 根據運勢動態推薦（使用數位串珠的真實珠子資料）
 const getRecommendedBeads = (fortuneResult) => {
-  const baseBeads = [
+  const allBeads = [
     // 玻璃珠系列 - 適合愛情和人際運勢
     {
       id: 1,
@@ -445,6 +445,11 @@ const getRecommendedBeads = (fortuneResult) => {
       suitableFor: ['love', 'social']
     }
   ];
+
+  // 過濾掉過渡珠系列（只過濾「過渡珠」，保留米珠）
+  const baseBeads = allBeads.filter(bead => 
+    !bead.name.includes('過渡珠')
+  );
 
   if (!fortuneResult) {
     // 如果沒有運勢數據，返回默認推薦
@@ -847,7 +852,7 @@ const PersonalizedFortuneAnalysis = ({ zodiacSign, gender, fortuneData }) => {
 
 // 主組件
 const DailyFortune = () => {
-  const { goToHome, goToGuide, goToRating } = useNavigation();
+  const { goToHome, goToCabinet, goToGuide, goToRating } = useNavigation();
   const [userInfo, setUserInfo] = useState({
     gender: '',
     birthDate: '',
@@ -903,7 +908,7 @@ const DailyFortune = () => {
   };
 
   const openBeadCabinet = () => {
-    goToHome();
+    goToCabinet();
   };
 
   const openGuide = () => {

@@ -1,14 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
 import html2canvas from 'html2canvas';
 import './ShareResultImage.css';
-import MyDesigns from './MyDesigns';
 
 const ShareResultImage = ({ design, scores, advice, onClose }) => {
   const resultRef = useRef(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImage, setGeneratedImage] = useState(null);
   const [selectedBackground, setSelectedBackground] = useState('transparent'); // 預設透明背景
-  const [showMyDesigns, setShowMyDesigns] = useState(false);
 
   // 組件掛載時自動生成分享圖
   useEffect(() => {
@@ -733,7 +731,7 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
             advice += '你的設計精簡優雅，這展現了你對品質的追求，精緻的設計往往比複雜的堆砌更有價值。';
           }
           
-          advice += '戴上這串手鍊會：';
+          advice += '戴上這串手鍊會';
           
           // 只給分數超過5分的面向提供運勢預測建議
           // 愛情運勢預測
@@ -865,27 +863,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
     link.click();
   };
 
-  // 保存到我的設計專區
-  const saveToMyDesigns = () => {
-    if (!design) return;
-    
-    try {
-      const designId = `beadDesign_${Date.now()}`;
-      const designToSave = {
-        ...design,
-        id: designId,
-        timestamp: Date.now(),
-        savedAt: new Date().toLocaleString('zh-TW')
-      };
-      
-      localStorage.setItem(designId, JSON.stringify(designToSave));
-      
-      // 顯示成功提示
-      alert('設計已保存到我的設計專區！');
-    } catch (error) {
-      alert('保存失敗，請稍後再試。');
-    }
-  };
 
   // 分享到社群媒體
   const shareToSocial = async () => {
@@ -1023,33 +1000,19 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
             </div>
           )}
           
-          {/* 操作按鈕 - 始終顯示 */}
-          <div className="action-section">
-            <div className="action-buttons">
-              <button 
-                className="action-btn download-btn"
-                onClick={downloadImage}
-                disabled={!generatedImage}
-              >
-                💾 下載圖片
-              </button>
-              
-              <button 
-                className="action-btn save-btn"
-                onClick={saveToMyDesigns}
-                disabled={!design}
-              >
-                💾 保存設計
-              </button>
-              
-              <button 
-                className="action-btn my-designs-btn"
-                onClick={() => setShowMyDesigns(true)}
-              >
-                🎨 我的設計專區
-              </button>
+          {/* 操作按鈕 - 只在生成完成後顯示 */}
+          {!isGenerating && generatedImage && (
+            <div className="action-section">
+              <div className="action-buttons">
+                <button 
+                  className="action-btn download-btn"
+                  onClick={downloadImage}
+                >
+                  💾 下載圖片
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* 生成完成後顯示完整的分享圖 */}
           {!isGenerating && generatedImage && (
@@ -1105,10 +1068,6 @@ const ShareResultImage = ({ design, scores, advice, onClose }) => {
         </div>
       </div>
       
-      {/* 我的設計專區彈窗 */}
-      {showMyDesigns && (
-        <MyDesigns onClose={() => setShowMyDesigns(false)} />
-      )}
     </div>
   );
 };

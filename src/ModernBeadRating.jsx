@@ -440,7 +440,7 @@ const ModernBeadRating = () => {
                   />
                   <Box>
                     <Typography variant="h5" className="text-purple-200 font-bold">
-                      BY: 星象大師: 小乖
+                      BY: 星象大師小乖
                     </Typography>
                     <Typography variant="body2" className="text-purple-300">
                       ✨ 能量分析專家 ✨

@@ -160,7 +160,7 @@ const ModernBeadRatingApp = () => {
                       />
                       <Box>
                         <Typography variant="h4" className="text-purple-200 font-bold mb-2">
-                          BY: 星象大師: 小乖
+                          BY: 星象大師小乖
                         </Typography>
                         <Typography variant="body1" className="text-purple-300 flex items-center">
                           <Psychology className="mr-2" />

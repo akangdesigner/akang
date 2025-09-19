@@ -7,7 +7,7 @@ import MyDesigns from './MyDesigns';
 import { useNavigation } from './hooks/useNavigation';
 
 const BeadRating = () => {
-  const { goToHome, goToGuide, goToFortune } = useNavigation();
+  const { goToHome, goToCabinet, goToGuide, goToFortune } = useNavigation();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [currentMessage, setCurrentMessage] = useState('');
@@ -404,7 +404,7 @@ const BeadRating = () => {
     
                                                      // 根據實際評分和珠子組合給出多樣化的總結建議
        
-        advice += '戴上這串手鍊會：';
+        advice += '戴上這串手鍊會';
         
         // 只給分數超過5分的面向提供運勢預測建議
        
@@ -702,7 +702,7 @@ const BeadRating = () => {
 
   // 前往數位串珠創作區創建新設計
   const goToBeadCabinet = () => {
-    goToHome();
+    goToCabinet();
   };
 
   // 返回主頁
@@ -799,7 +799,7 @@ const BeadRating = () => {
                     alt="神秘通靈師" 
                     className="psychic-image-full"
                   />
-                  <div className="psychic-title-small">BY: 星象大師:小乖</div>
+                  <div className="psychic-title-small">BY: 星象大師小乖</div>
                 </div>
               </div>
             </div>
